@@ -1,0 +1,49 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!roleHasUser.id" class="modal-title">{{ 'ROLE-HAS-USERS-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="roleHasUser.id" class="modal-title">{{ 'ROLE-HAS-USERS-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="user">{{ 'ROLE-HAS-USERS-MODAL.SELECT-USER.TITLE' | translate }}</label>
+                <ng-select id ="user"
+                           [disabled]="roleHasUser.created_at"
+                           [items]="users"
+                           (change)="getRolesUserDoesntHave()"
+                           placeholder="{{ 'ROLE-HAS-USERS-MODAL.SELECT-USER.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="roleHasUser.user_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="role">{{ 'ROLE-HAS-USERS-MODAL.SELECT-ROLE.TITLE' | translate }}</label>
+                <ng-select id ="role"
+                           [items]="rolesUserDoesntHave"
+                           [disabled]="!roleHasUser.user_id"
+                           placeholder="{{ 'ROLE-HAS-USERS-MODAL.SELECT-ROLE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="roleHasUser.role_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="!(roleHasUser.role_id &&
+     roleHasUser.user_id)">{{ 'ROLE-HAS-USERS-MODAL.BUTTON' | translate }}</button>
+</div>

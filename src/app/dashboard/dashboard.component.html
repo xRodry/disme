@@ -1,0 +1,98 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<!-- ? Início Érica-->
+<div *ngIf="TasksInitiateProcesses.length > 0">
+    <div class="panel-heading" style="padding: 10px 0 10px 0;">
+        <h3 class="panel-title"><i class="fa fa-cogs fa-fw"></i> {{ 'DASHBOARD.START-PROCESS' | translate }} </h3>
+    </div>
+    <app-dashboard-processes [RolesDashB] = RolesDashB [ProcessTasksDashB] = TasksInitiateProcesses [tasksStartProcesses]=true></app-dashboard-processes>
+</div>
+
+<div class="panel-heading" style="padding: 10px 0 10px 0;">
+  <h3 class="panel-title"><i class="fa fa-exchange fa-fw"></i> {{ 'DASHBOARD.TASKS.TITLE' | translate }} </h3>
+</div>
+<div class="card">
+  <div class="card-wrapper mt-3 mx-3" style="height:10px;">
+  </div>
+  <div class="row" style=" margin: 15px">
+    <div class="col-sm-6 col-md-6 col-lg-4" >
+      <div class="relative">
+        <div class="absolute-center text-center">
+          <p>{{totalOfInProgressTasks}}</p>
+        </div>
+        <canvas baseChart *ngIf="showInProgressGraph"
+            [data]="TasksInProgress.data"
+            [labels]="TasksInProgress.label"
+            [chartType]="chartType"
+            [colors]="TasksInProgress.color"
+            [options]="chartOptions"></canvas>
+        <canvas baseChart *ngIf="!showInProgressGraph"
+            [data]="fakeData"
+            [chartType]="chartType"
+            [colors]="fakeColors"
+            [options]="fakeOptions"></canvas>
+        <div class="text-value text-center">{{ 'DASHBOARD.TASKS.PENDING' | translate }}</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-4" >
+      <div class="relative">
+        <div class="absolute-center text-center">
+          <p>{{totalOfFinishedTasks}}</p>
+        </div>
+        <canvas baseChart *ngIf="showFinishedGraph"
+            [data]="FinishedTasks.data"
+            [labels]="FinishedTasks.label"
+            [chartType]="chartType"
+            [colors]="FinishedTasks.color"
+            [options]="chartOptions"></canvas>
+        <canvas baseChart *ngIf="!showFinishedGraph"
+            [data]="fakeData"
+            [chartType]="chartType"
+            [colors]="fakeColors"
+            [options]="fakeOptions"></canvas>
+        <div class="text-value text-center">{{ 'DASHBOARD.TASKS.PERFORMED' | translate }}</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-4">
+      <div class="relative">
+        <div class="absolute-center text-center">
+          <p>{{totalOfDelegatedTasks}}</p>
+        </div>
+        <canvas baseChart *ngIf="showDelegatedGraph"
+            [data]="DelegatedTasks[0].data"
+            [labels]="DelegatedTasks[0].label"
+            [chartType]="chartType"
+            [colors]="DelegatedTasks[0].color"
+            [options]="chartOptions"></canvas>
+        <canvas baseChart *ngIf="!showDelegatedGraph"
+            [data]="fakeData"
+            [chartType]="chartType"
+            [colors]="fakeColors"
+            [options]="fakeOptions"></canvas>
+        <div class="text-value text-center">{{ 'DASHBOARD.TASKS.DELEGATED' | translate }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel-heading" style="padding: 10px 0 10px 0;">
+  <h3 class="panel-title"><i class="fa fa-exchange fa-fw"></i> {{ 'DASHBOARD.PENDING-TASKS' | translate }} </h3>
+</div>
+<app-dashboard-tasks [RolesDashB] = RolesDashB [PendingTasks] = PendingTasks [isDelegated]= false></app-dashboard-tasks>
+
+
+<div class="panel-heading" style="padding: 10px 0 10px 0;">
+  <h3 class="panel-title"><i class="fa fa-exchange fa-fw"></i> {{ 'DASHBOARD.PENDING-TASKS-DELEGATED' | translate }} </h3>
+</div>
+<app-dashboard-tasks [RolesDashB] = RolesDashB [PendingTasks] = DelegatedPendingTasks [isDelegated]= true></app-dashboard-tasks>
+
+<div *ngIf="TasksOfInitiatedProcesses.length > 0">
+    <div class="panel-heading" style="padding: 10px 0 10px 0;">
+        <h3 class="panel-title"><i class="fa fa-cogs fa-fw"></i> {{ 'DASHBOARD.INITIATE-TASKS' | translate }} </h3>
+    </div>
+    <app-dashboard-processes [RolesDashB] = RolesDashB [ProcessTasksDashB] = TasksOfInitiatedProcesses [tasksStartProcesses]=false></app-dashboard-processes>
+</div>
+<!-- ? Fim Érica-->

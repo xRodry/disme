@@ -1,0 +1,194 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+  <h4  *ngIf="templateTranslation" class="modal-title">{{ 'TEMPLATES-MANAGEMENT.MODAL.MODAL-TITLE-TRANSLATION' | translate }}</h4>
+  <h4  *ngIf="!templateTranslation" class="modal-title">{{ 'TEMPLATES-MANAGEMENT.MODAL.MODAL-TITLE' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="name">{{ 'TEMPLATES-MANAGEMENT.MODAL.NAME' | translate }}</label>
+        <input *ngIf="templateTranslation" type="text" class="form-control" id="nameTranslation"
+               [(ngModel)]="template.name" [placeholder]="this.fieldPlaceholder.name" required>
+        <input *ngIf="!templateTranslation" type="text" class="form-control" id="name" [(ngModel)]="template.name"
+               placeholder="{{ 'TEMPLATES-MANAGEMENT.MODAL.NAME-PLACEHOLDER' | translate }}" required>
+        <div class="invalid-feedback">
+          {{ 'TEMPLATES-MANAGEMENT.MODAL.NAME-INVALID' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="type">{{ 'TEMPLATES-MANAGEMENT.MODAL.TYPE' | translate }}</label>
+        <select [disabled]="templateTranslation" class="form-control" id="type"  [(ngModel)]="template.type" (change)="onTypeChange($event)" required>
+          <option value="modal">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.TYPE-MODAL' | translate }}
+          </option>
+          <option value="toast">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.TYPE-TOAST' | translate }}
+          </option>
+          <option value="doc">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.TYPE-DOC' | translate }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          {{ 'TEMPLATES-MANAGEMENT.MODAL.TYPE-INVALID' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isModal" class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="modalHeader">{{ 'TEMPLATES-MANAGEMENT.MODAL.WINDOW-HEADER' | translate }}</label>
+        <input *ngIf="templateTranslation" type="text" class="form-control" id="modalHeaderTranslation"
+               [(ngModel)]="template.header" [placeholder]="this.fieldPlaceholder.header" required>
+        <input *ngIf="!templateTranslation" type="text" class="form-control" id="modalHeader" [(ngModel)]="template.header"
+               placeholder="{{ 'TEMPLATES-MANAGEMENT.MODAL.WINDOW-HEADER-PLACEHOLDER' | translate }}" required>
+        <div class="invalid-feedback">
+          {{ 'TEMPLATES-MANAGEMENT.MODAL.WINDOW-HEADER-INVALID' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isModal" class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="modalButton">{{ 'TEMPLATES-MANAGEMENT.MODAL.WINDOW-BUTTON' | translate }}</label>
+        <input *ngIf="templateTranslation" type="text" class="form-control" id="modalButtonTranslation"
+               [(ngModel)]="template.button" [placeholder]="this.fieldPlaceholder.button" required>
+        <input *ngIf="!templateTranslation" type="text" class="form-control" id="modalButton" [(ngModel)]="template.button"
+               placeholder="{{ 'TEMPLATES-MANAGEMENT.MODAL.WINDOW-BUTTON-PLACEHOLDER' | translate }}" required>
+        <div class="invalid-feedback">
+          {{ 'TEMPLATES-MANAGEMENT.MODAL.WINDOW-BUTTON-INVALID' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isToast" class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="toastClass">{{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-CLASS' | translate }}</label>
+        <select [disabled]="templateTranslation" class="form-control" id="toastClass"
+                [(ngModel)]="template.class" (change)="onClassChange($event)" required>
+            <option class="white-letters colour-select-grey" value="success">
+                {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-CLASS-SUCCESS' | translate }}
+            </option>
+            <option class="white-letters colour-select-grey" value="information">
+                {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-CLASS-INFORMATION' | translate }}
+            </option>
+            <option class="white-letters colour-select-grey" value="warning">
+                {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-CLASS-WARNING' | translate }}
+            </option>
+            <option class="white-letters colour-select-grey" value="error">
+                {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-CLASS-ERROR' | translate }}
+            </option>
+            <option class="white-letters colour-select-grey" value="custom">
+                {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-CLASS-CUSTOM' | translate }}
+            </option>
+        </select>
+        <div class="invalid-feedback">
+          {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-CLASS-INVALID' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isToast && isClassCustom" class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="toastTitle">{{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-TITLE' | translate }}</label>
+        <input *ngIf="templateTranslation" type="text" class="form-control" id="toastTitleTranslation"
+               [(ngModel)]="template.title" [placeholder]="this.fieldPlaceholder.title" required>
+        <input *ngIf="!templateTranslation" type="text" class="form-control" id="toastTitle" [(ngModel)]="template.title"
+               placeholder="{{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-TITLE-PLACEHOLDER' | translate }}" required>
+        <div class="invalid-feedback">
+          {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-TITLE-INVALID' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isToast && isClassCustom" class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="templateColour">{{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOUR' | translate }}</label>
+        <select [disabled]="templateTranslation" class="form-control" id="templateColour"
+                [(ngModel)]="template.colour" (change)="changeSelectBackgroundColour()">
+          <option class="white-letters colour-select-dark-pink" value="#ff4040">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.DARK-PINK' | translate }}
+          </option>
+          <option class="white-letters colour-select-pink" value="#ff66b3">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.PINK' | translate }}
+          </option>
+          <option class="white-letters colour-select-light-pink" value="#ff8080">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.LIGHT-PINK' | translate }}
+          </option>
+          <option class="white-letters colour-select-purple" value="#6600cc">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.PURPLE' | translate }}
+          </option>
+          <option class="white-letters colour-select-light-purple" value="#8080ff">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.LIGHT-PURPLE' | translate }}
+          </option>
+          <option class="white-letters colour-select-light-orange" value="#fd9d47">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.LIGHT-ORANGE' | translate }}
+          </option>
+          <option class="white-letters colour-select-dark-blue" value="#000099">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.DARK-BLUE' | translate }}
+          </option>
+          <option class="white-letters colour-select-dark-red" value="#420420">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.DARK-RED' | translate }}
+          </option>
+          <option class="white-letters colour-select-grey" value="#696969">
+            {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOURS.GREY' | translate }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          {{ 'TEMPLATES-MANAGEMENT.MODAL.NOTIFICATION-COLOUR-INVALID' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <editor
+                    [(ngModel)]="template.text"
+                    apiKey="mmun0ey6stgzacfxrzupwc5z7ftf7xw8luinw8qx3vyxslnp"
+                    [init]="initConfigTemplateEditor"
+                >
+                </editor>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="showSourceCode" [(ngModel)]="showSourceCode">
+                    <label class="custom-control-label" for="showSourceCode">
+                        {{ 'TEMPLATES-MANAGEMENT.MODAL.SHOW-SOURCE-CODE' | translate }}
+                    </label>
+                </div>
+                <div *ngIf="showSourceCode" style="border: dashed 1px rgb(144, 164, 174); padding: 5px">
+                    {{template.text}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <button  *ngIf="templateTranslation" type="button" class="btn btn-success" [disabled]="isSaveButtonDisabled()" (click)="passBack()">
+    {{ 'TEMPLATES-MANAGEMENT.MODAL.TRANSLATE' | translate }}
+  </button>
+  <button  *ngIf="!templateTranslation" type="button" class="btn btn-success" [disabled]="isSaveButtonDisabled()" (click)="passBack()">
+    {{ 'TEMPLATES-MANAGEMENT.MODAL.SAVE' | translate }}
+  </button>
+</div>

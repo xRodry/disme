@@ -1,0 +1,465 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('language')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.LANGUAGE.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openLanguageModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-LANGUAGE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{languages.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('language')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="languageGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="languages"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "languageColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('users')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.USERS.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openUsersModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-USER' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{users.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('users')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="usersGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="users"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "usersColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('role')">
+                <i  class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.ROLES.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openRolesModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-ROLE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{roles.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('role')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="rolesGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="roles"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "roleColumnDefs"
+                ></ag-grid-angular>
+
+                <div class="card mt-4">
+                    <div class="card-header" role="button" (click)="showOrHideTable('roleInitiatesTransaction')">
+                        <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.ROLE-INITIATES-TRANSACTION-TYPE.TITLE' | translate }}
+
+                        <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openRoleInitiatesTransactionModal()">
+                            {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-ROLE-INITIATES-TRANSACTION' | translate }}
+                        </button>
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{roleInitiatesTransactionTypes.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+                    <div [ngbCollapse]="!tablesToShow.includes('roleInitiatesTransaction')" class="card-body">
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="roleInitiatesTransactionTypeGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="roleInitiatesTransactionTypes"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "rolesInitiateTransactionTypeColumnDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" role="button" (click)="showOrHideTable('roleHasUser')">
+                        <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.ROLES-HAVE-USERS.TITLE' | translate }}
+
+                        <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openRoleHasUserModal()">
+                            {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-ROLE-HAS-USER' | translate }}
+                        </button>
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{roleHasUsers.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+                    <div [ngbCollapse]="!tablesToShow.includes('roleHasUser')" class="card-body">
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="roleUsersGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="roleHasUsers"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "rolesHaveUsersColumnDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('processType')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.PROCESS-TYPES.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openProcessTypeModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-PROCESS-TYPE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{processTypes.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('processType')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="processTypesGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="processTypes"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "processTypeColumnDefs"
+                ></ag-grid-angular>
+
+                <div class="card mt-4" >
+                    <div class="card-header" role="button" (click)="showOrHideTable('processDetails')">
+                        <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.PROCESS-DETAILS.TITLE' | translate }}
+
+                        <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openProcessDetailsModal()">
+                            {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-PROCESS-DETAIL' | translate }}
+                        </button>
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{processDetails.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+                    <div [ngbCollapse]="!tablesToShow.includes('processDetails')" class="card-body">
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="processDetailsGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="processDetails"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "processDetailsColumnDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('transactionType')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.TRANSACTION-TYPES.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openTransactionTypeModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-TRANSACTION-TYPE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{transactionTypes.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('transactionType')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="transactionTypesGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="transactionTypes"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "transactionTypeColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('entityType')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.ENTITY-TYPES.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openEntityTypeModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-ENTITY-TYPE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{entityTypes.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('entityType')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="entityTypesGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="entityTypes"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "entityTypeColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('property')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.PROPERTY.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openPropertyModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-PROPERTY' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{properties.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('property')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="propertyGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="properties"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "propertyColumnDefs"
+                ></ag-grid-angular>
+
+                <div class="card mt-4">
+                    <div class="card-header" role="button" (click)="showOrHideTable('propUnitType')">
+                        <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.PROP-UNIT-TYPES.TITLE' | translate }}
+
+                        <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openPropUnitTypeModal()">
+                            {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-PROP-UNIT-TYPE' | translate }}
+                        </button>
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{propUnitTypes.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+                    <div [ngbCollapse]="!tablesToShow.includes('propUnitType')" class="card-body">
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="propUnitTypeGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="propUnitTypes"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "propUnitTypeColumnDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header" role="button" (click)="showOrHideTable('referencedProperty')">
+                        <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.REFERENCED-PROPERTY-VALUES.TITLE' | translate }}
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{referencedProperties.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+
+                    <div [ngbCollapse]="!tablesToShow.includes('referencedProperty')" class="card-body">
+                        <div class="form-group">
+                            <label for="referencedPropertySelect">{{ 'PARAMETERIZATION.REFERENCED-PROPERTY-VALUES.SELECT-REFERENCED-PROPERTY.TITLE' | translate }}</label>
+                            <ng-select id ="referencedPropertySelect"
+                                       [items]="referencedProperties"
+                                       placeholder="{{ 'PARAMETERIZATION.REFERENCED-PROPERTY-VALUES.SELECT-REFERENCED-PROPERTY.PLACEHOLDER' | translate }}"
+                                       bindValue="property_id"
+                                       (change)="getSelectedReferencedPropertyValues()"
+                                       [(ngModel)]="selectedReferencedProperty">
+                                <ng-template ng-label-tmp let-item="item">
+                                    <span>{{item.ent_type_name +  ' → ' + item.property_name}}</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                    <div>
+                                        <span>{{item.ent_type_name +  ' → ' + item.property_name}}</span>
+                                    </div>
+                                    <div class="small text-muted">
+                                        <span> {{ 'PARAMETERIZATION.REFERENCED-PROPERTY-VALUES.REFERENCED-BY' | translate }}: {{referencedByProperties(item)}}</span>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="referencedPropertyGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="referencedPropertyValues"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "referencedPropertyColumnDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('constant')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.CONSTANTS.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openConstantModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-CONSTANT' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{constants.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('constant')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="constantsGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="constants"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "constantColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('waitingLink')">
+                <i class="fa fa-align-justify"></i> {{ 'PARAMETERIZATION.WAITING-LINK.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openWaitingLinkModal()">
+                    {{ 'PARAMETERIZATION.AVAILABLE-ACTIONS.NEW-WAITING-LINK' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{waitingLinks.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('waitingLink')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="waitingLinksGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="waitingLinks"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "waitingLinkColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <button class="btn btn-lg btn-block btn-primary" type="button" (click)="$event.stopPropagation(); openProcessDiagramModal()">
+            {{ 'PARAMETERIZATION.PROCESS-DIAGRAM.TITLE' | translate }}
+        </button>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <button class="btn btn-lg btn-block btn-primary" type="button" (click)="$event.stopPropagation(); openFactDiagramModal()">
+            {{ 'PARAMETERIZATION.FACT-DIAGRAM.TITLE' | translate }}
+        </button>
+    </div>
+
+    <div class="col-lg-12 mb-3">
+        <button class="btn btn-lg btn-block btn-danger" type="button" (click)="$event.stopPropagation(); deleteAllTestData()">
+            {{ 'PARAMETERIZATION.RESET-DATA.TITLE' | translate }}
+        </button>
+    </div>
+</div>

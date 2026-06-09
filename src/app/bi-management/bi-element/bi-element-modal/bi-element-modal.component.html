@@ -1,0 +1,100 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.BI-TOOL' | translate }}</label>
+                <ng-select [items]="biEngines"
+                   placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.BI-TOOLS-PLACEHOLDER' | translate }}"
+                   bindLabel="name"
+                   bindValue="id"
+                   [(ngModel)]="biElement.bi_engine_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.SLUG-TYPE' | translate }}</label>
+                <ng-select [items]="biElementTypes"
+                           bindLabel="slug"
+                           bindValue="id"
+                           placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.SLUG-TYPES-PLACEHOLDER' | translate }}"
+                           [editableSearchTerm]="true"
+                           [(ngModel)]="biElement.bi_element_type_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.NAME' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="biElement.name" type="text" placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.NAME-PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="description">{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.DESCRIPTION' | translate }}</label>
+                <input class="form-control" id="description" [(ngModel)]="biElement.description" type="text" placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.DESCRIPTION-PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="embed">{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.INTEGRATION-URL' | translate }}</label>
+                <input class="form-control" id="embed" [(ngModel)]="biElement.embed" type="text" placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.INTEGRATION-URL-PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <form>
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label>{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.PREVIEW-IMAGE' | translate }}</label>
+                            {{imageError}}
+                            <div class="custom-file fileInputProfileWrap">
+                                <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile">
+                                <div class="img-space">
+                                    <ng-container *ngIf="biElement.preview?.length && !isImageSaved;">
+                                        <img [src]="biElement.preview"  alt="preview"/>
+                                    </ng-container>
+                                    <ng-container *ngIf="!biElement.preview?.length || isImageSaved; then thenTemplate2;">
+                                    </ng-container>
+                                    <ng-container *ngIf="!biElement.preview?.length && !isImageSaved; then elseTemplate;">
+                                    </ng-container>
+                                    <ng-template #thenTemplate2>
+                                        <img [src]="cardImageBase64"  alt="preview"/>
+                                    </ng-template>
+                                    <ng-template #elseTemplate>
+                                        <img src="../../../../assets/img/no_image_item.png" alt="no-image-preview">
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved">{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.REMOVE-IMAGE' | translate }}</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" [disabled]="cantSaveElement()" (click)="saveData()">{{ 'BI-MANAGEMENT.BI-ELEMENT.MODAL.SAVE' | translate }}</button>
+</div>

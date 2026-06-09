@@ -1,0 +1,77 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.CONTROL-PANEL' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" routerLink="/biManagement/biElement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElementCollection">{{ 'BI-MANAGEMENT.BI-DASHBOARD.COLLECTION' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biKnowage">{{ 'BI-MANAGEMENT.BI-DASHBOARD.KNOWAGE-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biEngines">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-TOOLS' | translate }}</a>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header" *ngIf="biElement">
+                <i class="fa fa-align-justify"></i>{{ biElement.name }} {{ 'BI-MANAGEMENT.BI-ELEMENT.DETAILS.ELEMENT-DETAILS' | translate }}
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="biElement">
+                    <div class="col-sm-3">
+                        <img class="img-fluid img-thumbnail" [src]="biElement.preview" alt="{{ biElement.name }}"/>
+                    </div>
+                    <div class="col-sm-9">
+                        <h3 class="mb-3">{{ biElement.name }}</h3>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.DETAILS.TABLE.DESCRIPTION' | translate }}</th>
+                                <td>{{ biElement.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.DETAILS.TABLE.TYPE' | translate }}</th>
+                                <td>{{ biElement.type_slug }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.DETAILS.TABLE.BI-TOOL' | translate }}</th>
+                                <td>{{ biElement.engine_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.DETAILS.TABLE.CREATED-AT' | translate }}</th>
+                                <td>{{ biElement.created_at }}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-primary" (click)="openEmbedLinkModal(biElement)">
+                                        {{ 'BI-MANAGEMENT.BI-ELEMENT.DETAILS.VIEW' | translate }}
+                                    </button>
+
+                                </td>
+                                <td>
+                                    <div *ngIf="!collected; else inCollection">.
+                                        <button class="btn btn-danger" (click)="storeBiUserCollection({bi_element_id: biElement.id})"><i class="fa fa-heart"></i></button>
+                                    </div>
+                                    <ng-template #inCollection>
+                                        <button class="btn btn-secondary" [disabled]="disabled"><i class="fa fa-heart"></i></button>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+</div>

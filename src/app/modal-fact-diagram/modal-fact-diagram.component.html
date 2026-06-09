@@ -1,0 +1,66 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'FACT-DIAGRAM-MODAL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="dataSource">{{ 'FACT-DIAGRAM-MODAL.SELECT-SOURCE.TITLE' | translate }}</label>
+                <ng-select id ="dataSource"
+                           [items]="dataSources"
+                           placeholder="{{ 'FACT-DIAGRAM-MODAL.SELECT-SOURCE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="selectedDataSource"
+                           (change)="onDataSourceChange()">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedDataSource === 'xml-file'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="xmlFile">{{ 'FACT-DIAGRAM-MODAL.XML-FILE.TITLE' | translate }}</label>
+                <input type="file"
+                       id="xmlFile"
+                       class="form-control"
+                       accept=".xml,.drawio"
+                       placeholder="{{ 'FACT-DIAGRAM-MODAL.XML-FILE.PLACEHOLDER' | translate }}"
+                       (change)="setXmlFromFile($event)"
+                />
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedDataSource === 'fact-diagram-table'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="factDiagramTable">{{ 'FACT-DIAGRAM-MODAL.FACT-DIAGRAM-TABLE.TITLE' | translate }}</label>
+                <ng-select id ="factDiagramTable"
+                           [items]="factDiagrams"
+                           placeholder="{{ 'FACT-DIAGRAM-MODAL.FACT-DIAGRAM-TABLE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="XML"
+                           [(ngModel)]="selectedXmlContent">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-success"
+            (click)="setAndNavigate(selectedXmlContent)"
+            [disabled]="!(selectedDataSource &&
+            ((selectedDataSource !== 'xml-file') || selectedXmlContent) &&
+            ((selectedDataSource !== 'fact-diagram-table') || selectedXmlContent))">
+        {{ 'FACT-DIAGRAM-MODAL.BUTTON' | translate }}
+    </button>
+</div>

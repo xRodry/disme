@@ -1,0 +1,12 @@
+<?php
+/*
+ * Copyright © 2016 - 2024  Enterprise Engineering Lab /
+ * University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+ */
+
+return [
+
+    'MODAL_TITLE' => 'Atribuir Actores a Papel',
+    'LBL1' => 'Associar Actores a ',
+    'LBL2' => 'Lista de Actores'
+];

@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'PROCESS-DIAGRAM-MODAL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="dataSource">{{ 'PROCESS-DIAGRAM-MODAL.SELECT-SOURCE.TITLE' | translate }}</label>
+                <ng-select id ="dataSource"
+                           [items]="dataSources"
+                           placeholder="{{ 'PROCESS-DIAGRAM-MODAL.SELECT-SOURCE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="selectedDataSource"
+                           (change)="onDataSourceChange()">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedDataSource === 'xml-file'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="xmlFile">{{ 'PROCESS-DIAGRAM-MODAL.XML-FILE.TITLE' | translate }}</label>
+                <input type="file"
+                       id="xmlFile"
+                       class="form-control"
+                       accept=".xml,.drawio"
+                       placeholder="{{ 'PROCESS-DIAGRAM-MODAL.XML-FILE.PLACEHOLDER' | translate }}"
+                       (change)="setXmlFromFile($event)"
+                />
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedDataSource === 'process-diagram-table'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="processDiagramTable">{{ 'PROCESS-DIAGRAM-MODAL.PROCESS-DIAGRAM-TABLE.TITLE' | translate }}</label>
+                <ng-select id ="processDiagramTable"
+                           [items]="processDiagrams"
+                           placeholder="{{ 'PROCESS-DIAGRAM-MODAL.PROCESS-DIAGRAM-TABLE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           (change)="onProcessDiagramChange($event)">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedDataSource !== 'process-diagram-table'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="processType">{{ 'PROCESS-DIAGRAM-MODAL.SELECT-PROCESS-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="processType"
+                           [items]="processTypes"
+                           placeholder="{{ 'PROCESS-DIAGRAM-MODAL.SELECT-PROCESS-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="id"
+                           bindValue="id"
+                           [(ngModel)]="selectedProcessType">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-success"
+            (click)="setAndNavigate(selectedProcessType, selectedXmlContent)"
+            [disabled]="!(selectedProcessType &&
+            selectedDataSource &&
+            ((selectedDataSource !== 'xml-file') || selectedXmlContent) &&
+            ((selectedDataSource !== 'process-diagram-table') || selectedXmlContent))">
+        {{ 'PROCESS-DIAGRAM-MODAL.BUTTON' | translate }}
+    </button>
+</div>

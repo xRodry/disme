@@ -1,0 +1,109 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.CONTROL-PANEL' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElementCollection">{{ 'BI-MANAGEMENT.BI-DASHBOARD.COLLECTION' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" routerLink="/biManagement/biKnowage">{{ 'BI-MANAGEMENT.BI-DASHBOARD.KNOWAGE-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biEngines">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-TOOLS' | translate }}</a>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> {{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.TITLE' | translate }}
+
+                <button *ngIf="!biKnowageSession || biKnowageSession === ''; else noKnowage2Session"
+                        class="btn btn-sm btn-primary float-right" type="button" routerLink="/biManagement/BiKnowageLogin">
+                    {{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.ADD-ELEMENTS' | translate }}
+                </button>
+                <ng-template #noKnowage2Session>
+                    <button class="btn btn-sm btn-success float-right" type="button" (click)="openModal()">
+                        {{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.ADD-ELEMENTS' | translate }}
+                    </button>
+                </ng-template>
+                <ng-template #noKnowageSession>
+                    <button class="btn btn-sm btn-success float-right" type="button" (click)="getBiKnowageDocuments()">
+                        {{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.SEE-DOCS' | translate }}
+                    </button>
+                </ng-template>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{biKnowageElements.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+
+            <div class="card-body">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.LABEL' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.PREVIEW' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.NAME' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.DESCRIPTION' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.TYPE' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.PROFILE' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.DATASET-LABEL' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.CREATED-AT' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.ACTIONS' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="biKnowageElements?.length != 0">
+                    <tr *ngFor="let biKnowageElement of biKnowageElements">
+                        <td>{{ biKnowageElement.id }}</td>
+                        <td>{{ biKnowageElement.label }}</td>
+                        <td>
+                            <img [src]="biKnowageElement.preview" alt="{{ biKnowageElement.name }}" class="img-fluid"
+                                 style="display: block; margin: auto; width: 100%; height: 60px;"/>
+                        </td>
+                        <td>{{ biKnowageElement.name }}</td>
+                        <td>{{ biKnowageElement.description }}</td>
+                        <td>{{ biKnowageElement.type }}</td>
+                        <td>{{ biKnowageElement.role }}</td>
+                        <td>{{ biKnowageElement.dataset_label }}</td>
+                        <td>{{ biKnowageElement.created_at }}</td>
+                        <td>
+                            <li class="list-inline-item">
+                                <button class="btn btn-primary btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                        routerLink="/biManagement/biKnowageDetails/{{ biKnowageElement.id }}" data-placement="top" title="{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.DETAILS' | translate }}"><i class="fa fa-eye"></i>
+                                </button>
+                            </li>
+                            <li class="list-inline-item">
+                                <button class="btn btn-warning btn-sm rounded-0" type="button" (click)="openModal( biKnowageElement )" data-toggle="tooltip"
+                                        data-placement="top" title="{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.EDIT' | translate }}"><i class="fa fa-edit"></i>
+                                </button>
+                            </li>
+                            <li class="list-inline-item">
+                                <button class="btn btn-danger btn-sm rounded-0" type="button" (click)="deleteBiKnowage( biKnowageElement.id )" data-toggle="tooltip"
+                                        data-placement="top" title="{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.TABLE.DELETE' | translate }}"><i class="fa fa-trash"></i>
+                                </button>
+                            </li>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody *ngIf="biKnowageElements?.length == 0">
+                    <tr>
+                        <td colspan="10" class="no-data-available">{{ 'BI-MANAGEMENT.BI-KNOWAGE.MANAGEMENT.LOADING' | translate }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+</div>
+
+

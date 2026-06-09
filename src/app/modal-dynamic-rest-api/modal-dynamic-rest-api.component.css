@@ -1,0 +1,72 @@
+/*
+ * Copyright © 2016 - 2024  Enterprise Engineering Lab /
+ * University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+ */
+
+.label {
+    margin-bottom: 5px;
+}
+
+.float-child {
+    width: 100%;
+    float: left;
+    padding: 10px;
+    border: 2px solid red;
+}
+
+.float-child-get {
+    width: 7%;
+    padding: 10px;
+    border: 2px solid gray;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.url-for-rest-api {
+    width: 100%;
+    float: left;
+    padding: 10px;
+    border: 2px solid gray;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.url-for-rest-api-old {
+    margin-left: 10px;
+    margin-right: 15px;
+    padding: 10px 10px 10px 10px;
+}
+
+.mi {
+    overflow-x:scroll
+}
+
+/* ::placeholder {
+    color: dodgerblue;
+} */
+
+.trash-button {
+    background-color: transparent;
+    border-color: transparent;
+    font-size: 16px;
+    color: red;
+}
+
+.add-parameter {
+    font-size: 18px;
+    color: lightseagreen;
+    background-color: white;
+}
+
+.parameters-col-2-3 {
+    width: 40%;
+}
+
+.parameters-col-4 {
+    width: 8%;
+}
+
+.required-field::after {
+    content: "*";
+    color: red;
+}

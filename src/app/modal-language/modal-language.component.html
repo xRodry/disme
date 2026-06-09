@@ -1,0 +1,51 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!language.id" class="modal-title">{{ 'LANGUAGE-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="language.id" class="modal-title">{{ 'LANGUAGE-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'LANGUAGE-MODAL.NAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="language.name" type="text"
+                       placeholder="{{ 'LANGUAGE-MODAL.NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'LANGUAGE-MODAL.ABBRV-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="abbrv" [(ngModel)]="language.abbrv" type="text"
+                       placeholder="{{ 'LANGUAGE-MODAL.ABBRV-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="state">{{ 'LANGUAGE-MODAL.SELECT-STATE.TITLE' | translate }}</label>
+                <ng-select id ="state"
+                           [items]="languageState"
+                           placeholder="{{ 'LANGUAGE-MODAL.SELECT-STATE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="language.state">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="!(language.name && language.state)">
+        {{ 'LANGUAGE-MODAL.BUTTON' | translate }}
+    </button>
+</div>

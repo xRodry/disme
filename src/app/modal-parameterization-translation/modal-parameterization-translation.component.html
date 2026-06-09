@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.TITLE' | translate }}
+        {{'MODAL-PARAMETERIZATION-TRANSLATION.' + originTableTranslationString + '.TITLE' | translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div *ngIf="originItem.originTable === 'role' || originItem.originTable === 'processType' ||
+     originItem.originTable === 'entityType' || originItem.originTable === 'property' ||
+     originItem.originTable === 'propUnitType' || originItem.originTable === 'constant'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.NAME-FIELD' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="resultingItem.name" type="text"
+                       [placeholder]="originItem.name">
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="originItem.originTable === 'referencedPropertyValue'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="value">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.VALUE-FIELD' | translate }}</label>
+                <input class="form-control" id="value" [(ngModel)]="resultingItem.value" type="text"
+                       [placeholder]="originItem.value">
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="originItem.originTable === 'transactionType'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="tName">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.NAME-FIELD' | translate }}</label>
+                <input class="form-control" id="tName" [(ngModel)]="resultingItem.t_name" type="text"
+                       [placeholder]="originItem.t_name">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="rtName">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.RT-NAME-FIELD' | translate }}</label>
+                <input class="form-control" id="rtName" [(ngModel)]="resultingItem.rt_name" type="text"
+                       [placeholder]="originItem.rt_name">
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="originItem.originTable === 'entityType'" class="row">
+        <div class="col-sm-12">
+            <div *ngIf="originItem.id_name" class="form-group">
+                <label for="idName1">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.ID-NAME-FIELD' | translate }}</label>
+                <input *ngIf="originItem.id_name" class="form-control" id="idName1" [(ngModel)]="resultingItem.id_name" type="text"
+                       [placeholder]="originItem.id_name">
+            </div>
+            <div *ngIf="!originItem.id_name" class="form-group">
+                <label for="idName2">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.ID-NAME-FIELD' | translate }}</label>
+                <input class="form-control" id="idName2" [(ngModel)]="resultingItem.id_name" type="text"
+                       placeholder="{{ 'MODAL-PARAMETERIZATION-TRANSLATION.ID-NAME-PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12" *ngIf="originItem.originTable === 'property' && originItem.value_type === 'enum'">
+        <div class="col-sm-12 table-responsive">
+            <table ngDefaultControl class="form-group table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>{{ 'MODAL-PARAMETERIZATION-TRANSLATION.PROPERTY.PROP-ALLOWED-VALUES-TABLE-TITLE' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let propAllowedValue of resultingItem.property_values; let i = index">
+                    <td  style="min-width: 150px">
+                        <input type="text" class="form-control" [(ngModel)]="propAllowedValue.value"
+                               [placeholder]="propAllowedValue.placeholder">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!--    <div class="col-sm-12" *ngIf="originItem.originTable === 'constant' && originItem.value_type === 'enum'">-->
+<!--        <div class="col-sm-12 table-responsive">-->
+<!--            <table ngDefaultControl class="form-group table table-bordered table-striped">-->
+<!--                <thead>-->
+<!--                    <tr>-->
+<!--                            <th>{{ 'MODAL-PARAMETERIZATION-TRANSLATION.CONSTANT.ENUM-VALUES-TABLE-TITLE' | translate }}</th>-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                    <tr *ngFor="let enumValue of resultingItem.enumValues; let i = index">-->
+<!--                        <td  style="min-width: 150px">-->
+<!--                            <input type="text" class="form-control" [(ngModel)]="enumValue.value"-->
+<!--                                   [placeholder]="enumValue.placeholder">-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="isSaveButtonDisabled()">{{ 'MODAL-PARAMETERIZATION-TRANSLATION.BUTTON' | translate }}</button>
+</div>

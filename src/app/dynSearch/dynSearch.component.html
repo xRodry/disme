@@ -1,0 +1,270 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="col-lg-12">
+    <div class="entities">
+
+        <!----------------------------------------- Query Table ----------------------------------------->
+        <div *ngIf="showQueries">
+            <div class="card">
+                <div class="card-header" role="button" (click)="showOrHideTable('queries-management')">
+                    <i class="fa fa-align-justify"></i>{{ 'DYNAMIC-SEARCH.QUERIES.TITLE' | translate }}
+
+                    <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); goToCreateQueryPage()">
+                        {{ 'DYNAMIC-SEARCH.QUERIES.NEW-QUERY' | translate }}
+                    </button>
+
+                    <br>
+                    <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{Queries.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                </div>
+                <div [ngbCollapse]="!tablesToShow.includes('queries-management')" class="card-body">
+                    <ag-grid-angular
+                        style="width: 100%;"
+                        id="queriesGrid"
+                        class="ag-theme-blue"
+                        domLayout="autoHeight"
+                        [rowData]="Queries"
+                        [animateRows]="true"
+                        [pagination]="true"
+                        [suppressDragLeaveHidesColumns]="true"
+                        [paginationAutoPageSize]="false"
+                        [paginationPageSize]="10"
+                        [gridOptions]="gridOptions"
+                        [columnDefs] = "queriesColumnDefs"
+                    ></ag-grid-angular>
+                </div>
+            </div>
+        </div>
+
+        <!------------------------------- STEP 1 -> Select an Entity Type ------------------------------->
+        <div *ngIf="showFirstSteps">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i>
+                    {{ 'DYNAMIC-SEARCH.STEP-1.TITLE' | translate }}
+                </div>
+                <div class="card-body">
+                    <div *ngIf="entTypes.length">
+                        <div class="row" *ngFor="let entType of entTypes">
+                            <div class="custom-control custom-checkbox">
+                                <input
+                                    type="checkbox"
+                                    [disabled]="entType.disabled"
+                                    [(ngModel)]="entType.checked"
+                                    [value]="entType.id"
+                                    [id]="entType.id"
+                                    (ngModelChange)="toggleEntType()"
+                                >
+                                <label [for]="entType.id">&nbsp;
+                                    {{entType.name}}
+                                    <label class="text-primary" *ngIf="entType.isBaseTable">
+                                    <span>
+                                        <i class="fa fa-arrow-left" style="padding-right:5px"></i>
+                                        '{{ 'DYNAMIC-SEARCH.STEP-1.BASE-TABLE-LABEL' | translate }}'
+                                    </span>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" (click)="getPropertiesToDisplay()">
+                        {{ 'DYNAMIC-SEARCH.STEP-1.BUTTON' | translate }}
+                    </button>
+                </div>
+            </div>
+
+            <!--------------------------------- STEP 2 -> Select Properties --------------------------------->
+
+            <div class="card" *ngIf="Query.selectedEntityTypes.length">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i>
+                    {{ 'DYNAMIC-SEARCH.STEP-2.TITLE' | translate }}
+                </div>
+                <div class="card-body">
+                    <div class="row font-weight-bolder font-lg">
+                        <div class="col-md-2">
+                            {{ 'DYNAMIC-SEARCH.STEP-2.ENT-TYPE-LABEL' | translate }}
+                        </div>
+                        <div class="col-md-5">
+                            {{ 'DYNAMIC-SEARCH.STEP-2.INCLUDE-PROPS.LABEL' | translate }}
+                        </div>
+                        <div class="col-md-5">
+                            {{ 'DYNAMIC-SEARCH.STEP-2.FILTER-PROPS.LABEL' | translate }}
+                        </div>
+                    </div>
+                    <div class="row form-inline" *ngFor="let entType of Query.selectedEntityTypes">
+                        <div *ngIf="entType.isBaseTable"
+                             class="col-md-2 font-weight-bold text-primary">{{entType.name + ' (' +
+                        ('DYNAMIC-SEARCH.STEP-1.BASE-TABLE-LABEL' | translate) + ') '}}:
+                        </div>
+                        <div *ngIf="!entType.isBaseTable" class="col-md-2 font-weight-bold">{{entType.name}}:</div>
+                        <div class="col-md-5">
+                            <ng-select [multiple]="true" id="includedProperties"
+                                       [(ngModel)]="Query.includedProperties[entType.id]"
+                                       placeholder="{{ 'DYNAMIC-SEARCH.STEP-2.INCLUDE-PROPS.PLACEHOLDER' | translate }}">
+                                <ng-option *ngFor="let property of entType.displayProperties" [value]="property.id">
+                                    {{property.name}}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-5">
+                            <ng-select [multiple]="true" id="filterProperties"
+                                       [(ngModel)]="Query.filterProperties[entType.id]"
+                                       placeholder="{{ 'DYNAMIC-SEARCH.STEP-2.FILTER-PROPS.PLACEHOLDER' | translate }}">
+                                <ng-option *ngFor="let property of entType.displayProperties" [value]="property.id">
+                                    {{property.name}}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <br>
+                    <button class="btn btn-primary" (click)="setupBuilder()">
+                        {{ 'DYNAMIC-SEARCH.STEP-2.BUTTON' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!---------------------------------- STEP 3 -> Specify Filters ---------------------------------->
+
+        <div class="card" *ngIf="showStep3Component">
+            <div class="card-header"><i class="fa fa-align-justify"></i>
+                {{ 'DYNAMIC-SEARCH.STEP-3.TITLE' | translate }}
+            </div>
+
+            <div *ngIf="showQueryBuilder; else showMessage">
+                <div class="row">
+                    <div class="col-query-builder">
+                        <div class="qb">
+                            <query-builder id='queryBuilder' [(ngModel)]='Query.queryBuilder' [config]='builderConfig'
+                                           (ngModelChange)="addParameterToQuery()">
+                            </query-builder>
+                        </div>
+                    </div>
+
+                    <div>
+                        <br>
+                        <label class="parameterColumn">
+                            <strong>{{ 'DYNAMIC-SEARCH.STEP-3.IS-PARAMETER' | translate }}</strong>
+                        </label>
+                        <div *ngFor="let parameter of parameters; let i = index" id="ParameterColumn{{i}}">
+
+                            <label class="toggle-wrapper">
+                                <input type="checkbox"
+                                       id="parameter.name"
+                                       [(ngModel)]="parameter.checked"
+                                       (ngModelChange)="toggleParameterCheckbox()"
+                                >
+                                <div class="toggle-slider">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                            </label>
+                        </div>
+                        <div [innerHtml]="organizeParameterCheckboxes()"></div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #showMessage><br>
+                <div *ngIf="!messageStep3; else showError">
+                    <div class="alert-success">
+                        <strong>
+                            {{ 'DYNAMIC-SEARCH.STEP-3.ERROR.NO-FILTERS' | translate }}
+                        </strong>
+                    </div>
+                </div>
+                <ng-template #showError>
+                    <div class="alert-danger">
+                        <strong>{{messageStep3}}</strong>
+                    </div>
+                    <br>
+                </ng-template>
+            </ng-template>
+
+            <div *ngIf="!messageStep3">
+                <br>
+                <div class="alert-custom">
+                    <input
+                        type="checkbox"
+                        [(ngModel)]="resultsAvailableInRestAPIInterface"
+                        style="margin-left:10px"
+                        (change)="openRestApiModal()"
+                    />
+                    <label style="color:purple; font-size:medium">
+                        <strong>
+                            &nbsp;&nbsp;{{ 'DYNAMIC-SEARCH.STEP-3.RESULTS-AVAILABLE-RA' | translate }}
+                        </strong>
+                    </label>
+                </div>
+                <br>
+
+                <input class="col-sm-3 form-control ml-3" id="name" [(ngModel)]="Query.name" type="text"
+                       placeholder="{{ 'DYNAMIC-SEARCH.STEP-3.NAME-PLACEHOLDER' | translate }}">
+
+                <div *ngIf="showQueries">
+                    <button [disabled]="!Query.name" class="btn btn-success" (click)="updateQuery()">
+                        {{ 'DYNAMIC-SEARCH.STEP-3.BUTTON-UPDATE' | translate }}
+                    </button>
+                    <button class="btn btn-primary" (click)="loadResults()">
+                        {{ 'DYNAMIC-SEARCH.STEP-3.BUTTON' | translate }}
+                    </button>
+                </div>
+
+                <div *ngIf="!showQueries">
+                    <button [disabled]="!Query.name" class="btn btn-success" (click)="saveQuery()">
+                        {{ 'DYNAMIC-SEARCH.STEP-3.BUTTON-SAVE-QUERY' | translate }}
+                    </button>
+                    <button class="btn btn-primary" (click)="loadResults()">
+                        {{ 'DYNAMIC-SEARCH.STEP-3.BUTTON' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--------------------------------- STEP 4 -> Show Query Results -------------------------------->
+
+        <div *ngIf="showQueryResults">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-star"></i>
+                    {{ 'DYNAMIC-SEARCH.STEP-4.TITLE' | translate }}
+                </div>
+                <div *ngIf="queryResults.length; else showMessageNoResultsFound">
+                    <div class="text-right">
+                        <button class="btn" style="color:green" (click)="exportAsXLSX()">
+                            <i class="fa fa-file-excel-o" style="font-size:18px;color:green;padding-right:5px"></i>
+                            <strong>
+                                {{ 'DYNAMIC-SEARCH.STEP-4.EXPORT-EXCEL' | translate }}
+                            </strong>
+                        </button>
+                    </div>
+
+                    <table class="colorfulTable">
+                        <tr>
+                            <th *ngFor="let propertyName of queryHeader" class="cell">
+                                {{propertyName}}
+                            </th>
+                        </tr>
+
+                        <tr *ngFor="let row of queryResults" class="row">
+                            <td *ngFor="let valueCell of row" class="cell">
+                                {{valueCell}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <ng-template #showMessageNoResultsFound><br>
+                    <div class="text-center alert-danger">
+                        <strong>
+                            {{ 'DYNAMIC-SEARCH.STEP-4.NO-RESULTS' | translate }}
+                        </strong>
+                    </div>
+                    <br>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+

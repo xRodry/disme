@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'USER-DETAILING-DASHBOARD-MODAL.CREATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="user">{{ 'USER-DETAILING-DASHBOARD-MODAL.SELECT-USER.TITLE' | translate }}</label>
+                <ng-select id ="user"
+                           [items]="users"
+                           placeholder="{{ 'USER-DETAILING-DASHBOARD-MODAL.SELECT-USER.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="userDetailingId">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="showForm()" [disabled]="!(userDetailingId)">{{ 'USER-DETAILING-DASHBOARD-MODAL.BUTTON' | translate }}</button>
+</div>
+

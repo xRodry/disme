@@ -1,0 +1,2196 @@
+{
+    "SIDE-BAR": {
+        "DASHBOARD": "Dashboard",
+        "DASHBOARD-NEW": "New",
+        "COMPONENTS": "Components",
+        "DYNAMIC-SEARCH": "Dynamic Search",
+        "AR-MANAGEMENT": "Action Rules Management",
+        "TEMPLATES-MANAGEMENT": "Templates Management",
+        "FORMS-MANAGEMENT": "Forms Management",
+        "DELEGATIONS-MANAGEMENT": "Delegations Management",
+        "PARAMETERIZATION": "Parameterization",
+        "BI-MANAGEMENT": "BI Management"
+    },
+
+    "DASHBOARD": {
+        "START-PROCESS": "Start Task for a New Process",
+        "PROCESS-STARTED": {
+            "SUCCESS": "Process started successfully.",
+            "ERROR": "Error starting process. Please, try again."
+        },
+        "TASK-INITIATED": {
+            "SUCCESS": "Task initiated successfully.",
+            "ERROR": "Error initiating task. Please, try again."
+        },
+        "ACK-TASK-ERROR": "Error acknowledging task. Please, try again.",
+        "TASKS": {
+            "TITLE": "Tasks",
+            "PENDING": "Pending",
+            "PERFORMED": "Performed",
+            "DELEGATED": "Delegated to Others"
+        },
+        "PENDING-TASKS": "Execute Pending Task of an Existing Process",
+        "PENDING-TASKS-DELEGATED": "Execute Delegated Pending Task for Existing Process",
+        "INITIATE-TASKS": "Initiate Task on Existing Process",
+        "NOTHING-FOUND": "Oops! Nothing was found...",
+        "HAS-BEEN": "has been",
+        "TABLE": {
+            "DATE-CREATED": "Date Created",
+            "DETAILS": "Details",
+            "PROCESS": "Process",
+            "TASK": "Task",
+            "STATE": "State"
+        },
+        "FILTERS": {
+            "SEARCH": "Search",
+            "FUNCTION": {
+                "TITLE": "Function",
+                "PLACEHOLDER": "Pick a function"
+            },
+            "PROCESS": {
+                "TITLE": "Process",
+                "PLACEHOLDER": "Pick a process"
+            },
+            "TASK": {
+                "TITLE": "Task",
+                "PLACEHOLDER": "Pick a task"
+            }
+        }
+    },
+
+    "DASHBOARD-EXECUTER": {
+        "PERFORMED": "Action Rule Fully Performed.",
+        "ALREADY-HAD-EXECUTOR": "Another user has already been established as the executor of this task.",
+        "CAUSAL-LINK": {
+            "CAN-EXECUTE": "Task '{{transType}}' with state '{{transState}}' started where you are an executor/initiator. You can now complete it.",
+            "CANT-EXECUTE": "Task '{{transType}}' with state '{{transState}}' started and is awaiting completion by the corresponding authority.",
+            "UNKNOWN": "Causal Link status unknown"
+        },
+        "ERROR": "An error has occurred. Please try again."
+    },
+
+    "MODAL-SELECT-INSTANCE": {
+        "TITLE-BEGINNING": "Select an instance of",
+        "TITLE-CONTINUING-PROCESS": "to initiate the task",
+        "TITLE-CONTINUING-ENTITY": "to edit",
+        "TABLE": {
+            "DATE-CREATED": "Date Created",
+            "INTERNAL-ID": "Internal ID",
+            "DATE-UPDATED": "Date Updated"
+        },
+        "SEARCH-BOX": "Search table...",
+        "ERROR-LOADING-PROCESS": "Error Loading Processes. Please, try again.",
+        "ERROR-LOADING-ENTITY": "Error Loading Entities. Please, try again."
+    },
+
+    "MODAL-USER-EVALUATED-EXPRESSION": {
+        "TITLE": "Please assess this expression.",
+        "YES-BUTTON": "Yes",
+        "NO-BUTTON": "No"
+    },
+
+    "PROCESS-DETAILS-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Process Detail",
+            "ERROR": "There was an error creating the Process Detail. Please, try again.",
+            "SUCCESS": "Process Detail created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Process Detail",
+            "ERROR": "There was an error updating the Process Detail. Please, try again.",
+            "SUCCESS": "Process Detail updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Process Detail?",
+            "SUCCESS": "Process Detail deleted successfully.",
+            "ERROR": "Failed to delete Process Detail. Please, try again later."
+        },
+        "SELECT-PROCESS": {
+            "TITLE": "Process",
+            "PLACEHOLDER": "Pick a Process Type"
+        },
+        "SELECT-PROPERTY": {
+            "TITLE": "Property",
+            "PLACEHOLDER": "Pick a Property"
+        },
+        "BUTTON": "Save"
+    },
+
+    "PROCESS-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Process Type",
+            "ERROR": "There was an error creating the Process type. Please, try again.",
+            "SUCCESS": "Process Type created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Process Type",
+            "ERROR": "There was an error updating the Process type. Please, try again.",
+            "SUCCESS": "Process Type updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Process Type?",
+            "SUCCESS": "Process Type deleted successfully.",
+            "ERROR": "Failed to delete Process Type. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert the process type's name"
+        },
+        "SELECT-STATE": {
+            "TITLE": "State",
+            "PLACEHOLDER": "Pick a state",
+            "OPTIONS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            }
+        },
+        "COLOR-PICKER": {
+            "TITLE": "Color",
+            "PLACEHOLDER": "Insert/Select a color"
+        },
+        "BUTTON": "Save"
+    },
+
+    "BLOCKLY-PAGE": {
+        "TITLE": "Action Rules Management",
+        "ACTIONS": "Available Actions",
+        "SHOW-CODE": "Show Code",
+        "SHOW-XML-BLOCKLY": "Show XML Blockly",
+        "SAVE-TO-DB": "Save Action Rule",
+        "LOAD-AR": "Load Action Rule",
+        "GENERATOR": "Blockly Generator",
+        "SAVE-DRAFT": "Save Draft",
+        "UPDATE-DRAFT": "Update Draft",
+        "LOAD-DRAFT": "Load Draft",
+        "NEW": "New Action Rule",
+        "LOSE-PROGRESS-WARNING": "You will lose all progress. Are you sure you want to clear the workspace?"
+    },
+
+    "LOAD-AR-MODAL": {
+        "TITLE": "Load Action Rule",
+        "TITLE-DRAFT": "Load Action Rule Draft",
+        "MAIN-TEXT": "Select below the Action Rule which you'd like to load on Blockly Workspace!",
+        "MAIN-TEXT-DRAFT": "Select below the Action Rule Draft which you'd like to load on Blockly Workspace!",
+        "DEFAULT-OPTION": "Select an option below...",
+        "PREVIEW": "Preview:",
+        "LOAD": "Load",
+        "DELETE": "Delete",
+        "TRANS-TYPE": "Transaction Type",
+        "TRANS-STATE": "Transaction State"
+    },
+
+    "ACTION-RULE-DRAFT-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Action Rule Draft",
+            "ERROR": "There was an error creating the Action Rule Draft. Please, try again.",
+            "SUCCESS": "Action Rule Draft created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Action Rule Draft",
+            "ERROR": "There was an error updating the Action Rule Draft. Please, try again.",
+            "SUCCESS": "Action Rule Draft updated successfully!"
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "PREVIEW-FIELD": "Preview:",
+        "BUTTON": "Save"
+    },
+
+    "BLOCKLY-ACTIONS-NOTIFICATIONS": {
+        "SUCCESS": {
+            "LOAD-XML": "Action Rule loaded successfully.",
+            "SAVE-AR": "Action Rule saved successfully.",
+            "DELETE-AR": "Action Rule deleted successfully.",
+            "DELETE-AR-DRAFT": "Action Rule Draft deleted successfully.",
+            "LOAD-AR": "Existing Action Rules loaded successfully",
+            "LOAD-AR-DRAFT": "Existing Action Rule Drafts loaded successfully",
+            "LOAD-TEMPLATE-IN-BLOCK": "Template information updated successfully on the block."
+        },
+        "ERROR": {
+            "LOAD-XML": "Failed to load Action Rule.",
+            "SAVE-AR": "Failed to save Action Rule.",
+            "DELETE-AR": "Failed to delete Action Rule.",
+            "DELETE-AR-DRAFT": "Failed to delete Action Rule Draft.",
+            "LOAD-AR": "Failed to load existing Action Rules.",
+            "LOAD-AR-DRAFT": "Failed to load existing Action Rule Drafts."
+        },
+        "ASK-DELETE": "Are you sure you want to delete this Action Rule?",
+        "ASK-DELETE-DRAFT": "Are you sure you want to delete this Action Rule Draft?"
+    },
+
+    "BLOCKLY-CATEGORY": {
+        "GENERAL": "General",
+        "EVALUATE": "Evaluate",
+        "COMPUTE": "Compute",
+        "CONTEXT-VARIABLES": "Context Variables",
+        "SCHEDULING-SLOTS": "Scheduling Slots",
+        "USER-INPUT": "Create Instance",
+        "PROPERTIES": "Properties",
+        "EXTERNAL-CALL": "External Call",
+        "LOCAL-ENDPOINT-CALL": "Local Endpoint Call"
+    },
+
+    "BLOCKLY-BLOCKS": {
+        "VALUE-TYPES": {
+            "TEXT": "text",
+            "INT": "int",
+            "DOUBLE": "double",
+            "ENUM": "enum",
+            "DATE": "date",
+            "TIME": "time",
+            "BOOL": "yes/no",
+            "FILE": "file",
+            "ENTITY": "entity",
+            "REF": "ref"
+        },
+        "MULTIPLE-VALUES": "multiple values",
+        "WHEN-IS-DO": {
+            "WHEN": "when",
+            "ACT": "is",
+            "FACT": "has been",
+            "EXECUTION-TYPE": {
+                "TITLE": "execution type",
+                "NATIVE-EXECUTION": "native execution",
+                "LOCAL-ENDPOINT-CALL": {
+                    "TITLE": "local endpoint call",
+                    "ENDPOINT": "local endpoint",
+                    "FINAL-ENDPOINT": "resulting endpoint",
+                    "FINAL-ENDPOINT-PLACEHOLDER": "resulting endpoint",
+                    "ENDPOINT-PLACEHOLDER": "Insert the local endpoint extension here",
+                    "ENDPOINT-PARAMETER": "endpoint parameter(s)",
+                    "REQUEST-BODY": "request body",
+                    "RESPONSE": "response"
+                }
+            },
+            "ACTIONS": "action(s)"
+        },
+        "ACTION": {
+            "TITLE": "action",
+            "CHECKBOX-BLOCKCHAIN-EXECUTION": "blockchain execution",
+            "DROPDOWN": {
+                "NONE": "None",
+                "ASSIGN-EXPRESSION": {
+                    "TITLE": "assign expression"
+                },
+                "READ-VALUE": {
+                    "TITLE": "read value"
+                },
+                "PRODUCE-DOCUMENT": {
+                    "TITLE": "produce document"
+                },
+                "USER-OUTPUT": {
+                    "TITLE": "user output",
+                    "DROPDOWN": {
+                        "NEW": "create new",
+                        "EXISTING": "template"
+                    },
+                    "TEMPLATE-NAME": "name",
+                    "DEFAULT-TEMPLATE-NAME-TEXT": "insert the template name here",
+                    "TEXT-NOT-EDITABLE": "Custom Text",
+                    "TYPE": {
+                        "TITLE": "type",
+                        "MODAL": {
+                            "TITLE": "window",
+                            "HEADER": "header",
+                            "DEFAULT-HEADER": "information",
+                            "BUTTON": "button",
+                            "DEFAULT-BUTTON": "continue"
+                        },
+                        "TOAST": {
+                            "TITLE": "notification",
+                            "CLASS-DROPDOWN": {
+                                "SUCCESS": "success",
+                                "INFORMATION": "information",
+                                "WARNING": "warning",
+                                "ERROR": "error",
+                                "CUSTOM": "custom"
+                            },
+                            "CLASS": "class",
+                            "COLOUR": "colour",
+                            "CUSTOM-TITLE": "title",
+                            "DEFAULT-CUSTOM-TITLE": "notification",
+                            "CUSTOM-COLOURS": {
+                                "DARK-PINK": "dark pink",
+                                "PINK": "pink",
+                                "LIGHT-PINK": "light pink",
+                                "PURPLE": "purple",
+                                "LIGHT-PURPLE": "light purple",
+                                "LIGHT-ORANGE": "light orange",
+                                "DARK-BLUE": "dark blue",
+                                "DARK-RED": "dark red",
+                                "GREY": "grey"
+                            }
+                        },
+                        "DOC": {
+                            "TITLE": "document"
+                        }
+                    },
+                    "DEFAULT-TEXT": "insert new text here",
+                    "TEMPLATE-EDITOR-TEXT": "Open Template Editor"
+                },
+                "EXTERNAL-API-CALL": {
+                    "TITLE": "external api call",
+                    "EXTERNAL-ENDPOINT": {
+                        "TITLE": "external endpoint",
+                        "PLACEHOLDER": "Insert the external endpoint URL here",
+                        "TYPE": {
+                            "POST": "create",
+                            "GET": "read",
+                            "PUT": "update",
+                            "DELETE": "delete"
+                        }
+                    },
+                    "PARAMETER": "parameter(s)",
+                    "ACTION": "internal action(s)"
+                },
+                "CAUSAL-LINK": {
+                    "TITLE": "causal link",
+                    "MUST-BE": "must be",
+                    "MIN": "min",
+                    "MAX": "max",
+                    "CANCEL-PROCESS": "cancel process",
+                    "CONTINUE-SAME-USER": "continue if same user"
+                },
+                "USER-INPUT": {
+                    "TITLE-MULTIPLE-ENT-TYPES": "create instance of multiple entity types",
+                    "TITLE-SINGLE-ENT-TYPE": "create instance of a single entity type",
+                    "ACTION-NAME": "action name",
+                    "ACTION-NAME-DEFAULT-TEXT": "insert the action name here",
+                    "PROPERTIES": "form fact(s)",
+                    "TERM-PROPERTIES": "derived fact(s)"
+                },
+                "EDIT-ENTITY-INSTANCE": {
+                    "TITLE": "update instance",
+                    "ENTITY-DETAILS": "entity details",
+                    "ENTITY-FILTERS": "entity filter",
+                    "ACTION-NAME": "action name",
+                    "ACTION-NAME-DEFAULT-TEXT": "insert the action name here",
+                    "PROPERTIES": "form fact(s)"
+                },
+                "CREATE-ENTITY": {
+                    "TITLE": "create entity",
+                    "ENTITY-TYPE": "entity type",
+                    "PROPERTY": "property(ies)"
+                },
+                "LOCAL_ENDPOINT_CALL": {
+                    "USER-INPUT": {
+                        "TITLE": "create record"
+                    },
+                    "RECORD" : {
+                        "SOFT-DELETED-OBJECTS": "query deleted objects"
+                    },
+                    "QUERY-RECORDS" : {
+                        "TITLE": "query records",
+                        "VARIABLE-NAME": "insert variable name here",
+                        "VARIABLE-NAME-LABEL": "variable"
+                    },
+                    "UPDATE-RECORD": {
+                        "TITLE": "update record"
+                    },
+                    "DELETE-RECORD": {
+                        "TITLE": "delete record"
+                    }
+                },
+                "CREATE-SCHEDULE-SLOTS": {
+                    "SCHEDULING-RECORD": "scheduling record",
+                    "SLOT-RECORDS": "slot records",
+                    "TITLE": "create schedule slots"
+                }
+            }
+        },
+        "SCHEDULE" : {
+            "TITLE": "schedule",
+            "ENTITY-TYPE": "entity type",
+            "RESPONSIBLE-USER": "responsible user",
+            "START-DATE": "start date",
+            "START-TIME": "start time",
+            "END-DATE": "end date",
+            "END-TIME": "end time",
+            "WEEKDAYS": "weekday(s)",
+            "DURATION": "duration",
+            "SLOT-COUNT": "slot count"
+        },
+        "SCHEDULE-SLOT": {
+            "TITLE": "schedule slot",
+            "ENTITY-TYPE": "entity type",
+            "SCHEDULE-REF": "schedule reference",
+            "SLOT-NUMBER": "slot number",
+            "DAY": "day",
+            "START-TIME": "start time",
+            "END-TIME": "end time",
+            "ADDITIONAL-PROPERTIES": "additional fact(s)"
+        },
+        "SCHEDULING-PROPERTY": {
+            "TITLE": "scheduling property"
+        },
+        "TERM-PROPERTY-OUTPUT": {
+            "TITLE": "derived fact"
+        },
+        "SCHEDULING-ADDITIONAL-PROPERTY": {
+            "TITLE": "assign additional fact"
+        },
+        "QUERY-LEDGER-FILTER": {
+            "TITLE": "query filter"
+        },
+        "ENTITY-DETAILS": {
+            "TITLE": "entity details",
+            "TOOLTIP": "pick the properties to be shown as entity details on the entity instance selection modal."
+        },
+        "ENTITY-DETAILS-MUTATOR": {
+            "NO-PROPERTIES": "No properties available.",
+            "NO-PROPERTIES-TOOLTIP": "Select a valid entity type on the action block."
+        },
+        "ENTITY-FILTERS": {
+            "TITLE": "entity filters",
+            "TOOLTIP": "options if you want to filter the entities that can be edited."
+        },
+        "ENTITY-FILTERS-MUTATOR": {
+            "INSTANCES-FROM-QUERY": "get instances from query",
+            "SPECIFIC-INSTANCE": "get specific instance"
+        },
+        "ENT-TYPE-FORM": {
+            "TITLE": "entity type multiple insertion",
+            "PROPERTIES": "property(ies)",
+            "PROPERTY-PART-OF-TOOLTIP": "Property automatically filled by the system."
+        },
+        "IF_THEN": {
+            "IF": "if",
+            "THEN": "then",
+            "ELSE": "else"
+        },
+        "WHILE": {
+            "WHILE": "while",
+            "DO": "do"
+        },
+        "FOR-EACH": {
+            "TITLE": "for each",
+            "ITEM": "item in",
+            "DO": "do"
+        },
+        "CONDITION": {
+            "TITLE": "condition",
+            "TERMS": "term(s)",
+            "DROPDOWN": {
+                "IS-TRUE": "Is True",
+                "NOT": "Not",
+                "AND": "And",
+                "OR": "Or"
+            }
+        },
+        "COMP-EVALUATED-EXPRESSION": {
+            "TITLE": "comp evaluated expression",
+            "OPERATOR": "operator"
+        },
+        "FILTER-PROPERTY-REF-FILTER": {
+            "TITLE": "where"
+        },
+        "USER-EVALUATED-EXPRESSION": {
+            "TITLE": "user evaluated expression",
+            "EXPRESSION-NAME": "name",
+            "EXPRESSION-TEXT": "text",
+            "DROPDOWN": {
+                "NEW": "create new",
+                "EXISTING": "use existing"
+            },
+            "DEFAULT-NAME": "insert the expression name here",
+            "DEFAULT-TEXT": "insert the expression text here",
+            "OPEN-EXPRESSION-EDITOR": "Open Expression Editor",
+            "TEXT-NOT-EDITABLE": "Custom Text"
+        },
+        "COMPUTE-EXPRESSION": {
+            "TITLE": "compute expression",
+            "TERMS": "term(s)",
+            "RESULT-IN": {
+                "TITLE": "result in",
+                "SECONDS": "seconds",
+                "MINUTES": "minutes",
+                "HOURS": "hours",
+                "DAYS": "days",
+                "WEEKS": "weeks",
+                "MONTHS": "months",
+                "YEARS": "years"
+            },
+            "AVERAGE-OPERATOR": "average"
+        },
+        "QUERY": {
+            "TITLE": "query",
+            "PARAMETERS-LABEL": "query parameters",
+            "DROPDOWN-DEFAULT": "None"
+        },
+        "VALUE": {
+            "TITLE": "value",
+            "DEFAULT-VALUE": "Insert value here",
+            "VALUE-TYPE-DROPDOWN": {
+                "TITLE": "value type",
+                "STRING": "String",
+                "INTEGER-NUMBER": "Integer\u00A0Number",
+                "REAL-NUMBER": "Real\u00A0Number",
+                "BOOLEAN": "Boolean",
+                "ENUM": "Enum",
+                "DATE": "Date",
+                "TIME": "Time"
+            }
+        },
+        "CONSTANT": {
+            "TITLE": "constant",
+            "DROPDOWN": {
+                "NEW": "New constant",
+                "EXISTING": "Existing constant"
+            },
+            "NAME": "name",
+            "VALUE": "value",
+            "DEFAULT-TEXT-NAME": "Insert name here",
+            "VALUE-TYPE-DROPDOWN": {
+                "TITLE": "value type",
+                "STRING": "String",
+                "INTEGER-NUMBER": "Integer\u00A0Number",
+                "REAL-NUMBER": "Real\u00A0Number",
+                "BOOLEAN": "Boolean",
+                "DATE": "Date",
+                "TIME": "Time"
+            },
+            "DEFAULT-TEXT-VALUE": "Insert value here"
+        },
+        "PROPERTY": {
+            "TITLE": "form fact",
+            "ENT-TYPE": "entity type",
+            "PROPERTY": "property",
+            "DROPDOWN-DEFAULT": "None",
+            "FORM-COMPUTE": "form calculation",
+            "ENABLE-CONDITION": "enable condition",
+            "VALIDATION-CONDITION": "validation condition(s)",
+            "PROPERTY-REF-FILTER": "referenced property filter(s)",
+            "PROPERTY-REF-QUERY": "options from query result",
+            "MANDATORY": "mandatory",
+            "ALLOW-DUPLICATES": "allow duplicates"
+        },
+        "TERM-PROPERTY": {
+            "TITLE": "derived fact"
+        },
+        "FORM-COMPUTE": {
+            "TITLE": "form calculation",
+            "TERMS": "term(s)"
+        },
+        "ENABLE-CONDITION": {
+            "TITLE": "enable condition",
+            "CONDITION": "condition"
+        },
+        "VALIDATION-CONDITION": {
+            "TITLE": "validation condition(s)",
+            "CONDITION": "condition(s)"
+        },
+        "PROPERTY-REF-FILTER": {
+            "TITLE": "property filter(s)",
+            "FILTER": "filter(s)"
+        },
+        "CONDITION-VALIDATION-CONDITION": {
+            "TITLE": "validation condition",
+            "EXTRA-FIELDS": {
+                "NOT": "Not",
+                "BELONGS-RANGE-TO": "to",
+                "MATCH-CASE": "Match Case",
+                "CURRENT-DATE": "Current Date",
+                "CURRENT-TIME": "Current Time"
+            },
+            "VALIDATOR-WARNING": {
+                "HAS-CHARACTER": "Insert Character Here",
+                "HAS-WORD": "Insert Word Here",
+                "REGULAR-EXPRESSION": "Insert Regular Expression Here",
+                "CUSTOM-VALIDATION": "Insert Custom Validation Here"
+            },
+            "DROPDOWN": {
+                "REQUIRED": "Required",
+                "IS-EMAIL": "Is Email",
+                "IS-URL": "Is URL",
+                "EQUAL-TO": "Equal to",
+                "LESS-EQUAL": "Less Equal",
+                "HIGHER-EQUAL": "Higher Equal",
+                "HIGHER-THAN": "Higher than",
+                "LESS-THAN": "Less than",
+                "MIN-LENGTH": "Min. Length",
+                "MAX-LENGTH": "Max. Length",
+                "BELONGS-RANGE": "Belongs Range",
+                "MIN-WORD-LENGTH": "Min. Word Length",
+                "MAX-WORD-LENGTH": "Max. Word Length",
+                "HAS-CHARACTER": "Has Character",
+                "HAS-WORD": "Has Word",
+                "REGULAR-EXPRESSION": "Regular Expression",
+                "CUSTOM-VALIDATION": "Custom Validation",
+                "AFTER-DATE": "After Date",
+                "BEFORE-DATE": "Before Date",
+                "AFTER-TIME": "After Time",
+                "BEFORE-TIME": "Before Time",
+                "MIN-CHOICE" : "Min. Number of Choices",
+                "MAX-CHOICE" : "Max. Number of Choices"
+            }
+        },
+        "PROPERTY-SINGLE": {
+            "TITLE": "property",
+            "SCOPE": "scope",
+            "ENT-TYPE": "entity type",
+            "PROPERTY": "property",
+            "VALUE-TYPE": "value type"
+        },
+        "PROPERTY-VALUE": {
+            "WARNING": "Note: Please select an option on the left side",
+            "TITLE": "property value"
+        },
+        "EXTERNAL-CALL-CREATE-ENTITY": {
+            "TITLE": "create entity(ies)",
+            "ENTITY-TYPE": "entity type",
+            "PROPERTIES": "property(ies)"
+        },
+        "EXTERNAL-CALL-MATCHING-PROPERTY": {
+            "TITLE": "matching",
+            "ENT-TYPE-PROPERTY": "entity type property",
+            "ENDPOINT-PROPERTY": "endpoint property"
+        },
+        "EXTERNAL-CALL-PARAMETER": {
+            "TITLE": "parameter"
+        },
+        "EXTERNAL-CALL-PARAMETER-VALUE": {
+            "TITLE": "value",
+            "PLACEHOLDER": "Insert the value here"
+        },
+        "LOCAL-ENDPOINT-CALL-PARAMETER": {
+            "TITLE": "parameter",
+            "NAME": "name",
+            "NAME-PLACEHOLDER": "Insert parameter name here",
+            "DESCRIPTION": "description",
+            "DESCRIPTION-PLACEHOLDER": "description for documentation",
+            "ENT-TYPE": "internal entity type",
+            "PROPERTY": "internal property",
+            "EXAMPLE": "example value",
+            "EXAMPLE-PLACEHOLDER": "a value example",
+            "MANDATORY": "mandatory"
+        },
+        "LOCAL-ENDPOINT-CALL-PARAMETER-SET": {
+            "TITLE": "parameter set",
+            "NAME-PLACEHOLDER": "Insert set name here",
+            "DESCRIPTION": "description",
+            "DESCRIPTION-PLACEHOLDER": "description for documentation",
+            "PARAMETERS": "parameter(s)"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-PROPERTY": {
+            "TITLE": "response property",
+            "NAME-PLACEHOLDER": "Insert property name here",
+            "VALUE-TYPE": "value type"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-SET": {
+            "TITLE": "response set",
+            "NAME-PLACEHOLDER": "Insert set name here",
+            "ENT-TYPE": "entity type",
+            "PROPERTIES": "property(ies)"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-QUERIED-OBJECT": {
+            "TITLE": "response queried object",
+            "OBJECT": "object"
+        },
+        "LOCAL-ENDPOINT-CALL-SET-PROPERTY": {
+            "TITLE": "set property",
+            "ENT-TYPE-PROPERTY":"entity type property"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-PROPERTY-OUTPUT": {
+            "TITLE": "response property",
+            "NAME-PLACEHOLDER": "Insert property name here"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-SUCCESS": {
+            "TITLE": "success",
+            "DROPDOWN": {
+                "SUCCESS": "success message",
+                "SUCCESS-MESSAGE": "insert the success message here",
+                "CREATED-OBJECT": "created object",
+                "QUERIED-OBJECT": "queried object",
+                "UPDATED-OBJECT": "updated object",
+                "DELETED-OBJECT-ID": "deleted object id"
+            }
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-ERROR": {
+            "TITLE": "error",
+            "DROPDOWN": {
+                "ERROR": "error message"
+            }
+        },
+        "CURRENT-USER": {
+            "TITLE": "executing user"
+        },
+        "CURRENT-USER-ROLE": {
+            "TITLE": "executing user role"
+        },
+        "USER-ROLE": {
+            "TITLE": "user role"
+        },
+        "ROLLBACK-TRANSACTION": {
+            "TITLE": "rollback action rule transaction",
+            "ERROR-LABEL": "error message",
+            "ERROR-LABEL-PLACEHOLDER": "insert the error message here"
+        },
+        "SET-CONTEXT-VARIABLE": {
+            "TITLE": "set context variable",
+            "DEFAULT-NAME": "Insert name here "
+        },
+        "GET-CONTEXT-VARIABLE": {
+            "TITLE": "get context variable"
+        },
+        "UPDATE-CONTEXT-VARIABLE": {
+            "TITLE": "update context variable"
+        }
+    },
+
+    "FORM-MANAGEMENT": {
+        "FORM-NAME": "Form Name",
+        "FORM-EDITOR": "Form Editor",
+        "FORM-TRANSACTION-NAME": "Transaction Name",
+        "FORM-ACTION-NAME": "Action Name",
+        "FORM-UPDATED": "Updated at",
+        "FORM-CREATED": "Created at",
+        "FORM-ACTION-RULE-DELETED": "Action Rule Deleted at",
+        "FORM-ACTIONS": "Actions",
+        "FORM-EDIT": "Edit",
+        "FORM-DELETE": "Delete",
+        "FORM-DELETE-ALL-UNUSED-FORMS": "Delete all retired forms",
+        "FORM-ACTIONS-AVAILABLE": "Available Actions",
+        "FORM-CREATE": "New Form",
+        "FORM-MANAGEMENT": "Forms Management",
+        "FORMS-NEED-UPDATING": "Forms Requiring Updates",
+        "FORMS-IN-USE": "Active Forms",
+        "RETIRED-FORMS-ARCHIVE": "Retired Forms Archive",
+        "ASK-DELETE": "Are you sure you want to delete the form?",
+        "ASK-DELETE-ALL-RETIRED-FORMS": "Are you sure you want to delete all of the retired forms?",
+        "OPERATION-SUCCESS": "Operation performed successfully!",
+        "OPERATION-ERROR": "Operation not performed!",
+        "LABEL-NAME": "Name",
+        "PLACEHOLDER-NAME": "Enter the form name",
+        "LABEL-ACTION": "Action",
+        "PLACEHOLDER-ACTION": "Enter the action",
+        "PROCEED-BUTTON": "Proceed"
+    },
+
+    "FORMIO": {
+        "HEADER": "Form Editor",
+        "SAVE-BUTTON": "Save Form",
+        "UPDATE-BUTTON": "Update Form",
+        "ADD-ANOTHER-BUTTON": "Add Another",
+        "ERROR-INSERT-ALL-FIELDS": "You need to insert all fields!",
+        "OPERATION-SUCCESS": "Operation performed successfully!",
+        "ASK-YOU-SURE": "Are you sure, you want to save the form?",
+        "OPTION-TRUE": "Yes",
+        "OPTION-FALSE": "No",
+        "LABEL-NAME": "Name",
+        "LABEL-TYPE": "Type",
+        "SUBMIT-BUTTON": "Submit",
+        "SAVE-SUCCESS": "Form saved successfully.",
+        "SAVE-ERROR": "There was an error saving the form. Please, try again.",
+        "UPDATE-SUCCESS": "Form updated successfully.",
+        "UPDATE-ERROR": "There was an error updating the form. Please, try again."
+    },
+
+    "FORM-RENDER": {
+        "FORM-NAME": "Form Name",
+        "FORM-EDITOR": "Form Editor",
+        "FORM-TRANSACTION-NAME": "Transaction Name",
+        "FORM-ACTION-NAME": "Action Name",
+        "FORM-UPDATED": "Updated at",
+        "FORM-CREATED": "Created at",
+        "FORM-ACTIONS": "Actions",
+        "FORM-RENDER-ACTION": "Render",
+        "FORM-ACTIONS-AVAILABLE": "Available Actions",
+        "FORM-RENDER": "Forms Render",
+        "ASK-RENDER": "Are you sure you want to render the form?",
+        "OPERATION-SUCCESS": "Operation performed successfully!",
+        "OPERATION-ERROR": "Operation not performed!",
+        "HEADER-RENDERED-FORM": "Rendered Form",
+        "DATA-SAVED-SUCCESS": "Form data saved successfully!",
+        "DATA-SAVED-ERROR": "Error submitting data. Please, try again.",
+        "BACK-BUTTON": "Go Back"
+    },
+
+    "TRANSLATOR": {
+        "FORMS": "Forms Translation",
+        "FORM-NAME": "Form Name",
+        "FORM-LANGUAGE-ABBRV": "Language Abbreviation",
+        "FORM-TRANSACTION-NAME": "Transaction Name",
+        "FORM-ACTION-NAME": "Action Name",
+        "FORM-UPDATED": "Updated at",
+        "FORM-CREATED": "Created at",
+        "FORM-ACTIONS": "Actions",
+        "FORM-TRANSLATE-ACTION": "Translate",
+        "FORM-TRANSLATOR": "Forms Translation",
+        "FORM-NAME-NEW": "Name",
+        "PLACEHOLDER-NAME-NEW": "Enter the name for the new form",
+        "LABEL-LANGUAGE": "Language",
+        "PLACEHOLDER-LANGUAGE": "Select the language you wish to translate",
+        "PROCEED-BUTTON": "Proceed",
+        "OPERATION-SUCCESS": "Operation performed successfully!",
+        "OPERATION-ERROR": "Operation not performed!",
+        "TRANSLATED-ACTION-NAME": "Translated Action Name"
+    },
+
+    "DEFAULT-VALIDATION-ERROR": {
+        "IS-INTEGER": "Must be an integer.",
+        "IS-INTEGER-NEGATION": "Cannot be an integer.",
+        "IS-EMAIL": "Must be a valid email address.",
+        "IS-EMAIL-NEGATION": "Cannot be a valid email address.",
+        "IS-URL": "Must be a valid URL.",
+        "IS-URL-NEGATION": "Cannot be a valid URL.",
+        "EQUAL-TO": "Must be equal to {{param1}}.",
+        "EQUAL-TO-NEGATION": "Cannot be equal to {{param1}}.",
+        "LESS-EQUAL": "Must be less or equal to {{param1}}.",
+        "LESS-EQUAL-NEGATION": "Cannot be less or equal to {{param1}}.",
+        "HIGHER-EQUAL": "Must be higher or equal to {{param1}}.",
+        "HIGHER-EQUAL-NEGATION": "Cannot be higher or equal to {{param1}}.",
+        "HIGHER-THAN": "Must be higher than {{param1}}.",
+        "HIGHER-THAN-NEGATION": "Cannot be higher than {{param1}}.",
+        "LESS-THAN": "Must be less than {{param1}}.",
+        "LESS-THAN-NEGATION": "Cannot be less than {{param1}}.",
+        "MIN-LENGTH": "Must have at least {{param1}} characters.",
+        "MAX-LENGTH": "Must have less than {{param1}} characters.",
+        "BELONGS-RANGE": "Must be between {{param1}} and {{param2}}.",
+        "BELONGS-RANGE-NEGATION" : "Cannot be between {{param1}} and {{param2}}.",
+        "MIN-WORD-LENGTH": "Must have more than {{param1}} words.",
+        "MAX-WORD-LENGTH": "Must have less than {{param1}} words.",
+        "HAS-CHARACTER": "Must contain character \"{{param1}}\".",
+        "HAS-CHARACTER-NEGATION": "Cannot contain character \"{{param1}}\".",
+        "HAS-WORD": "Must contain word \"{{param1}}\".",
+        "HAS-WORD-NEGATION": "Cannot contain word \"{{param1}}\".",
+        "REGULAR-EXPRESSION": "Must obey the regular expression: {{param1}}.",
+        "REGULAR-EXPRESSION-NEGATION": "Cannot obey the regular expression: {{param1}}.",
+        "AFTER-DATE": "Has to be a date after the selected \"{{param1}}\".",
+        "BEFORE-DATE": "Has to be a date before the selected \"{{param1}}\".",
+        "CUSTOM-VALIDATION": "Must follow custom Validation: {{param1}}.",
+        "MIN-CHOICE": "Has a minimum of {{param1}} choices.",
+        "MAX-CHOICE": "Has a maximum of {{param1}} choices."
+    },
+
+    "TEMPLATES-MANAGEMENT": {
+        "TITLE": "Templates Management",
+        "CREATE": "New Template",
+        "TABLE": {
+            "NAME": "Name",
+            "TYPE": "Type",
+            "UPDATED-AT": "Updated At",
+            "CREATED-AT": "Created At",
+            "AVAILABLE-ACTIONS": "Available Actions",
+            "EDIT": "Edit",
+            "DELETE": "Delete",
+            "TRANSLATE": "Translate"
+        },
+        "MODAL": {
+            "MODAL-TITLE": "Template Editor",
+            "MODAL-TITLE-TRANSLATION": "Template Translator",
+            "NAME": "Name",
+            "NAME-PLACEHOLDER": "Insert the template name here.",
+            "NAME-INVALID": "Please choose a template name.",
+            "TYPE": "Type",
+            "TYPE-MODAL": "Window",
+            "TYPE-TOAST": "Notification",
+            "TYPE-DOC": "Document",
+            "TYPE-INVALID": "Please choose a template type.",
+            "WINDOW-HEADER": "Window Header",
+            "WINDOW-HEADER-PLACEHOLDER": "Insert the window header text here.",
+            "WINDOW-HEADER-INVALID": "Please choose the window header text.",
+            "WINDOW-BUTTON": "Window Button",
+            "WINDOW-BUTTON-PLACEHOLDER": "Insert the window button text here.",
+            "WINDOW-BUTTON-INVALID": "Please choose the window button text.",
+            "NOTIFICATION-CLASS": "Notification Class",
+            "NOTIFICATION-CLASS-SUCCESS": "Success",
+            "NOTIFICATION-CLASS-INFORMATION": "Information",
+            "NOTIFICATION-CLASS-WARNING": "Warning",
+            "NOTIFICATION-CLASS-ERROR": "Error",
+            "NOTIFICATION-CLASS-CUSTOM": "Custom",
+            "NOTIFICATION-CLASS-INVALID": "Please choose a notification class.",
+            "NOTIFICATION-TITLE": "Notification Title",
+            "NOTIFICATION-TITLE-PLACEHOLDER": "Insert the notification title text here.",
+            "NOTIFICATION-TITLE-INVALID": "Please choose a notification title.",
+            "NOTIFICATION-COLOUR": "Notification Colour",
+            "NOTIFICATION-COLOUR-INVALID": "Please choose a notification colour.",
+            "NOTIFICATION-COLOURS": {
+                "DARK-PINK": "dark pink",
+                "PINK": "pink",
+                "LIGHT-PINK": "light pink",
+                "PURPLE": "purple",
+                "LIGHT-PURPLE": "light purple",
+                "LIGHT-ORANGE": "light orange",
+                "DARK-BLUE": "dark blue",
+                "DARK-RED": "dark red",
+                "GREY": "grey"
+            },
+            "DYNAMIC-VALUES": {
+                "MENU-BUTTON-TEXT": "Dynamic Values",
+                "MODAL-TITLE": "Insert Dynamic Value",
+                "CONSTANTS-TAB": {
+                    "TITLE": "Constants",
+                    "CONSTANT-SELECT": "Select a constant",
+                    "CONSTANT-PLACEHOLDER": "Choose a constant"
+                },
+                "PROPERTIES-TAB": {
+                    "TITLE": "Properties",
+                    "ENTITY-SELECT": "Select an entity type",
+                    "PROPERTY-SELECT": "Select a property",
+                    "PROPERTY-PLACEHOLDER": "Choose a property"
+                },
+                "QUERIES-TAB": {
+                    "TITLE": "Queries",
+                    "QUERY-SELECT": "Select a query",
+                    "QUERY-PLACEHOLDER": "Choose a query"
+                },
+                "CONTEXT-VARIABLES-TAB": {
+                    "TITLE": "Context Variables",
+                    "CONTEXT-VARIABLE-SELECT": "Select a context variable",
+                    "CONTEXT-VARIABLE-PLACEHOLDER": "Choose a context variable"
+                },
+                "BUTTONS": {
+                    "CANCEL": "Cancel",
+                    "INSERT": "Insert"
+                }
+            },
+            "SHOW-SOURCE-CODE": "Show Source Code",
+            "TEMPLATE-TEXT-DEFAULT": "Edit the text to be displayed here.",
+            "SAVE": "Save",
+            "TRANSLATE": "Translate"
+        },
+        "ERROR": {
+            "TEMPLATE-INFORMATION": "Error getting template information.",
+            "CREATING": "Error creating the template. Please, try again.",
+            "UPDATING": "Error updating the template. Please, try again.",
+            "DELETING": "Error deleting the template. Please, try again.",
+            "TRANSLATING": "Error translating the template. Please, try again."
+        },
+        "SUCCESS": {
+            "CREATING": "Template created successfully.",
+            "UPDATING": "Template updated successfully.",
+            "DELETING": "Template deleted successfully.",
+            "TRANSLATING": "Template translated successfully."
+        },
+        "WARNING": {
+            "USED-IN-AR": "This template is being used in an active Action Rule, it can't be deleted."
+        },
+        "DELETE-CONFIRMATION-MESSAGE": "Are you sure you want to delete this template?"
+    },
+
+    "USER-EVALUATED-EXPRESSION-MANAGEMENT": {
+        "TITLE": "User Evaluated Expressions Management",
+        "CREATE": "New User Evaluated Expression",
+        "TABLE": {
+            "NAME": "Name",
+            "UPDATED-AT": "Updated At",
+            "CREATED-AT": "Created At",
+            "AVAILABLE-ACTIONS": "Available Actions",
+            "EDIT": "Edit",
+            "DELETE": "Delete",
+            "TRANSLATE": "Translate"
+        },
+        "MODAL": {
+            "TITLE": "User Evaluated Expression Editor",
+            "TITLE-TRANSLATION": "User Evaluated Expression Translator",
+            "NAME": "Name",
+            "NAME-PLACEHOLDER": "Insert the expression name here.",
+            "NAME-INVALID": "Please choose an expression name.",
+            "TEXT-DEFAULT": "Edit the text to be displayed here.",
+            "SAVE": "Save",
+            "TRANSLATE": "Translate"
+        },
+        "ERROR": {
+            "CREATING": "Error creating the user evaluated expression. Please, try again.",
+            "UPDATING": "Error updating the user evaluated expression. Please, try again.",
+            "DELETING": "Error deleting the user evaluated expression. Please, try again.",
+            "TRANSLATING": "Error translating the user evaluated expression. Please, try again."
+        },
+        "SUCCESS": {
+            "CREATING": "User Evaluated Expression created successfully.",
+            "UPDATING": "User Evaluated Expression updated successfully.",
+            "DELETING": "User Evaluated Expression deleted successfully.",
+            "TRANSLATING": "User Evaluated Expression translated successfully."
+        },
+        "WARNING": {
+            "USED-IN-AR": "This user evaluated expression is being used in an active Action Rule, it can't be deleted."
+        },
+        "DELETE-CONFIRMATION-MESSAGE": "Are you sure you want to delete this User Evaluated Expression?"
+    },
+
+    "DELEGATIONS": {
+        "TITLE": "Delegations",
+        "AVAILABLE-ACTIONS": {
+            "TITLE": "Available Actions",
+            "NEW": "New Delegation"
+        },
+        "TABLE": {
+            "DELEGATES-ROLE": "Delegates Role",
+            "DELEGATED-ROLE": "Delegated Role",
+            "DELEGATED-USER": "Delegated User",
+            "TRANSACTION-STEP": "Transaction Step",
+            "START-TIME": "Start Time",
+            "END-TIME": "End Time",
+            "CREATED-AT": "Created At",
+            "UPDATED-AT": "Updated At",
+            "ACTIONS": {
+                "TITLE": "Actions",
+                "EDIT": "Edit",
+                "DELETE": "Delete"
+            },
+            "TYPE": {
+                "TITLE": "Type",
+                "ACT": "is",
+                "FACT": "has been"
+            }
+        },
+        "ASK-DELETE": "Are you sure you want to delete this delegation?",
+        "OPERATION-SUCCESS": "Operation performed successfully!",
+        "OPERATION-ERROR": "Operation not performed! Please, try again."
+    },
+
+    "DELEGATIONS-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Delegation",
+            "ERROR": "There was an error creating the delegation. Please, try again.",
+            "SUCCESS": "Delegation created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Delegation",
+            "ERROR": "There was an error updating the delegation. Please, try again.",
+            "SUCCESS": "Delegation updated successfully!"
+        },
+        "SELECT-TRANSACTION-TYPE": {
+            "TITLE": "Transaction Type",
+            "PLACEHOLDER": "Pick a Transaction Type"
+        },
+        "SELECT-TYPE": {
+            "TITLE": "Type",
+            "PLACEHOLDER": "Pick a Type"
+        },
+        "SELECT-DELEGATES-ROLE": {
+            "TITLE": "Role To Delegate",
+            "PLACEHOLDER": "Pick the role to delegate"
+        },
+        "SELECT-TRANSACTION-STATE": {
+            "TITLE": "Transaction State",
+            "PLACEHOLDER": "Pick a Transaction State"
+        },
+        "SELECT-DELEGATED-ROLE": {
+            "TITLE": "Delegated Role",
+            "PLACEHOLDER": "Pick the delegated role"
+        },
+        "SELECT-DELEGATED-USER": {
+            "TITLE": "Delegated User",
+            "PLACEHOLDER": "Pick the delegated user"
+        },
+        "VISIBLE-TO-DELEGATOR-LABEL": "Visible To Delegator",
+        "DELEGATE-SPECIFIC-USER": "Delegate To Specific User",
+        "DELEGATED-USER-CAN-DELEGATE": "Delegated User Can Delegate",
+        "START-TIME": {
+            "TITLE": "Start Date",
+            "PLACEHOLDER": "Pick the start date for this delegation"
+        },
+        "END-TIME": {
+            "TITLE": "End Date",
+            "PLACEHOLDER": "Pick the end date for this delegation"
+        },
+        "BUTTON": "Save"
+    },
+
+    "DYNAMIC-SEARCH": {
+        "QUERIES": {
+            "TITLE": "Select a Query",
+            "NEW-QUERY": "New Query",
+            "TABLE-COL-1": "Query Name",
+            "TABLE-COL-2": "Updated At",
+            "TABLE-COL-3": "Created At",
+            "TABLE-COL-4": {
+                "TITLE": "Actions",
+                "EDIT": "Show/Edit",
+                "DELETE": "Delete"
+            },
+            "GET": "Get ",
+            "PROPERTIES": "as a result of properties: ",
+            "FILTERS": "and as filters: ",
+            "MORE-FILTERS": " and {{number}} more filters",
+            "SUCCESS-DELETE-QUERY": "Query deleted successfully!"
+        },
+        "STEP-1": {
+            "TITLE": "Step 1: Select an Entity Type",
+            "BUTTON": "Get Properties",
+            "BASE-TABLE-LABEL": "Base Table"
+        },
+        "STEP-2": {
+            "TITLE": "Step 2: Select Properties",
+            "BUTTON": "Specify Filters",
+            "ENT-TYPE-LABEL": "Entity Type",
+            "INCLUDE-PROPS": {
+                "LABEL": "Include Properties",
+                "PLACEHOLDER": "Select Properties to  Include in the Result"
+            },
+            "FILTER-PROPS": {
+                "LABEL": "Filter Properties",
+                "PLACEHOLDER": "Select Properties to Filter"
+            }
+        },
+        "STEP-3": {
+            "TITLE": "Step 3: Specify Filters",
+            "BUTTON": "Show Results",
+            "BUTTON-UPDATE": "Update Query",
+            "ERROR": {
+                "NO-CONNECTION-PROPS": "No connection between the \"Included properties\" of the entity types!",
+                "NO-INCL-PROPS": "Each selected entity type needs to have \"Included Properties\"!",
+                "NO-FILTERS": "There are no filters. Click \"Show Results\" to see the results of the query!"
+            },
+            "IS-PARAMETER": "Is Parameter?",
+            "RESULTS-AVAILABLE-RA": "Make Results Available in Rest API Interface",
+            "URL-PREVIEW": "Final Endpoint Preview:",
+            "QUERY-ACTION": "Query Action",
+            "PARAMETERS-COL-1": "Parameter ",
+            "PARAMETERS-COL-2": "Parameter Name",
+            "PARAMETERS-COL-3": "Actions",
+            "PLACEHOLDER-PARAMETER": "Select a Parameter to include in the Endpoint",
+            "PLACEHOLDER-PARAMETER-NAME": "Parameter Name that'll appear in the Endpoint",
+            "FINAL-URL": "Query result available in Rest Api interface through Endpoint:",
+            "BUTTON-SAVE-URL": "Save Endpoint",
+            "BUTTON-SAVE-QUERY": "Save Query",
+            "NAME-PLACEHOLDER": "Insert a name for the designed query"
+        },
+        "STEP-4": {
+            "TITLE": "Step 4: Query Results",
+            "EXPORT-EXCEL": "Export Results to Excel",
+            "NO-RESULTS": "No Results Found"
+        },
+        "SUCCESS": {
+            "SAVE-QUERY": "Query saved successfully.",
+            "UPDATE-QUERY": "Query updated successfully.",
+            "DELETE-QUERY": "Query deleted successfully."
+        },
+        "ERROR": {
+            "SAVE-QUERY": "There was an error creating the Query. Please, try again.",
+            "UPDATE-QUERY": "There was an error updating the Query. Please, try again.",
+            "DELETE-QUERY": "There was an error deleting the Query. Please, try again."
+        }
+    },
+
+    "LANGUAGE-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Language",
+            "ERROR": "There was an error creating the Language. Please, try again.",
+            "SUCCESS": "Language created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Language",
+            "ERROR": "There was an error updating the Language. Please, try again.",
+            "SUCCESS": "Language updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Language?",
+            "SUCCESS": "Language deleted successfully.",
+            "ERROR": "Failed to delete Language. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert the language's name"
+        },
+        "ABBRV-FIELD": {
+            "TITLE": "Abbreviation",
+            "PLACEHOLDER": "Insert the language's abbreviation"
+        },
+        "SELECT-STATE": {
+            "TITLE": "State",
+            "PLACEHOLDER": "Pick a state",
+            "OPTIONS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            }
+        },
+        "BUTTON": "Save"
+    },
+
+    "PARAMETERIZATION": {
+        "TITLE": "Parameterization",
+        "BOOLEAN-FORMATTER": {
+            "TRUE": "Yes",
+            "FALSE": "No"
+        },
+        "OPTIONAL-FIELD": "(Optional)",
+        "TABLE-ITEMS": "Items",
+        "AVAILABLE-ACTIONS": {
+            "TITLE": "Available Actions",
+            "NEW-LANGUAGE": "New Language",
+            "NEW-USER": "New User",
+            "NEW-ROLE": "New Role",
+            "NEW-ROLE-INITIATES-TRANSACTION": "New Role Initiates Transaction Type",
+            "NEW-ROLE-HAS-USER": "New User Role",
+            "NEW-PROCESS-TYPE": "New Process Type",
+            "NEW-PROCESS-DETAIL": "New Process Detail",
+            "NEW-TRANSACTION-TYPE": "New Transaction Type",
+            "NEW-ENTITY-TYPE": "New Entity Type",
+            "NEW-PROPERTY": "New Property",
+            "NEW-PROP-UNIT-TYPE": "New Property Unit Type",
+            "NEW-CONSTANT": "New Constant",
+            "NEW-WAITING-LINK": "New Waiting Link"
+        },
+        "TABLE-ACTIONS": {
+            "TITLE": "Actions",
+            "EDIT": "Edit",
+            "DELETE": "Delete",
+            "TRANSLATE": "Translate"
+        },
+        "LANGUAGE": {
+            "TITLE": "Languages",
+            "TABLE": {
+                "NAME": "Name",
+                "ABBRV": "Abbreviation",
+                "STATE": "State",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at"
+            }
+        },
+        "USERS": {
+            "TITLE": "Users",
+            "TABLE": {
+                "NAME": "Name",
+                "NIF": "NIF",
+                "EMAIL": "Email",
+                "USER-NAME": "Username",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "ROLES": {
+            "TITLE": "Roles",
+            "TABLE": {
+                "NAME": "Name",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "ROLE-INITIATES-TRANSACTION-TYPE": {
+            "TITLE": "Role Initiates Transaction Type",
+            "TABLE": {
+                "ROLE": "Role",
+                "TRANSACTION-TYPE": "Transaction Type",
+                "OWN-USER-ACCESS-ONLY": "Restrictive Access",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at"
+            }
+        },
+        "ROLES-HAVE-USERS": {
+            "TITLE": "User Roles",
+            "TABLE": {
+                "ROLE": "Role",
+                "USER": "User",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at"
+            }
+        },
+        "PROCESS-TYPES": {
+            "TITLE": "Process Types",
+            "TABLE": {
+                "NAME": "Name",
+                "STATE": "State",
+                "COLOR": "Color",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "PROCESS-DETAILS": {
+            "TITLE": "Process Details",
+            "TABLE": {
+                "PROCESS-TYPE": "Process Type",
+                "PROPERTY": "Property",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at"
+            }
+        },
+        "TRANSACTION-TYPES": {
+            "TITLE": "Transaction Types",
+            "TABLE": {
+                "T-NAME": "Name",
+                "RT-NAME": "Result Name",
+                "STATE": "State",
+                "PROCESS-TYPE": "Process Type",
+                "INIT-PROC": "Initiates Process",
+                "END-PROC": "Ends Process",
+                "EXECUTER-ROLE": "Executer Role",
+                "OWN-USER-ACCESS-ONLY": "Restrictive Access",
+                "AUTO-ACTIVATE": "Auto Activates",
+                "FREQ-ACTIVATE": "Frequency Activation",
+                "WHEN-ACTIVATE": "When Activates",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "ENTITY-TYPES": {
+            "TITLE": "Entity Types",
+            "TABLE": {
+                "NAME": "Name",
+                "ID-NAME": "Identifying Name",
+                "STATE": "State",
+                "TRANSACTION-TYPE": "Transaction Type",
+                "NR-ENTITIES": "Number of Entities",
+                "HAS-MANY": "Has Many",
+                "USER-DETAILS": "User Details",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "PROPERTY": {
+            "TITLE": "Properties",
+            "TABLE": {
+                "NAME": "Name",
+                "VALUE-TYPE": "Value Type",
+                "ENT-TYPE": "Entity Type",
+                "STATE": "State",
+                "REQUIRES-TRANSLATION": "Requires Translation",
+                "EDITABLE": "Editable",
+                "SOFT-DELETE": "Soft Delete",
+                "MULTIPLE-VALUES": "Multiple Values",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "PROP-UNIT-TYPES": {
+            "TITLE": "Property Unit Types",
+            "TABLE": {
+                "NAME": "Name",
+                "ABBRV": "Abbreviation",
+                "STATE": "State",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "REFERENCED-PROPERTY-VALUES": {
+            "TITLE": "Referenced Property Values",
+            "SELECT-REFERENCED-PROPERTY": {
+                "TITLE": "Referenced Property",
+                "PLACEHOLDER": "Select a referenced property."
+            },
+            "REFERENCED-BY": "Referenced by",
+            "TABLE": {
+                "VALUE": "Value",
+                "STATE": "State",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "CONSTANTS": {
+            "TITLE": "Constants",
+            "TABLE": {
+                "NAME": "Name",
+                "VALUE-TYPE": "Value Type",
+                "VALUE": "Value",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at",
+                "LANGUAGE": "Language"
+            }
+        },
+        "WAITING-LINK": {
+            "TITLE": "Waiting Links",
+            "TABLE": {
+                "IS": "is",
+                "HAS-BEEN": "has been",
+                "WAITING-TRANSACTION-STEP": "Waiting Transaction Step",
+                "WAITED-TRANSACTION-STEP": "Waited Transaction Step",
+                "UPDATED-AT": "Updated at",
+                "CREATED-AT": "Created at"
+            }
+        }
+    },
+
+    "TRANSACTION-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Transaction Type",
+            "ERROR": "There was an error creating the transaction type. Please, try again.",
+            "SUCCESS": "Transaction Type created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Transaction Type",
+            "ERROR": "There was an error updating the transaction type. Please, try again.",
+            "SUCCESS": "Transaction Type updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Transaction Type?",
+            "SUCCESS": "Transaction Type deleted successfully.",
+            "ERROR": "Failed to delete Transaction Type. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "RESULT-NAME-FIELD": {
+            "TITLE": "Result Name",
+            "PLACEHOLDER": "Insert a result name"
+        },
+        "SELECT-STATE": {
+            "TITLE": "State",
+            "PLACEHOLDER": "Select a state",
+            "OPTIONS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            }
+        },
+        "SELECT-PROCESS-TYPE": {
+            "TITLE": "Process Type",
+            "PLACEHOLDER": "Select a process type"
+        },
+        "SELECT-EXECUTER-ROLE": {
+            "TITLE": "Executer Role",
+            "PLACEHOLDER": "Select the executer role"
+        },
+        "CHECKBOX-INIT-PROC": "Initiates Process",
+        "CHECKBOX-END-PROC": "Ends Process",
+        "CHECKBOX-OWN-USER-ACCESS-ONLY": "Own User Access Only",
+        "CHECKBOX-AUTO-ACTIVATE": "Auto Activates",
+        "BUTTON": "Save"
+    },
+
+    "ENTITY-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Entity Type",
+            "ERROR": "There was an error creating the entity type. Please, try again.",
+            "SUCCESS": "Entity Type created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Entity Type",
+            "ERROR": "There was an error updating the entity type. Please, try again.",
+            "SUCCESS": "Entity Type updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Entity Type?",
+            "SUCCESS": "Entity Type deleted successfully.",
+            "ERROR": "Failed to delete Entity Type. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "ID-NAME-FIELD": {
+            "TITLE": "Identifying Name",
+            "PLACEHOLDER": "Insert an identifying name"
+        },
+        "SELECT-STATE": {
+            "TITLE": "State",
+            "PLACEHOLDER": "Select a state",
+            "OPTIONS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            }
+        },
+        "SELECT-TRANSACTION-TYPE": {
+            "TITLE": "Transaction Type",
+            "PLACEHOLDER": "Select a transaction type"
+        },
+        "CHECKBOX-HAS-MANY": "One-To-Many or Many-To-Many Entity Type",
+        "CHECKBOX-USER-DETAILS": "Used for the specification of User Details",
+        "BUTTON": "Save"
+    },
+
+    "PROPERTY-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Property",
+            "ERROR": "There was an error creating the property. Please, try again.",
+            "SUCCESS": "Property created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Property",
+            "ERROR": "There was an error updating the property. Please, try again.",
+            "SUCCESS": "Property updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Property?",
+            "SUCCESS": "Property deleted successfully.",
+            "ERROR": "Failed to delete Property. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "SELECT-ENTITY-TYPE": {
+            "TITLE": "Entity Type",
+            "PLACEHOLDER": "Select an entity type"
+        },
+        "SELECT-STATE": {
+            "TITLE": "State",
+            "PLACEHOLDER": "Select a state",
+            "OPTIONS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            }
+        },
+        "SELECT-VALUE-TYPE": {
+            "TITLE": "Value Type",
+            "PLACEHOLDER": "Select a value type",
+            "OPTIONS": {
+                "TEXT": "Text",
+                "BOOL": "Boolean",
+                "INT": "Integer Number",
+                "DOUBLE": "Real Number",
+                "ENUM": "Enumerate",
+                "DATE": "Date",
+                "TIME": "Time",
+                "PROP-REF": "Reference",
+                "FILE": "File"
+            }
+        },
+        "PROP-ALLOWED-VALUES-TABLE": {
+            "TITLE": "Property Allowed Values",
+            "ADD-VALUE": "Add Value",
+            "REMOVE-VALUE": "Remove",
+            "VALUE-PLACEHOLDER": "Insert a value",
+            "SELECT-STATE-PLACEHOLDER": "Pick a state"
+        },
+        "SELECT-SCOPE": {
+            "TITLE": "Scope",
+            "PLACEHOLDER": "Select a scope",
+            "OPTIONS": {
+                "ENTITY": "Entity",
+                "PROCESS": "Process",
+                "GLOBAL": "Global"
+            }
+        },
+        "SELECT-UNIT-TYPE": {
+            "TITLE": "Unit Type",
+            "PLACEHOLDER": "Select a unit type"
+        },
+        "SELECT-FK-PROPERTY": {
+            "TITLE": "Referenced Property",
+            "PLACEHOLDER": "Select the referenced property"
+        },
+        "SELECT-FK-ENTITY-TYPE": {
+            "TITLE": "Referenced Entity Type",
+            "PLACEHOLDER": "Select the referenced entity type"
+        },
+        "CHECKBOX-REFERENCE-SPECIFIC-PROPERTY": "Reference a specific property from the selected referenced entity type.",
+        "CHECKBOX-PART-OF": "Linking Property of a One-To-Many or Many-To-Many Entity Type",
+        "CHECKBOX-REQUIRES-TRANSLATION": "Requires Translation",
+        "CHECKBOX-EDITABLE": "Editable",
+        "CHECKBOX-SOFT-DELETE": "Soft Delete",
+        "CHECKBOX-MULTIPLE-VALUES": "Multiple Values",
+        "ALREADY-ASSIGNED-TO-PROPERTY": "Already assigned to property",
+        "BUTTON": "Save"
+    },
+
+    "PROP-UNIT-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Property Unit Type",
+            "ERROR": "There was an error creating the Property Unit Type. Please, try again.",
+            "SUCCESS": "Property Unit Type created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Property Unit Type",
+            "ERROR": "There was an error updating the Property Unit Type. Please, try again.",
+            "SUCCESS": "Property Unit Type updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Property Unit Type?",
+            "SUCCESS": "Property Unit Type deleted successfully.",
+            "ERROR": "Failed to delete Property Unit Type. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "ABBRV-FIELD": {
+            "TITLE": "Abbreviation",
+            "PLACEHOLDER": "Insert an identifying abbreviation"
+        },
+        "SELECT-STATE": {
+            "TITLE": "State",
+            "PLACEHOLDER": "Select a state",
+            "OPTIONS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            }
+        },
+        "BUTTON": "Save"
+    },
+
+    "VALUE-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Referenced Property Value",
+            "ERROR": "There was an error creating the Referenced Property Value. Please, try again.",
+            "SUCCESS": "Referenced Property Value created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Referenced Property Value",
+            "ERROR": "There was an error updating the Referenced Property Value. Please, try again.",
+            "SUCCESS": "Referenced Property Value updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Referenced Property Value?",
+            "SUCCESS": "Referenced Property Value deleted successfully.",
+            "ERROR": "Failed to delete Referenced Property Value. Please, try again later."
+        },
+        "VALUE-FIELD": {
+            "TITLE": "Value",
+            "PLACEHOLDER": "Insert a value"
+        },
+        "SELECT-STATE": {
+            "TITLE": "State",
+            "PLACEHOLDER": "Select a state",
+            "OPTIONS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            }
+        },
+        "BUTTON": "Update"
+    },
+
+    "CONSTANTS-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Constant",
+            "ERROR": "There was an error creating the Constant. Please, try again.",
+            "SUCCESS": "Constant created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Constant",
+            "ERROR": "There was an error updating the Constant. Please, try again.",
+            "SUCCESS": "Constant updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Constant?",
+            "SUCCESS": "Constant deleted successfully.",
+            "ERROR": "Failed to delete Constant. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "VALUE": {
+            "TITLE": "Value",
+            "PLACEHOLDER": "Insert the constant's value"
+        },
+        "SELECT-VALUE-TYPE": {
+            "TITLE": "Value Type",
+            "PLACEHOLDER": "Select a value type",
+            "OPTIONS": {
+                "TEXT": "Text",
+                "BOOL": "Boolean",
+                "INT": "Integer",
+                "DOUBLE": "Double",
+                "ENUM": "Enumerate",
+                "DATE": "Date",
+                "TIME": "Time"
+            }
+        },
+        "SELECT-BOOL-VALUE": {
+            "PLACEHOLDER": "Select the constant's value",
+            "TRUE": "True",
+            "FALSE": "False"
+        },
+        "ENUM-VALUES-TABLE": {
+            "TITLE": "Constant Enumerate Values",
+            "ADD-VALUE": "Add Value",
+            "REMOVE-VALUE": "Remove",
+            "VALUE-PLACEHOLDER": "Insert a value"
+        },
+        "BUTTON": "Save"
+    },
+
+    "ROLES-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Role",
+            "ERROR": "There was an error creating the Role. Please, try again.",
+            "SUCCESS": "Role created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Role",
+            "ERROR": "There was an error updating the Role. Please, try again.",
+            "SUCCESS": "Role updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Role?",
+            "SUCCESS": "Role deleted successfully.",
+            "ERROR": "Failed to delete Role. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "BUTTON": "Save"
+    },
+
+    "USERS-MODAL": {
+        "CREATE": {
+            "TITLE": "Create User",
+            "ERROR": "There was an error creating the User. Please, try again.",
+            "SUCCESS": "User created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update User",
+            "ERROR": "There was an error updating the User. Please, try again.",
+            "SUCCESS": "User updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this User?",
+            "SUCCESS": "User deleted successfully.",
+            "ERROR": "Failed to delete User. Please, try again later."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Name",
+            "PLACEHOLDER": "Insert a name"
+        },
+        "NIF-FIELD": {
+            "TITLE": "NIF",
+            "PLACEHOLDER": "Insert a NIF"
+        },
+        "EMAIL-FIELD": {
+            "TITLE": "Email",
+            "PLACEHOLDER": "Insert an email"
+        },
+        "PASSWORD-FIELD": {
+            "TITLE": "Password",
+            "PLACEHOLDER": "Insert a password"
+        },
+        "CONFIRM-PASSWORD-FIELD": {
+            "TITLE": "Confirm Password",
+            "PLACEHOLDER": "Confirm your password"
+        },
+        "USERNAME-FIELD": {
+            "TITLE": "Username",
+            "PLACEHOLDER": "Insert a username"
+        },
+        "SELECT-LANGUAGE": {
+            "TITLE": "Language",
+            "PLACEHOLDER": "Pick a language"
+        },
+        "SELECT-USER-DETAILS-ENT-TYPE": {
+            "TITLE": "User Details Entity Type",
+            "PLACEHOLDER": "Pick an entity type for user details specification"
+        },
+        "CHECKBOX-USER-DETAILS-SPECIFICATION": "Specify Extra User Details",
+        "CHECKBOX-CHANGE-PASSWORD": "Change Password",
+        "PASSWORDS-DONT-MATCH": "Passwords don't match.",
+        "BUTTON": "Save"
+    },
+
+    "ROLE-INITIATES-TRANSACTIONS-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Role Initiates Transaction record",
+            "ERROR": "There was an error creating the Role Initiates Transaction record. Please, try again.",
+            "SUCCESS": "Role Initiates Transaction record created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Role Initiates Transaction record",
+            "ERROR": "There was an error updating the Role Initiates Transaction record. Please, try again.",
+            "SUCCESS": "Role Initiates Transaction record updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Role Initiates Transaction record?",
+            "SUCCESS": "Role Initiates Transaction record deleted successfully.",
+            "ERROR": "Failed to delete Role Initiates Transaction record. Please, try again later."
+        },
+        "SELECT-ROLE": {
+            "TITLE": "Role",
+            "PLACEHOLDER": "Pick a role"
+        },
+        "SELECT-TRANSACTION-TYPE": {
+            "TITLE": "Transaction Type",
+            "PLACEHOLDER": "Pick a transaction type"
+        },
+        "CHECKBOX-OWN-USER-ACCESS-ONLY": "Own User Access Only",
+        "BUTTON": "Save"
+    },
+
+    "ROLE-HAS-USERS-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Role Has User record",
+            "ERROR": "There was an error creating the Role Has User record. Please, try again.",
+            "SUCCESS": "Role Has User record created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Role Has User record",
+            "ERROR": "There was an error updating the Role Has User record. Please, try again.",
+            "SUCCESS": "Role Has User record updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Role Has User record?",
+            "SUCCESS": "Role Has User record deleted successfully.",
+            "ERROR": "Failed to delete Role Has User record. Please, try again later."
+        },
+        "SELECT-ROLE": {
+            "TITLE": "Role",
+            "PLACEHOLDER": "Pick a role"
+        },
+        "SELECT-USER": {
+            "TITLE": "User",
+            "PLACEHOLDER": "Pick a user"
+        },
+        "BUTTON": "Save"
+    },
+
+    "WAITING-LINKS-MODAL": {
+        "CREATE": {
+            "TITLE": "Create Waiting Link",
+            "ERROR": "There was an error creating the Waiting Link. Please, try again.",
+            "SUCCESS": "Waiting Link created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update Waiting Link",
+            "ERROR": "There was an error updating the Waiting Link. Please, try again.",
+            "SUCCESS": "Waiting Link updated successfully!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Are you sure you want to delete this Waiting Link?",
+            "SUCCESS": "Waiting Link deleted successfully.",
+            "ERROR": "Failed to delete Waiting Link. Please, try again later."
+        },
+        "GROUP-WAITED-TRANSACTION-STEP": "Waited Transaction Step",
+        "IS": "is",
+        "HAS-BEEN": "has been",
+        "GROUP-WAITING-TRANSACTION-STEP": "Waiting Transaction Step",
+        "SELECT-WAITED-TRANSACTION-TYPE": {
+            "TITLE": "Waited Transaction Type",
+            "PLACEHOLDER": "Pick a transaction type"
+        },
+        "SELECT-WAITED-TRANSACTION-STATE": {
+            "TITLE": "Waited Transaction State",
+            "PLACEHOLDER": "Pick a transaction state"
+        },
+        "SELECT-WAITING-TRANSACTION-TYPE": {
+            "TITLE": "Waiting Transaction Type",
+            "PLACEHOLDER": "Pick a transaction type"
+        },
+        "SELECT-WAITING-TRANSACTION-STATE": {
+            "TITLE": "Waiting Transaction State",
+            "PLACEHOLDER": "Pick a transaction state"
+        },
+        "MAX-FIELD": {
+            "TITLE": "Maximum",
+            "PLACEHOLDER": "Insert the maximum number of occurrences"
+        },
+        "MIN-FIELD": {
+            "TITLE": "Minimum",
+            "PLACEHOLDER": "Insert the minimum number of occurrences"
+        },
+        "BUTTON": "Save"
+    },
+
+    "MODAL-PARAMETERIZATION-TRANSLATION": {
+        "TITLE": "Translation",
+        "NAME-FIELD": "Name",
+        "VALUE-FIELD": "Value",
+        "RT-NAME-FIELD": "Result Name",
+        "ID-NAME-FIELD": "Identifying Name",
+        "ID-NAME-PLACEHOLDER": "Insert an identifying name",
+        "ROLE": {
+            "TITLE": "Role",
+            "ERROR": "There was an error translating the Role. Please, try again.",
+            "SUCCESS": "Role translated successfully!"
+        },
+        "PROCESS-TYPE": {
+            "TITLE": "Process Type",
+            "ERROR": "There was an error translating the Process Type. Please, try again.",
+            "SUCCESS": "Process Type translated successfully!"
+        },
+        "TRANSACTION-TYPE": {
+            "TITLE": "Transaction Type",
+            "ERROR": "There was an error translating the Transaction Type. Please, try again.",
+            "SUCCESS": "Transaction Type translated successfully!"
+        },
+        "ENTITY-TYPE": {
+            "TITLE": "Entity Type",
+            "ERROR": "There was an error translating the Entity Type. Please, try again.",
+            "SUCCESS": "Entity Type translated successfully!"
+        },
+        "PROPERTY": {
+            "TITLE": "Property",
+            "ERROR": "There was an error translating the Property. Please, try again.",
+            "SUCCESS": "Property translated successfully!",
+            "PROP-ALLOWED-VALUES-TABLE-TITLE": "Property Allowed Values"
+        },
+        "PROP-UNIT-TYPE": {
+            "TITLE": "Property Unit Type",
+            "ERROR": "There was an error translating the Property Unit Type. Please, try again.",
+            "SUCCESS": "Property Unit Type translated successfully!"
+        },
+        "REFERENCED-PROPERTY-VALUE": {
+            "TITLE": "Referenced Property Value",
+            "ERROR": "There was an error translating the Referenced Property Value. Please, try again.",
+            "SUCCESS": "Referenced Property Value translated successfully!"
+        },
+        "CONSTANT": {
+            "TITLE": "Constant",
+            "ERROR": "There was an error translating the Constant. Please, try again.",
+            "SUCCESS": "Constant translated successfully!",
+            "ENUM-VALUES-TABLE-TITLE": "Enumerate Values"
+        },
+        "BUTTON": "Translate"
+    },
+
+    "USER-DETAILING-DASHBOARD-MODAL": {
+        "CREATE": {
+            "TITLE": "Create User Details",
+            "ERROR": "There was an error creating the User Details. Please, try again.",
+            "SUCCESS": "User Details created successfully!"
+        },
+        "UPDATE": {
+            "TITLE": "Update User Details",
+            "ERROR": "There was an error updating the User Details. Please, try again.",
+            "SUCCESS": "User Details updated successfully!"
+        },
+        "SELECT-USER": {
+            "TITLE": "User",
+            "PLACEHOLDER": "Pick a user"
+        },
+        "BUTTON": "Continue"
+    },
+
+    "MODAL-FORM-DASHBOARD-HEADER": "Fill the following form",
+
+    "BI-MANAGEMENT": {
+        "BI-DASHBOARD": {
+            "CONTROL-PANEL": "Control Panel",
+            "BI-ELEMENTS": "BI Elements",
+            "COLLECTION": "Collection",
+            "KNOWAGE-ELEMENTS": "Knowage Elements",
+            "BI-TOOLS": "BI Tools"
+        },
+        "BI-ELEMENT": {
+            "COLLECTION": {
+                "SEARCH": {
+                    "PLACEHOLDER": "Search by title and description",
+                    "ACTION": "Search"
+                },
+                "DELETE": {
+                    "CONFIRMATION": "Are you sure you want to delete this BI Element from your collection?",
+                    "SUCCESS": "The element was removed from your collection.",
+                    "ERROR": "Failed to remove the element from your collection. Please, try again later."
+                },
+                "DETAILS": "Details",
+                "NO-ELEMENTS": "There are no BI Elements in your collection."
+            },
+            "DETAILS": {
+                "ADD": {
+                    "SUCCESS": "The element was added to your collection.",
+                    "ERROR": "Failed to add the element to your collection. Please, try again later."
+                },
+                "TABLE": {
+                    "DESCRIPTION": "Description",
+                    "TYPE": "Type",
+                    "BI-TOOL": "BI Tool",
+                    "CREATED-AT": "Created at"
+                },
+                "CLOSE": "Close",
+                "VIEW": "View",
+                "ELEMENT-DETAILS": "details"
+            },
+            "MANAGEMENT": {
+                "DELETE": {
+                    "CONFIRMATION": "Are you sure you want to delete this BI Element?",
+                    "SUCCESS": "The BI Element was deleted.",
+                    "ERROR": "Failed to delete the BI Element. Please, try again later."
+                },
+                "CREATE": "New BI Element",
+                "TABLE": {
+                    "TITLE": "BI Elements Table",
+                    "PREVIEW": "Preview",
+                    "NAME": "Name",
+                    "DESCRIPTION": "Description",
+                    "TYPE-SLUG": "Type Slug",
+                    "BI-TOOL": "BI Tool",
+                    "CREATED-AT": "Created at",
+                    "DETAILS": "Details",
+                    "EDIT": "Edit",
+                    "DELETE": "Delete"
+                },
+                "LOADING": "Loading",
+                "OPERATION-SUCCESS": "Operation performed successfully!",
+                "OPERATION-ERROR": "Operation not performed! Please, try again later."
+            },
+            "MODAL": {
+                "TITLE": "BI Elements",
+                "BI-TOOLS": "BI Tools",
+                "BI-TOOL": "BI Tool",
+                "BI-TOOLS-PLACEHOLDER": "Choose a BI tool",
+                "SLUG-TYPE": "Type",
+                "SLUG-TYPES": "Slug Types",
+                "SLUG-TYPES-PLACEHOLDER": "Choose a type",
+                "NAME": "Name",
+                "NAME-PLACEHOLDER": "Insert the BI element's name",
+                "DESCRIPTION": "Description",
+                "DESCRIPTION-PLACEHOLDER": "Insert the BI element's description",
+                "INTEGRATION-URL": "Integration URL",
+                "INTEGRATION-URL-PLACEHOLDER": "Insert the BI element's integration URL",
+                "PREVIEW-IMAGE": "Preview image",
+                "REMOVE-IMAGE": "Remove image",
+                "SAVE": "Save",
+                "MAXIMUM-SIZE-ALLOWED": "Maximum size allowed is",
+                "ONLY-IMAGES-ALLOWED": "Only Images are allowed ( JPG | PNG )",
+                "MAXIMUM-DIMENSIONS-ALLOWED": "Maximum dimensions allowed"
+            },
+            "TYPE": {
+                "DELETE": {
+                    "CONFIRMATION": "Are you sure you want to delete this BI Element Type?",
+                    "SUCCESS": "The BI Element Type was deleted.",
+                    "ERROR": "Failed to delete the BI Element Type. Please, try again later."
+                },
+                "CREATE": "New BI Element Type",
+                "TABLE": {
+                    "TITLE": "BI Element Types Table",
+                    "NAME": "Name",
+                    "SLUG": "Slug",
+                    "DESCRIPTION": "Description",
+                    "ACTIONS": "Actions",
+                    "EDIT": "Edit",
+                    "DELETE": "Delete"
+                },
+                "LOADING": "Loading",
+                "OPERATION-SUCCESS": "Operation performed successfully!",
+                "OPERATION-ERROR": "Operation not performed! Please, try again later."
+            },
+            "TYPE-MODAL": {
+                "TITLE": "BI Element Types",
+                "NAME": "Name",
+                "NAME-PLACEHOLDER": "Insert a name for this BI Element Type",
+                "SLUG": "Slug",
+                "SLUG-PLACEHOLDER": "Insert a slug for this BI Element Type",
+                "DESCRIPTION": "Description",
+                "DESCRIPTION-PLACEHOLDER": "Insert a description for this BI Element Type",
+                "SAVE": "Save"
+            },
+            "ELEMENT": {
+                "SEARCH": {
+                    "PLACEHOLDER": "Search by title and description",
+                    "ACTION": "Search"
+                },
+                "DETAILS": "Details"
+            }
+        },
+        "BI-ENGINE": {
+            "BI-ELEMENTS": {
+                "DETAILS": "Details"
+            },
+            "MANAGEMENT": {
+                "DELETE": {
+                    "CONFIRMATION": "Are you sure you want to delete this BI Engine?",
+                    "SUCCESS": "The BI Engine was deleted.",
+                    "ERROR": "Failed to delete the BI Engine. Please, try again later."
+                },
+                "CREATE": "New BI Tool",
+                "TABLE": {
+                    "TITLE": "BI Engines Table",
+                    "PREVIEW": "Preview",
+                    "NAME": "Name",
+                    "CREATED-AT": "Created at",
+                    "ACTIONS": "Actions",
+                    "EDIT": "Edit",
+                    "DELETE": "Delete"
+                },
+                "LOADING": "Loading BI Tool",
+                "OPERATION-SUCCESS": "Operation performed successfully!",
+                "OPERATION-ERROR": "Operation not performed! Please, try again later."
+            },
+            "MODAL": {
+                "TITLE": "BI Tools",
+                "NAME": "Name",
+                "NAME-PLACEHOLDER": "Insert the BI tool's name",
+                "PREVIEW-IMAGE": "Preview image",
+                "REMOVE-IMAGE": "Remove image",
+                "SAVE": "Save",
+                "MAXIMUM-SIZE-ALLOWED": "Maximum size allowed is",
+                "ONLY-IMAGES-ALLOWED": "Only Images are allowed ( JPG | PNG )",
+                "MAXIMUM-DIMENSIONS-ALLOWED": "Maximum dimensions allowed"
+            },
+            "ENGINE": {
+                "BI-ELEMENTS": "List of BI Elements"
+            }
+        },
+        "BI-KNOWAGE": {
+            "DETAILS": {
+                "TITLE": "details",
+                "DESCRIPTION": "Description",
+                "TYPE": "Type",
+                "PROFILE": "Profile",
+                "CREATED-AT": "Created at",
+                "CLOSE": "Close",
+                "OPEN-DOCUMENT": "Open Document",
+                "ANALYSE": "Analyse",
+                "DATASET": "dataset",
+                "ANALYSE-DATASET": "Analyse dataset"
+            },
+            "LOGIN": {
+                "TITLE": "Knowage Login",
+                "USERNAME": "UserName",
+                "PASSWORD": "Password",
+                "BUTTON": "Login"
+            },
+            "MANAGEMENT": {
+                "DELETE": {
+                    "CONFIRMATION": "Are you sure you want to delete this Knowage element?",
+                    "SUCCESS": "The Knowage element was deleted.",
+                    "ERROR": "Failed to delete the Knowage element. Please, try again later."
+                },
+                "ADD-ELEMENTS": "Add Knowage Elements",
+                "SEE-DOCS": "See Knowage Documents",
+                "TABLE": {
+                    "TITLE": "Knowage Elements Table",
+                    "LABEL": "Label",
+                    "PREVIEW": "Preview",
+                    "NAME": "Name",
+                    "DESCRIPTION": "Description",
+                    "TYPE": "Type",
+                    "PROFILE": "Profile",
+                    "DATASET-LABEL": "Dataset Label",
+                    "CREATED-AT": "Created at",
+                    "ACTIONS": "Actions",
+                    "DETAILS": "Details",
+                    "EDIT": "Edit",
+                    "DELETE": "Delete"
+                },
+                "LOADING": "Loading BI Knowage...",
+                "OPERATION-SUCCESS": "Operation performed successfully!",
+                "OPERATION-ERROR": "Operation not performed! Please, try again later."
+            },
+            "MODAL": {
+                "TITLE": "Knowage Elements",
+                "LABEL": "Label",
+                "LABEL-PLACEHOLDER": "Select the label",
+                "LABELS": "Labels",
+                "NAME": "Name",
+                "NAME-PLACEHOLDER": "Insert the BI Knowage's name",
+                "DESCRIPTION": "Description",
+                "DESCRIPTION-PLACEHOLDER": "Insert the BI Knowage's description",
+                "TYPE": "Type",
+                "TYPE-PLACEHOLDER": "Insert the BI Knowage's type",
+                "PROFILE": "Profile",
+                "PROFILE-PLACEHOLDER": "Insert the BI Knowage's role",
+                "DATASET-LABEL": "Dataset Label",
+                "DATASET-LABEL-PLACEHOLDER": "Insert the BI Knowage's dataset label",
+                "PREVIEW-IMAGE": "Preview image",
+                "REMOVE-IMAGE": "Remove image",
+                "DISPLAY-TOOLBAR": "Display Toolbar",
+                "DISPLAY-SLIDERS": "Display Sliders",
+                "RESET-PARAMETERS": "Allow parameters to be reset",
+                "SAVE": "Save",
+                "MAXIMUM-SIZE-ALLOWED": "Maximum size allowed is",
+                "ONLY-IMAGES-ALLOWED": "Only Images are allowed ( JPG | PNG )",
+                "MAXIMUM-DIMENSIONS-ALLOWED": "Maximum dimensions allowed"
+            },
+            "ELEMENT": {
+                "SEARCH": {
+                    "PLACEHOLDER": "Search by title and description",
+                    "ACTION": "Search"
+                },
+                "DETAILS": "Details"
+            }
+        },
+        "BI-WIDGETS": {
+            "CHARTS": {
+                "BI-ELEMENTS": "BI Elements",
+                "KNOWAGE-ELEMENTS": "Knowage Elements"
+            },
+            "COUNTER": {
+                "BI-ELEMENTS": "BI Elements",
+                "SEE-DETAILS": "See Details",
+                "KNOWAGE-ELEMENTS": "Knowage Elements",
+                "TYPES": "Types",
+                "BI-TOOLS": "BI Tools"
+            }
+        }
+    }
+}

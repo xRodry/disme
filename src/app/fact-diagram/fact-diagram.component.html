@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div id="graph-container" style="overflow-x: auto; max-width: 100%;">
+    <div id="graph-output"></div>
+</div>
+
+<div style="display: block">
+    <h3>mxGraph</h3>
+    <textarea [value]="drawioObjectsXml" rows="15" cols="212" readonly></textarea>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <button class="btn btn-lg btn-block btn-primary" type="button" (click)="$event.stopPropagation(); openSaveFactDiagramModal()" [disabled]="!drawioObjectsXml">
+            {{ 'FACT-DIAGRAM.BUTTON-SAVE-DIAGRAM' | translate }}
+        </button>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <button class="btn btn-lg btn-block btn-primary" type="button" (click)="saveData()" [disabled]="!drawioObjectsXml">
+            {{ 'FACT-DIAGRAM.SAVE-DATA.BUTTON' | translate }}
+        </button>
+    </div>
+</div>

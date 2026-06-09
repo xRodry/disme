@@ -1,0 +1,95 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div>
+    <div class="card">
+      <div class="card-wrapper mt-3 mx-3" style="height:10px;">
+      </div>
+      <div class="row" style="margin: 15px">
+        <div class="well well-sm">
+          <form name="myForm" role="form" novalidate="novalidate" class="form-inline">
+            <div class="form-group" style="padding: 0 15px">
+              <label><b> {{ 'DASHBOARD.FILTERS.FUNCTION.TITLE' | translate }} </b>
+                <ng-select class="form-control"
+                  [items]="RolesDashB"
+                  (change)="loadProcessByRoleID(selectedRole)"
+                  placeholder=" {{ 'DASHBOARD.FILTERS.FUNCTION.PLACEHOLDER' | translate }} "
+                  bindLabel="role_name"
+                  bindValue="role_id"
+                  name="roleInput"
+                  [(ngModel)]="selectedRole">
+                </ng-select>
+              </label>
+            </div>
+            <div class="form-group" style="padding: 0 15px" *ngIf="selectedRole > 0">
+              <label><b> {{ 'DASHBOARD.FILTERS.PROCESS.TITLE' | translate }} </b>
+                <ng-select class="form-control"
+                  [items]="processFilter"
+                  (change)="filterProcesses()"
+                  placeholder=" {{ 'DASHBOARD.FILTERS.PROCESS.PLACEHOLDER' | translate }} "
+                  bindLabel="process_type_name"
+                  bindValue="process_type_id"
+                  name="processInput"
+                  [(ngModel)]="selectedProcess">
+                </ng-select>
+              </label>
+            </div>
+            <div class="form-group" style="padding: 0 15px;" *ngIf="ProcessTasksDashB.length > 0">
+              <label><b> Sort by </b>
+                <ng-select class="form-control"
+                         [items]="sortingOptions"
+                         (change)="sortProcesses()"
+                         [clearable]="false"
+                         bindLabel="name"
+                         bindValue="id"
+                         name="sortingMethod"
+                         [(ngModel)]="sortingBy">
+                </ng-select>
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row" style="margin: 15px" *ngIf="ProcessTasksDashB.length > 0; else noProcessesFound">
+        <ng-container *ngFor="let ProcessDashB of ProcessTasksDashB; let i = index">
+          <div class="col-sm-6 col-md-4 col-lg-4">
+            <div class="card text-white">
+              <div [style.background-color]= "ProcessDashB.color">
+                <div class="card-body pb-0">
+                  <div class="text-value">{{ProcessDashB.transaction_type_name}}</div>
+                  <div class="card-text">(<b>{{ProcessDashB.process_type_name}}</b>)
+                    <label style="margin-bottom:0"></label>
+                  </div>
+                </div>
+                <div class="card-wrapper mt-3 mx-3" style="text-align: right; padding: 10px;">
+                  <button *ngIf="ProcessDashB.init_proc" class="btn btn-transparent p-0" type="button" aria-haspopup="true" aria-expanded="false"
+                          (click)= "startProcess(ProcessDashB)">
+                    <i class="fa fa-arrow-circle-right fa-4x"></i>
+                  </button>
+                  <button *ngIf="!ProcessDashB.init_proc" class="btn btn-transparent p-0" type="button" aria-haspopup="true" aria-expanded="false"
+                          (click)= "getProcessesAndOpenInitiateTaskModal(ProcessDashB)">
+                    <i class="fa fa-arrow-circle-right fa-4x"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="col-sm-12 col-md-12 col-lg-12" style="margin: 15px">
+          <ngb-pagination class="pagination justify-content-end" [collectionSize]="BackupProcessTasksDashB.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="refreshProcessTasks()"></ngb-pagination>
+        </div>
+      </div>
+      <ng-template #noProcessesFound>
+        <div class="row text-center" style="margin: 15px">
+          <div class="col-lg-12">
+            <i class="fa fa-meh-o fa-5x"></i>
+          </div>
+          <div class="col-lg-12">
+            <h3> {{ 'DASHBOARD.NOTHING-FOUND' | translate }} </h3>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+</div>

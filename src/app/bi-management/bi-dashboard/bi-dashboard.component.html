@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" routerLink="/biManagement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.CONTROL-PANEL' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElementCollection">{{ 'BI-MANAGEMENT.BI-DASHBOARD.COLLECTION' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biKnowage">{{ 'BI-MANAGEMENT.BI-DASHBOARD.KNOWAGE-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biEngines">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-TOOLS' | translate }}</a>
+    </li>
+</ul>
+
+<div class="container-fluid">
+    <br>
+    <app-bi-widgets-counter></app-bi-widgets-counter>
+    <iframe src="http://localhost:8080/knowage" height="750px" width="100%" style="border: 0"></iframe>
+</div>

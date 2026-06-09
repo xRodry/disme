@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.CONTROL-PANEL' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElementCollection">{{ 'BI-MANAGEMENT.BI-DASHBOARD.COLLECTION' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biKnowage">{{ 'BI-MANAGEMENT.BI-DASHBOARD.KNOWAGE-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" routerLink="/biManagement/biEngines">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-TOOLS' | translate }}</a>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-md-4 bielement-list" *ngFor="let biEngine of biEngines">
+        <div class="card mb-4 shadow-sm">
+            <img [src]="biEngine.logo_preview" alt="{{ biEngine.name }}" class="img-fluid" style="display: block;margin-left: auto;margin-right: auto; width: 50%; height: 130px;"/>
+            <div class="card-body">
+                <h4><a routerLink="/biManagement/biEngineBielements/{{ biEngine.id }}">{{ biEngine.name }}</a></h4>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" routerLink="/biManagement/biEngineBielements/{{ biEngine.id }}">
+                            <i class="fa fa-list"></i> {{ 'BI-MANAGEMENT.BI-ENGINE.ENGINE.BI-ELEMENTS' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

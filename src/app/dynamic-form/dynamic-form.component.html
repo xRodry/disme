@@ -1,0 +1,136 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="card-header" role="button" (click)="showOrHideTable('forms-management')">
+                <i class="fa fa-align-justify"></i> {{ 'FORM-MANAGEMENT.FORM-MANAGEMENT' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openFormsManagementModal()">
+                    {{ 'FORM-MANAGEMENT.FORM-CREATE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{numberOfTotalFormsManagement}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+
+            <div [ngbCollapse]="!tablesToShow.includes('forms-management')" class="card-body">
+
+                <div class="card mt-4">
+                    <div class="card-header" role="button" (click)="showOrHideTable('forms-need-updating')">
+                        <i class="fa fa-align-justify"></i> {{ 'FORM-MANAGEMENT.FORMS-NEED-UPDATING' | translate }}
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{DynamicFormsNeedUpdating.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+                    <div [ngbCollapse]="!tablesToShow.includes('forms-need-updating')" class="card-body">
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="formsNeedUpdatingGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="DynamicFormsNeedUpdating"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "formsManagementColumnDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header" role="button" (click)="showOrHideTable('forms-active')">
+                        <i class="fa fa-align-justify"></i> {{ 'FORM-MANAGEMENT.FORMS-IN-USE' | translate }}
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{DynamicFormsActive.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+                    <div [ngbCollapse]="!tablesToShow.includes('forms-active')" class="card-body">
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="formsActiveGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="DynamicFormsActive"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "formsManagementColumnDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header" role="button" (click)="showOrHideTable('RETIRED-FORMS-ARCHIVE')">
+                        <i class="fa fa-align-justify"></i> {{ 'FORM-MANAGEMENT.RETIRED-FORMS-ARCHIVE' | translate }}
+
+                        <br>
+                        <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{DynamicFormsNoLongerInUse.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                    </div>
+                    <div [ngbCollapse]="!tablesToShow.includes('RETIRED-FORMS-ARCHIVE')" class="card-body">
+
+                        <div class="d-flex justify-content-end mb-4">
+                            <button class="btn btn-sm btn-danger" type="button"
+                                    (click)="$event.stopPropagation(); deleteAllUnusedForms()">
+                                {{ 'FORM-MANAGEMENT.FORM-DELETE-ALL-UNUSED-FORMS' | translate }}
+                            </button>
+                        </div>
+
+                        <ag-grid-angular
+                            #agGrid
+                            style="width: 100%;"
+                            id="formsNoLongerInUseGrid"
+                            class="ag-theme-blue"
+                            domLayout="autoHeight"
+                            [rowData]="DynamicFormsNoLongerInUse"
+                            [animateRows]="true"
+                            [pagination]="true"
+                            [suppressDragLeaveHidesColumns]="true"
+                            [paginationAutoPageSize]="false"
+                            [paginationPageSize]="10"
+                            [gridOptions]="gridOptions"
+                            [columnDefs] = "formsNoLongerInUseColumnsDefs"
+                        ></ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('forms-translator')">
+                <i class="fa fa-align-justify"></i> {{ 'TRANSLATOR.FORM-TRANSLATOR' | translate }}
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{DynamicFormsToTranslate.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('forms-translator')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="formsTranslatorGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="DynamicFormsToTranslate"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "formsTranslatorColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

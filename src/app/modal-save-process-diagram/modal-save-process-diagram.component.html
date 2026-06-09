@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'SAVE-PROCESS-DIAGRAM-MODAL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'SAVE-PROCESS-DIAGRAM-MODAL.NAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="processDiagram.name" type="text"
+                       placeholder="{{ 'SAVE-PROCESS-DIAGRAM-MODAL.NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="description">{{ 'SAVE-PROCESS-DIAGRAM-MODAL.DESCRIPTION-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="description" [(ngModel)]="processDiagram.description" type="text"
+                       placeholder="{{ 'SAVE-PROCESS-DIAGRAM-MODAL.DESCRIPTION-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-success"
+            (click)="saveProcessDiagram()"
+            [disabled]="!(processDiagram.name)">
+        {{ 'SAVE-PROCESS-DIAGRAM-MODAL.BUTTON' | translate }}
+    </button>
+</div>

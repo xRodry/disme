@@ -1,0 +1,133 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div>
+  <div class="card">
+    <div class="card-wrapper mt-3 mx-3" style="height:10px;">
+    </div>
+    <div class="row" style="margin: 15px">
+      <div class="well well-sm" style="margin-bottom: 15px">
+        <form name="myForm" role="form" novalidate="novalidate" class="form-inline">
+          <div class="form-group" style="padding: 0 15px">
+            <div class="input-group">
+              <input type="text" placeholder=" {{ 'DASHBOARD.FILTERS.SEARCH' | translate }} " class="form-control" name="search" [(ngModel)]="query" (keyup)="search()">
+              <div class="input-group-append">
+                <button id="button-addon5" type="submit" disabled class="btn btn-secondary"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="well well-sm">
+        <form name="myForm" role="form" novalidate="novalidate" class="form-inline">
+          <div class="form-group" style="padding: 0 15px">
+            <label><b> {{ 'DASHBOARD.FILTERS.FUNCTION.TITLE' | translate }} </b>
+              <ng-select class="form-control"
+                [items]="RolesDashB"
+                (change)="loadTasksByRole(taskSelectedRole)"
+                placeholder=" {{ 'DASHBOARD.FILTERS.FUNCTION.PLACEHOLDER' | translate }} "
+                bindLabel="role_name"
+                bindValue="role_id"
+                name="roleInput2"
+                [(ngModel)]="taskSelectedRole">
+              </ng-select>
+            </label>
+          </div>
+          <div class="form-group" style="padding: 0 15px" *ngIf="taskSelectedRole > 0">
+            <label><b> {{ 'DASHBOARD.FILTERS.PROCESS.TITLE' | translate }} </b>
+              <ng-select class="form-control"
+                [items]="taskProcess"
+                (change)="loadTasksByProcessID(taskSelectedRole, taskSelectedProcess)"
+                placeholder=" {{ 'DASHBOARD.FILTERS.PROCESS.PLACEHOLDER' | translate }} "
+                bindLabel="process_type_name"
+                bindValue="process_type_id"
+                name="processInput2"
+                [(ngModel)]="taskSelectedProcess">
+              </ng-select>
+            </label>
+          </div>
+          <div class="form-group" style="padding: 0 15px" *ngIf="taskSelectedProcess > 0">
+            <label><b> {{ 'DASHBOARD.FILTERS.TASK.TITLE' | translate }} </b>
+              <ng-select class="form-control"
+                [items]="TasksDashB"
+                (change)="filterPendingTasks(selectedTask ? 2 : 1)"
+                placeholder=" {{ 'DASHBOARD.FILTERS.TASK.PLACEHOLDER' | translate }} "
+                bindLabel="t_name"
+                bindValue="id"
+                name="taskInput"
+                [(ngModel)]="selectedTask">
+              </ng-select>
+            </label>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row" style="margin: 15px" *ngIf="PendingTasks.length > 0; else noPendingTasksFound">
+      <table class="table table-responsive-sm table-hover table-outline mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th class="new-badge"></th>
+            <th class="link" (click)="sortBy('created_at')"> {{ 'DASHBOARD.TABLE.DATE-CREATED' | translate }} </th>
+            <th>{{ 'DASHBOARD.TABLE.DETAILS' | translate }}</th>
+            <th class="link" (click)="sortBy('process_name')"> {{ 'DASHBOARD.TABLE.PROCESS' | translate }} </th>
+            <th class="link" (click)="sortBy('task_name')"> {{ 'DASHBOARD.TABLE.TASK' | translate }} </th>
+            <th class="link" (click)="sortBy('t_state')"> {{ 'DASHBOARD.TABLE.STATE' | translate }} </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let PendingTask of PendingTasks; let i = index">
+            <tr (click)="acknowledgeTask(PendingTask)">
+              <td>
+                <span *ngIf="!PendingTask.ack_on" class="badge badge-primary">{{ 'SIDE-BAR.DASHBOARD-NEW' | translate }}</span>
+              </td>
+              <td>
+                <div>{{PendingTask.created_at | date:'dd/MM/yyyy hh:mm'}}</div>
+              </td>
+              <td>
+                <div *ngIf="PendingTask.id_name">{{PendingTask.id_name}} {{PendingTask.internal_id}}</div>
+                <div *ngIf="!PendingTask.id_name">{{PendingTask.process_type_name}} {{PendingTask.internal_id}}</div>
+                <div class="small text-muted">
+                  <span>{{PendingTask.details.join(' | ')}}</span>
+                </div>
+              </td>
+              <td>
+                <div><span class="badge badge-pill" [style.background-color]= "PendingTask.color">&nbsp;</span> {{PendingTask.process_type_name}}</div>
+              </td>
+              <td>
+                <div>{{PendingTask.task_name}}</div>
+              </td>
+              <td *ngIf="PendingTask.action_rule_type === 'act'">
+                <div>{{PendingTask.t_state_act_name}}</div>
+              </td>
+              <td *ngIf="PendingTask.action_rule_type === 'fact'">
+                <div>{{ 'DASHBOARD.HAS-BEEN' | translate }} {{PendingTask.t_state_name}}</div>
+              </td>
+              <td class="text-center">
+                <button class="btn p-0" type="button" aria-haspopup="true" aria-expanded="false"
+                (click)="executeAR($event, PendingTask)">
+                  <i class="fa fa-arrow-circle-right fa-2x"></i>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="col-sm-12 col-md-12 col-lg-12" style="margin: 15px">
+        <ngb-pagination class="pagination justify-content-end" [collectionSize]="BackupPendingTasks.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="refreshPendingTasks()"></ngb-pagination>
+      </div>
+    </div>
+    <ng-template #noPendingTasksFound>
+      <div class="row text-center" style="margin: 15px">
+        <div class="col-lg-12">
+          <i class="fa fa-meh-o fa-5x"></i>
+        </div>
+        <div class="col-lg-12">
+          <h3> {{ 'DASHBOARD.NOTHING-FOUND' | translate }} </h3>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

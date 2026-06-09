@@ -1,0 +1,155 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!delegation.id" class="modal-title"> {{ 'DELEGATIONS-MODAL.CREATE.TITLE' | translate }} </h4>
+    <h4 *ngIf="delegation.id" class="modal-title"> {{ 'DELEGATIONS-MODAL.UPDATE.TITLE' | translate }} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="form-row">
+        <div class="form-group col-md-5">
+            <label for="transactionType">{{ 'DELEGATIONS-MODAL.SELECT-TRANSACTION-TYPE.TITLE' | translate }}</label>
+            <ng-select id="transactionType" [items]="tasksToDelegate"
+                       autofocus
+                       placeholder = "{{ 'DELEGATIONS-MODAL.SELECT-TRANSACTION-TYPE.PLACEHOLDER' | translate }}"
+                       bindLabel="transaction_type_name"
+                       bindValue="transaction_type_id"
+                       (change)="changeSelectedTask()"
+                       [(ngModel)]="delegation.transaction_type_id">
+            </ng-select>
+        </div>
+        <div class="form-group col-md-2" *ngIf="delegation.transaction_type_id && delegation.delegates_role_id">
+            <label for="transactionType">{{ 'DELEGATIONS-MODAL.SELECT-TYPE.TITLE' | translate }}</label>
+            <ng-select id="type" [items]="type"
+                       placeholder = "{{ 'DELEGATIONS-MODAL.SELECT-TYPE.PLACEHOLDER' | translate }}"
+                       bindLabel="form_name"
+                       bindValue="name"
+                       (change)="changeSelectedType()"
+                       [(ngModel)]="delegation.type">
+            </ng-select>
+        </div>
+        <div class="form-group col-md-5" *ngIf="possibleStates.length">
+                <label for="tState">{{ 'DELEGATIONS-MODAL.SELECT-TRANSACTION-STATE.TITLE' | translate }}</label>
+                <ng-select id="tState" [items]="possibleStates"
+                           autofocus
+                           placeholder= "{{ 'DELEGATIONS-MODAL.SELECT-TRANSACTION-STATE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="t_state_id"
+                           (change)="defineMaxEndDate()"
+                           [(ngModel)]="delegation.t_state_id">
+                </ng-select>
+        </div>
+    </div>
+    <div class="row" *ngIf="possibleRoles.length">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="role">{{ 'DELEGATIONS-MODAL.SELECT-DELEGATES-ROLE.TITLE' | translate }}</label>
+                <ng-select id="role" [items]="possibleRoles"
+                           autofocus
+                           placeholder = "{{ 'DELEGATIONS-MODAL.SELECT-DELEGATES-ROLE.PLACEHOLDER' | translate }}"
+                           (change)="changeSelectedRole()"
+                           bindLabel="role_name"
+                           bindValue="role_id"
+                           [(ngModel)]="delegation.delegates_role_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="delegatedRoles.length">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="delegatedRole">{{ 'DELEGATIONS-MODAL.SELECT-DELEGATED-ROLE.TITLE' | translate }}</label>
+                <ng-select id="delegatedRole" [items]="delegatedRoles"
+                           (change) = "changedDelegatedRole()"
+                           placeholder= "{{ 'DELEGATIONS-MODAL.SELECT-DELEGATED-ROLE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="delegation.delegated_role_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="delegation.delegated_role_id">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="delegateSpecificUser" [(ngModel)]="delegateSpecificUser">
+                    <label class="custom-control-label" for="delegateSpecificUser">
+                        {{ 'DELEGATIONS-MODAL.DELEGATE-SPECIFIC-USER' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="delegateSpecificUser">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="delegatedUser">{{ 'DELEGATIONS-MODAL.SELECT-DELEGATED-USER.TITLE' | translate }}</label>
+                <ng-select id="delegatedUser" [items]="delegatedUsers"
+                           placeholder= "{{ 'DELEGATIONS-MODAL.SELECT-DELEGATED-USER.PLACEHOLDER' | translate }}"
+                           bindLabel="user_name"
+                           bindValue="id"
+                           [(ngModel)]="delegation.user_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="visibleToDelegator" [(ngModel)]="delegation.visible_to_delegator">
+                    <label class="custom-control-label" for="visibleToDelegator">
+                        {{ 'DELEGATIONS-MODAL.VISIBLE-TO-DELEGATOR-LABEL' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="delegatedUserCanDelegate" [(ngModel)]="delegation.delegated_user_can_delegate">
+                    <label class="custom-control-label" for="delegatedUserCanDelegate">
+                        {{ 'DELEGATIONS-MODAL.DELEGATED-USER-CAN-DELEGATE' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                    <label for="startTime">{{ 'DELEGATIONS-MODAL.START-TIME.TITLE' | translate }}</label>
+                    <div class="input-group-append">
+                    <input class="form-control" (click)="s.toggle()" [autoClose]="true" (ngModelChange)="formatDate($event, 'startTime')"
+                           placeholder="{{ 'DELEGATIONS-MODAL.START-TIME.PLACEHOLDER' | translate }}" id="startTime"
+                           [(ngModel)]="ngbStartTime" ngbDatepicker #d1="ngModel" #s="ngbDatepicker" [minDate]="ngbMinStartTime" [maxDate]="ngbMaxEndTime">
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="endTime">{{ 'DELEGATIONS-MODAL.END-TIME.TITLE' | translate }}</label>
+                <div class="input-group-append">
+                    <input class="form-control" (click)="e.toggle()" [autoClose]="true" (ngModelChange)="formatDate($event, 'endTime')"
+                           placeholder="{{ 'DELEGATIONS-MODAL.END-TIME.PLACEHOLDER' | translate }}" id="endTime"
+                           [(ngModel)]="ngbEndTime" ngbDatepicker #d2="ngModel" #e="ngbDatepicker" [minDate]="ngbStartTime ? ngbStartTime : ngbMinStartTime" [maxDate]="ngbMaxEndTime">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="d1.invalid || d2.invalid || disableSaveButton()">
+        {{ 'DELEGATIONS-MODAL.BUTTON' | translate }}
+    </button>
+</div>

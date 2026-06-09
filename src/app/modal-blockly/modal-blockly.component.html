@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+  <h4 *ngIf="!this.actionRuleDrafts" class="modal-title"> {{ 'LOAD-AR-MODAL.TITLE' | translate }} </h4>
+  <h4 *ngIf="this.actionRuleDrafts" class="modal-title"> {{ 'LOAD-AR-MODAL.TITLE-DRAFT' | translate }} </h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">X</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label *ngIf="!this.actionRuleDrafts" for="actionRule"> {{ 'LOAD-AR-MODAL.MAIN-TEXT' | translate }} </label>
+        <ng-select *ngIf="!this.actionRuleDrafts" id="actionRule"
+                   [items]="ActionRules"
+                   placeholder = "{{ 'LOAD-AR-MODAL.DEFAULT-OPTION' | translate }}"
+                   [(ngModel)]="selectedActionRule">
+            <ng-template ng-label-tmp ng-option-tmp let-item="item">
+                <div *ngIf="item.type === 'act'">
+                    <b>{{ 'LOAD-AR-MODAL.TRANS-TYPE' | translate }}</b>: {{item.transaction_type_name}}   |   <b>{{ 'LOAD-AR-MODAL.TRANS-STATE' | translate }}</b>: {{item.t_state_act_name}}
+                </div>
+                <div *ngIf="item.type !== 'act'">
+                    <b>{{ 'LOAD-AR-MODAL.TRANS-TYPE' | translate }}</b>: {{item.transaction_type_name}}   |   <b>{{ 'LOAD-AR-MODAL.TRANS-STATE' | translate }}</b>: {{item.t_state_name}}
+                </div>
+            </ng-template>
+        </ng-select>
+          <label *ngIf="this.actionRuleDrafts" for="actionRuleDraft"> {{ 'LOAD-AR-MODAL.MAIN-TEXT-DRAFT' | translate }} </label>
+          <ng-select *ngIf="this.actionRuleDrafts" id="actionRuleDraft"
+                     [items]="ActionRules"
+                     placeholder = "{{ 'LOAD-AR-MODAL.DEFAULT-OPTION' | translate }}"
+                     bindLabel="name"
+                     [(ngModel)]="selectedActionRule">
+          </ng-select>
+        <div class="preview" *ngIf="selectedActionRule">
+            <label for="actionRulePreview"> {{ 'LOAD-AR-MODAL.PREVIEW' | translate }} </label>
+            <br>
+            <img id="actionRulePreview" [src]="getARPreview()" alt="Selected AR preview" style="max-height: 90%; max-width: 90%;" >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" [disabled]="!selectedActionRule" class="btn btn-danger" (click)="deleteActionRule()"> {{ 'LOAD-AR-MODAL.DELETE' | translate }} </button>
+  <button type="button" [disabled]="!selectedActionRule" class="btn btn-success" (click)="passBack()"> {{ 'LOAD-AR-MODAL.LOAD' | translate }} </button>
+</div>

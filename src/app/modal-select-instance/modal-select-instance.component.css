@@ -1,0 +1,109 @@
+/*
+ * Copyright © 2016 - 2024  Enterprise Engineering Lab /
+ * University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+ */
+
+@media (min-width: 544px) {
+    .text-value {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .text-value {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .text-value {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .text-value {
+        font-size: 1.3rem !important;
+    }
+}
+
+.relative {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.absolute-center {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text-center{
+    text-align: center;
+}
+
+.absolute-center.text-center > p {
+    font-size: 2.5rem !important;
+}
+
+.form-group label {
+    float: left;
+    text-align: left;
+    font-weight: normal;
+}
+
+.form-group label > b {
+    padding-right: 10px;
+}
+
+.form-group select, .form-group input{
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.form-control-underlined {
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-radius: 0;
+    padding-left: 0;
+}
+
+.form-control::placeholder {
+    font-size: 0.95rem;
+    color: #aaa;
+    font-style: italic;
+}
+
+.form-control.ng-select {
+    border: none;
+    padding: 0;
+}
+
+.link {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+    color: #20a8d8 !important;
+}
+
+.new-badge {
+    text-align: center;
+    width: 10px;
+    word-wrap:break-word
+}
+
+.btn.p-0:hover {
+    color: #3CB371;
+}

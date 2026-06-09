@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'FORM-MANAGEMENT.FORM-MANAGEMENT' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="name">{{ 'FORM-MANAGEMENT.LABEL-NAME' | translate }}</label>
+        <input class="form-control" id="name" [(ngModel)]="dynamicForm.name" type="text"
+               placeholder="{{ 'FORM-MANAGEMENT.PLACEHOLDER-NAME' | translate }}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="action">{{ 'FORM-MANAGEMENT.LABEL-ACTION' | translate }}</label>
+        <ng-select [disabled]="dynamicForm.id" id="action" [items]="userInputActions"
+                   placeholder="{{ 'FORM-MANAGEMENT.PLACEHOLDER-ACTION' | translate }}"
+                   bindLabel="name"
+                   bindValue="id"
+                   [(ngModel)]="dynamicForm.action_id">
+        </ng-select>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="!(this.dynamicForm.name && this.dynamicForm.action_id)">{{ 'FORM-MANAGEMENT.PROCEED-BUTTON' | translate }}</button>
+</div>

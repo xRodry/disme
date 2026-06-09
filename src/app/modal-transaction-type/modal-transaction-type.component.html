@@ -1,0 +1,207 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!transactionType.id" class="modal-title">{{ 'TRANSACTION-TYPES-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="transactionType.id" class="modal-title">{{ 'TRANSACTION-TYPES-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="t_name">{{ 'TRANSACTION-TYPES-MODAL.NAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="t_name" [(ngModel)]="transactionType.t_name" type="text"
+                       placeholder="{{ 'TRANSACTION-TYPES-MODAL.NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="rt_name">{{ 'TRANSACTION-TYPES-MODAL.RESULT-NAME-FIELD.TITLE' | translate }}
+                    <small><i>{{ 'PARAMETERIZATION.OPTIONAL-FIELD' | translate }}</i></small></label>
+                <input class="form-control" id="rt_name" [(ngModel)]="transactionType.rt_name" type="text"
+                       placeholder="{{ 'TRANSACTION-TYPES-MODAL.RESULT-NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="state">{{ 'TRANSACTION-TYPES-MODAL.SELECT-STATE.TITLE' | translate }}</label>
+                <ng-select id ="state"
+                           [items]="transactionTypeStates"
+                           placeholder="{{ 'TRANSACTION-TYPES-MODAL.SELECT-STATE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="transactionType.state">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="processType">{{ 'TRANSACTION-TYPES-MODAL.SELECT-PROCESS-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="processType"
+                           [items]="processTypes"
+                           (change)="updateQueryRestrictions()"
+                           placeholder="{{ 'TRANSACTION-TYPES-MODAL.SELECT-PROCESS-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="transactionType.process_type_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="role">{{ 'TRANSACTION-TYPES-MODAL.SELECT-EXECUTER-ROLE.TITLE' | translate }}</label>
+                <ng-select id ="role"
+                           [items]="roles"
+                           placeholder="{{ 'TRANSACTION-TYPES-MODAL.SELECT-EXECUTER-ROLE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="transactionType.executer_role_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!transactionType.init_proc && transactionType.process_type_id" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="processRestriction">{{ 'TRANSACTION-TYPES-MODAL.SELECT-RESTRICTION-QUERY.TITLE' | translate }}</label>
+                <ng-select id ="processRestriction"
+                           [items]="restrictionQueries"
+                           placeholder="{{ 'TRANSACTION-TYPES-MODAL.SELECT-RESTRICTION-QUERY.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="transactionType.restriction_query_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!(transactionType.external || transactionType.frontier)" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="type">{{ 'TRANSACTION-TYPES-MODAL.SELECT-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="type"
+                           [items]="transactionTypeTypes"
+                           placeholder="{{ 'TRANSACTION-TYPES-MODAL.SELECT-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="transactionType.type">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="transactionType.frontier" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="frontierType">{{ 'TRANSACTION-TYPES-MODAL.SELECT-FRONTIER-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="frontierType"
+                           [items]="transactionTypeFrontiers"
+                           placeholder="{{ 'TRANSACTION-TYPES-MODAL.SELECT-FRONTIER-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="transactionType.frontier_type">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!(transactionType.interm_task)" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input (change)="resetQueryInput()"  type="checkbox" class="custom-control-input" id="initProc" [(ngModel)]="transactionType.init_proc">
+                    <label class="custom-control-label" for="initProc">
+                        {{ 'TRANSACTION-TYPES-MODAL.CHECKBOX-INIT-PROC' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="endProc" [(ngModel)]="transactionType.end_proc">
+                    <label class="custom-control-label" for="endProc">
+                        {{ 'TRANSACTION-TYPES-MODAL.CHECKBOX-END-PROC' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!(transactionType.init_proc)" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="intermTask" [(ngModel)]="transactionType.interm_task">
+                    <label class="custom-control-label" for="intermTask">
+                        {{ 'TRANSACTION-TYPES-MODAL.CHECKBOX-INTERM-TASK' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!(transactionType.type != null || transactionType.frontier)" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="external" [(ngModel)]="transactionType.external">
+                    <label class="custom-control-label" for="external">
+                        {{ 'TRANSACTION-TYPES-MODAL.CHECKBOX-EXTERNAL' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!(transactionType.type != null || transactionType.external)" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="frontier" [(ngModel)]="transactionType.frontier">
+                    <label class="custom-control-label" for="frontier">
+                        {{ 'TRANSACTION-TYPES-MODAL.CHECKBOX-FRONTIER' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="ownUserAccessOnly" [(ngModel)]="transactionType.own_user_access_only">
+                    <label class="custom-control-label" for="ownUserAccessOnly">
+                        {{ 'TRANSACTION-TYPES-MODAL.CHECKBOX-OWN-USER-ACCESS-ONLY' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" disabled class="custom-control-input" id="autoActivate" [(ngModel)]="transactionType.auto_activate">
+                    <label class="custom-control-label" for="autoActivate">
+                        {{ 'TRANSACTION-TYPES-MODAL.CHECKBOX-AUTO-ACTIVATE' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="!(transactionType.t_name && transactionType.state &&
+     transactionType.process_type_id && transactionType.executer_role_id &&
+     (!transactionType.frontier || transactionType.frontier_type))">{{ 'TRANSACTION-TYPES-MODAL.BUTTON' | translate }}</button>
+</div>

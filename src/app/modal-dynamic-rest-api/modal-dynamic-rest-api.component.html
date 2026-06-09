@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        {{ 'DYNAMIC-SEARCH.STEP-3.RESULTS-AVAILABLE-RA' | translate }}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div *ngIf="showMessageRestApi; else buildEndpoint">
+                <div class="alert-success url-for-rest-api">
+                    <ins style="color:darkorange">
+                        {{ 'DYNAMIC-SEARCH.STEP-3.FINAL-URL' | translate }}
+                    </ins>
+                    <br>
+                    {{urlForRestApi}}
+                </div>
+            </div>
+
+            <ng-template #buildEndpoint>
+
+
+                <div class="label">Method/Route</div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">GET</span>
+                    </div>
+                    <textarea class="form-control" placeholder="{{urlForRestApi}}" style="overflow-y: hidden;" disabled></textarea>
+                </div>
+
+                <div class="form-group">
+
+                    <formio [form]="myForm" (change)="updateURL($event)"
+                            (submit)="onSubmit($event)"></formio>
+
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!showMessageRestApi">
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="verifyErrorsInsertURL()">
+            {{ 'DYNAMIC-SEARCH.STEP-3.BUTTON-SAVE-URL' | translate }}
+        </button>
+    </div>
+</div>

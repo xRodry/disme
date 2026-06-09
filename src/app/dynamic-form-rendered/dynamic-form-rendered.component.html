@@ -1,0 +1,21 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="card">
+  <div class="card-body">
+    <div class="card-header text-center">
+      {{ 'FORM-RENDER.HEADER-RENDERED-FORM' | translate }}
+    </div>
+    <div class="card-body">
+        <formio *ngIf="showForm" [form]="myForm" [options]="options" [renderOptions]="{language: languageAbbrv}" [submission]="formSubmission" (submit)="onSubmit($event)"></formio>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <button type="button" class="btn btn-success" (click)="goBack()"> {{ 'FORM-RENDER.BACK-BUTTON' | translate }} </button>
+    </div>
+  </div>
+</div>
+
+
+

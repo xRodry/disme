@@ -1,0 +1,91 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!waitingLink.id" class="modal-title">{{ 'WAITING-LINKS-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="waitingLink.id" class="modal-title">{{ 'WAITING-LINKS-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+
+    <label for="waitingTransactionStep">{{ 'WAITING-LINKS-MODAL.GROUP-WAITING-TRANSACTION-STEP' | translate }}</label>
+    <div id="waitingTransactionStep" class="row">
+        <div class="form-group col-sm-5">
+            <ng-select id ="waiting_t"
+                       [items]="transactionTypes"
+                       placeholder="{{ 'WAITING-LINKS-MODAL.SELECT-WAITING-TRANSACTION-TYPE.PLACEHOLDER' | translate }}"
+                       bindLabel="t_name"
+                       bindValue="id"
+                       [(ngModel)]="waitingLink.waiting_t">
+            </ng-select>
+        </div>
+
+        <div class="form-group col-sm-2">
+            <input class="form-control" type="text" value="{{ 'WAITING-LINKS-MODAL.IS' | translate }}" readonly>
+        </div>
+
+        <div class="form-group col-sm-5">
+            <ng-select id ="waiting_act"
+                       [items]="transactionStates"
+                       placeholder="{{ 'WAITING-LINKS-MODAL.SELECT-WAITING-TRANSACTION-STATE.PLACEHOLDER' | translate }}"
+                       bindLabel="name"
+                       bindValue="id"
+                       [(ngModel)]="waitingLink.waiting_act">
+            </ng-select>
+        </div>
+    </div>
+
+    <label for="waitedTransactionStep">{{ 'WAITING-LINKS-MODAL.GROUP-WAITED-TRANSACTION-STEP' | translate }}</label>
+    <div id="waitedTransactionStep" class="row">
+            <div class="form-group col-sm-5">
+                <ng-select id ="waited_t"
+                           [items]="transactionTypes"
+                           placeholder="{{ 'WAITING-LINKS-MODAL.SELECT-WAITED-TRANSACTION-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="t_name"
+                           bindValue="id"
+                           [(ngModel)]="waitingLink.waited_t">
+                </ng-select>
+            </div>
+
+        <div class="form-group col-sm-2">
+            <input class="form-control" type="text" value="{{ 'WAITING-LINKS-MODAL.HAS-BEEN' | translate }}" readonly>
+        </div>
+
+        <div class="form-group col-sm-5">
+            <ng-select id ="waited_act"
+                       [items]="transactionStates"
+                       placeholder="{{ 'WAITING-LINKS-MODAL.SELECT-WAITED-TRANSACTION-STATE.PLACEHOLDER' | translate }}"
+                       bindLabel="name"
+                       bindValue="id"
+                       [(ngModel)]="waitingLink.waited_act">
+            </ng-select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="min">{{ 'WAITING-LINKS-MODAL.MIN-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="min" [(ngModel)]="waitingLink.min" type="number" min="0" step="1"
+                       placeholder="{{ 'WAITING-LINKS-MODAL.MIN-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="max">{{ 'WAITING-LINKS-MODAL.MAX-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="max" [(ngModel)]="waitingLink.max" type="number" [min]="waitingLink.min" step="1"
+                       placeholder="{{ 'WAITING-LINKS-MODAL.MIN-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="!(waitingLink.waited_t && waitingLink.waited_act &&
+     waitingLink.waiting_t && waitingLink.waiting_act && waitingLink.min && waitingLink.max)">{{ 'WAITING-LINKS-MODAL.BUTTON' | translate }}</button>
+</div>

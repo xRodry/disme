@@ -1,0 +1,128 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!user.id" class="modal-title">{{ 'USERS-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="user.id" class="modal-title">{{ 'USERS-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'USERS-MODAL.NAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="user.name" type="text"
+                       placeholder="{{ 'USERS-MODAL.NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="username">{{ 'USERS-MODAL.USERNAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="username" [(ngModel)]="user.user_name" type="text"
+                       placeholder="{{ 'USERS-MODAL.USERNAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="language">{{ 'USERS-MODAL.SELECT-LANGUAGE.TITLE' | translate }}</label>
+                <ng-select id ="language"
+                           [items]="languages"
+                           placeholder="{{ 'USERS-MODAL.SELECT-LANGUAGE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="user.language_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="nif">{{ 'USERS-MODAL.NIF-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="nif" [(ngModel)]="user.nif" type="text"
+                       placeholder="{{ 'USERS-MODAL.NIF-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="email">{{ 'USERS-MODAL.EMAIL-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="email" [(ngModel)]="user.email" type="email"
+                       placeholder="{{ 'USERS-MODAL.EMAIL-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div *ngIf="user.id" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="changePassword" [(ngModel)]="changePassword"
+                           (change)="resetPasswordOnFalseCheckbox()">
+                    <label class="custom-control-label" for="changePassword">
+                        {{ 'USERS-MODAL.CHECKBOX-CHANGE-PASSWORD' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!user.id || changePassword" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="password">{{ 'USERS-MODAL.PASSWORD-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="password" [(ngModel)]="user.password" type="password"
+                       placeholder="{{ 'USERS-MODAL.PASSWORD-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="confirmPassword">{{ 'USERS-MODAL.CONFIRM-PASSWORD-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="confirmPassword" [(ngModel)]="user.confirm_password" type="password"
+                       placeholder="{{ 'USERS-MODAL.CONFIRM-PASSWORD-FIELD.PLACEHOLDER' | translate }}">
+                <div *ngIf="user.confirm_password && user.confirm_password !== user.password" class="alert text-danger">
+                    {{ 'USERS-MODAL.PASSWORDS-DONT-MATCH' | translate }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="userSpecification" [(ngModel)]="userDetailsSpecification">
+                    <label class="custom-control-label" for="userSpecification">
+                        {{ 'USERS-MODAL.CHECKBOX-USER-DETAILS-SPECIFICATION' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="userDetailsSpecification" class="col-sm-12">
+            <div class="form-group">
+                <label for="language">{{ 'USERS-MODAL.SELECT-USER-DETAILS-ENT-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="userDetailsEntTypes"
+                           [items]="userDetailsEntTypes"
+                           placeholder="{{ 'USERS-MODAL.SELECT-USER-DETAILS-ENT-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="user.ent_type_id"
+                           (change)="getFormForUserDetails()">
+                </ng-select>
+            </div>
+            <div *ngIf="user.ent_type_id" class="form-group">
+                <formio *ngIf="showForm" [form]="formUserDetails" [options]="formUserDetailsOptions" [renderOptions]="{language: userLanguage}" [submission]="formUserDetailsSubmission"></formio>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="disableSaveButton()">
+        {{ 'USERS-MODAL.BUTTON' | translate }}</button>
+</div>

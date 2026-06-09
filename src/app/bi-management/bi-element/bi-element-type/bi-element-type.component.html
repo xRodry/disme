@@ -1,0 +1,78 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.CONTROL-PANEL' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" routerLink="/biManagement/biElement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biElementCollection">{{ 'BI-MANAGEMENT.BI-DASHBOARD.COLLECTION' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biKnowage">{{ 'BI-MANAGEMENT.BI-DASHBOARD.KNOWAGE-ELEMENTS' | translate }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/biManagement/biEngines">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-TOOLS' | translate }}</a>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> {{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.TABLE.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="openModal()">
+                    {{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.CREATE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{biElementTypes.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+
+            <div class="card-body">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.TABLE.NAME' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.TABLE.SLUG' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.TABLE.DESCRIPTION' | translate }}</th>
+                        <th>{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.TABLE.ACTIONS' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="biElementTypes?.length != 0">
+                    <tr *ngFor="let biElementType of biElementTypes">
+                        <td>{{ biElementType.id }}</td>
+                        <td>{{ biElementType.name }}</td>
+                        <td>{{ biElementType.slug }}</td>
+                        <td>{{ biElementType.description }}</td>
+                        <td>
+                            <li class="list-inline-item">
+                                <button class="btn btn-warning btn-sm rounded-0" type="button" (click)="openModal(biElementType)" data-toggle="tooltip"
+                                        data-placement="top" title="{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.TABLE.EDIT' | translate }}"><i class="fa fa-edit"></i>
+                                </button>
+                            </li>
+                            <li class="list-inline-item">
+                                <button class="btn btn-danger btn-sm rounded-0" type="button" (click)="deleteBiElementType(biElementType.id)" data-toggle="tooltip"
+                                        data-placement="top" title="{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.TABLE.DELETE' | translate }}"><i class="fa fa-trash"></i>
+                                </button>
+                            </li>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody *ngIf="biElementTypes?.length == 0">
+                    <tr>
+                        <td colspan="5" class="no-data-available">{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE.LOADING' | translate }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-->
+</div>

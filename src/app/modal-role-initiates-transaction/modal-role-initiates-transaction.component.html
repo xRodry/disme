@@ -1,0 +1,61 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!roleInitiatesTransaction.id" class="modal-title">{{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="roleInitiatesTransaction.id" class="modal-title">{{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="transactionType">{{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.SELECT-TRANSACTION-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="transactionType"
+                           [disabled]="roleInitiatesTransaction.created_at"
+                           [items]="transactionTypes"
+                           (change)="getRolesTransactionDoesntHave()"
+                           placeholder="{{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.SELECT-TRANSACTION-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="t_name"
+                           bindValue="id"
+                           [(ngModel)]="roleInitiatesTransaction.transaction_type_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="role">{{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.SELECT-ROLE.TITLE' | translate }}</label>
+                <ng-select id ="role"
+                           [disabled]="!roleInitiatesTransaction.transaction_type_id"
+                           [items]="rolesDontInitiateTransaction"
+                           placeholder="{{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.SELECT-ROLE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="roleInitiatesTransaction.role_id">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="ownUserAccessOnly" [(ngModel)]="roleInitiatesTransaction.own_user_access_only">
+                    <label class="custom-control-label" for="ownUserAccessOnly">
+                        {{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.CHECKBOX-OWN-USER-ACCESS-ONLY' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="!(roleInitiatesTransaction.role_id &&
+     roleInitiatesTransaction.transaction_type_id)">{{ 'ROLE-INITIATES-TRANSACTIONS-MODAL.BUTTON' | translate }}</button>
+</div>

@@ -1,0 +1,292 @@
+/*
+ * Copyright © 2016 - 2024  Enterprise Engineering Lab /
+ * University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+ */
+
+.trash-button {
+    background-color: transparent;
+    border-color: transparent;
+    font-size: 16px;
+    color: red;
+}
+
+.highlighted-parts-of-the-query-name {
+    color: #54B4D3;
+    font-weight: bold;
+}
+
+.add-parameter {
+    font-size: 18px;
+    color: lightseagreen;
+    background-color: white;
+}
+
+.url-for-rest-api {
+    margin-left: 10px;
+    margin-right: 15px;
+    padding: 10px 10px 10px 10px;
+}
+
+.parameters-col-2-3 {
+    width: 40%;
+}
+
+.parameters-col-4 {
+    width: 8%;
+}
+
+.alert-custom {
+    background-color: #f5f6fa;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+.col-query-builder {
+    margin-left: 15px;
+    width: 89%;
+}
+
+.parameterColumn {
+    justify-content: left;
+    alignment: left;
+    padding-right: 20px;
+}
+
+/*.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #e8f4fc;
+}*/
+
+.toggle-wrapper {
+    display: block;
+    width: 45px;
+    height: 25px;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggle-wrapper input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-wrapper input[type="checkbox"]:checked + .toggle-slider {
+    background-color: #44cc66;
+}
+
+.toggle-wrapper .toggle-slider {
+    background-color: #ccc;
+    position: absolute;
+    border-radius: 100px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+}
+
+.toggle-wrapper .toggle-knob {
+    position: absolute;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+}
+
+
+.toggle-wrapper {
+    width: 54px;
+    height: 30px;
+}
+
+.toggle-wrapper input[type="checkbox"]:checked + .toggle-slider .toggle-knob:before {
+    top: -100%;
+}
+
+.toggle-wrapper input[type="checkbox"]:checked + .toggle-slider .toggle-knob:after {
+    top: 3px;
+}
+
+.toggle-wrapper .toggle-knob {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.toggle-wrapper .toggle-knob:before {
+    content: 'No';
+    position: absolute;
+    width: calc(30px - 6px);
+    height: calc(30px - 6px);
+    border-radius: 50%;
+    left: 3px;
+    top: 3px;
+    background-color: #fff;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 75%;
+    font-weight: 500;
+}
+
+.toggle-wrapper .toggle-knob:after {
+    content: 'Yes';
+    position: absolute;
+    width: calc(30px - 6px);
+    height: calc(30px - 6px);
+    border-radius: 50%;
+    right: 3px;
+    top: -100%;
+    background-color: #fff;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 75%;
+    font-weight: 500;
+}
+
+.required-field::after {
+    content: "*";
+    color: red;
+}
+
+.Trash::before {
+    content: ' \f1f8';
+}
+
+.radio_btn {
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+.entities li {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-color: #EEE;
+    margin: .5em;
+    padding: .3em 0;
+    height: 1.6em;
+    border-radius: 4px;
+}
+
+.entities li:hover {
+    color: #607D8B;
+    background-color: #DDD;
+    left: .1em;
+}
+
+.entities li.selected {
+    background-color: #CFD8DC;
+    color: white;
+}
+
+.entities li.selected:hover {
+    background-color: #BBD8DC;
+    color: white;
+}
+
+.entities .badge {
+    display: inline-block;
+    font-size: small;
+    color: white;
+    padding: 0.8em 0.7em 0 0.7em;
+    background-color: #405061;
+    line-height: 1em;
+    position: relative;
+    left: -1px;
+    top: -4px;
+    height: 1.8em;
+    margin-right: .8em;
+    border-radius: 4px 0 0 4px;
+}
+
+.checkLabel {
+    float: right;
+    padding-left: 5px;
+}
+
+.checkbox {
+    padding: 3px;
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.btn {
+    margin: 10px;
+    width: 200px;
+}
+
+.qb {
+    padding: 10px;
+    float: left;
+    width: 99%;
+}
+
+label {
+    display: inline-block;
+}
+
+.row {
+    margin-top: 10px;
+}
+
+.top {
+    margin-top: 10px;
+}
+
+.col-md-4 {
+    width: 450px;
+}
+
+table.colorfulTable {
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.cell {
+    margin: 0;
+    border: 2px solid rgb(50, 50, 75);
+    padding: 1px;
+    text-align: center;
+    border-collapse: inherit;
+    color: black;
+}
+
+th.cell {
+    background-color: #060627;
+    color: white;
+}
+
+tr.row {
+    border-collapse: inherit;
+    display: table-row;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-sizing: inherit;
+    width: 100%;
+}
+
+tr.row:nth-child(odd), td.odd {
+    background-color: #99d5fd;
+}
+
+tr.row:nth-child(even), td.even {
+    background-color: #b0aeff;
+}

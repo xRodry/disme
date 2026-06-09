@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'MODAL-FORM-DASHBOARD-HEADER' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">X</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <formio *ngIf="showForm" [form]="myForm" (change)="applyOverflowHiddenToSelects()" [options]="options" [renderOptions]="{language: languageAbbrv}" [submission]="formSubmission" (submit)="onSubmit($event)"></formio>
+      </div>
+    </div>
+  </div>
+</div>

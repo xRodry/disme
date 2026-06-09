@@ -1,0 +1,2371 @@
+{
+    "SIDE-BAR": {
+        "DASHBOARD": "Dashboard",
+        "DASHBOARD-NEW": "Novo",
+        "COMPONENTS": "Componentes",
+        "DYNAMIC-SEARCH": "Pesquisa Dinâmica",
+        "AR-MANAGEMENT": "Gestão de Regras de Ação",
+        "TEMPLATES-MANAGEMENT": "Gestão de Templates",
+        "FORMS-MANAGEMENT": "Gestão de Formulários",
+        "DELEGATIONS-MANAGEMENT": "Gestão de Delegações",
+        "PARAMETERIZATION": "Parametrização",
+        "BI-MANAGEMENT": "Gestão de BI",
+        "Logout": "Logout"
+    },
+
+    "DASHBOARD": {
+        "START-PROCESS": "Iniciar Tarefa para Novo Processo",
+        "PROCESS-STARTED": {
+            "SUCCESS": "Processo criado com sucesso.",
+            "ERROR": "Erro ao criar processo. Por favor, tente novamente."
+        },
+        "TASK-INITIATED": {
+            "SUCCESS": "Tarefa iniciada com sucesso.",
+            "ERROR": "Erro ao iniciar a tarefa. Por favor, tente novamente."
+        },
+        "ACK-TASK-ERROR": "Erro a reconhecer a tarefa. Por favor, tente novamente.",
+        "TASKS": {
+            "TITLE": "Tarefas",
+            "PENDING": "Pendentes",
+            "PERFORMED": "Executadas",
+            "DELEGATED": "Delegadas a Outros"
+        },
+        "PENDING-TASKS": "Executar Tarefa Pendente de um Processo Existente",
+        "PENDING-TASKS-DELEGATED": "Executar Tarefa Delegada Pendente de um Processo Existente",
+        "INITIATE-TASKS": "Iniciar Tarefa em Processo Já Existente",
+        "NOTHING-FOUND": "Oops! Não encontramos nada...",
+        "HAS-BEEN": "foi",
+        "TABLE": {
+            "DATE-CREATED": "Data de Criação",
+            "DETAILS": "Detalhes",
+            "PROCESS": "Processo",
+            "TASK": "Tarefa",
+            "STATE": "Estado"
+        },
+        "FILTERS": {
+            "SEARCH": "Procurar",
+            "FUNCTION": {
+                "TITLE": "Função",
+                "PLACEHOLDER": "Escolha uma função"
+            },
+            "PROCESS": {
+                "TITLE": "Processo",
+                "PLACEHOLDER": "Escolha um processo"
+            },
+            "TASK": {
+                "TITLE": "Tarefa",
+                "PLACEHOLDER": "Escolha uma tarefa"
+            }
+        }
+    },
+
+    "DASHBOARD-EXECUTER": {
+        "PERFORMED": "Regra de ação completamente realizada.",
+        "ALREADY-HAD-EXECUTOR": "Outro utilizador já foi estabelecido como o executor desta tarefa.",
+        "CAUSAL-LINK": {
+            "CAN-EXECUTE": "Esta tarefa está bloqueada pela tarefa '{{transType}}' no estado '{{transState}}' onde é um executor/iniciador. Pode continuar quando esta estiver concluída.",
+            "WAIT": "Esta tarefa está bloqueada por outra. Pode continuar quando a tarefa '{{transType}}' com estado '{{transState}}' estiver concluída.",
+            "UNKNOWN": "Estado da ação 'causal link' desconhecido."
+        },
+        "AUTO-UPDATE-ENTITY-SUCCESS": "Entidade automaticamente atualizada com sucesso.",
+        "AUTO-UPDATE-ENTITY-ERROR": "Ocorreu um erro ao atualizar automaticamente a entidade. Por favor, tente outra vez.",
+        "ERROR": "Ocorreu um erro. Por favor, tente outra vez."
+    },
+
+    "MODAL-SELECT-INSTANCE": {
+        "TITLE-BEGINNING": "Selecione uma instância de",
+        "TITLE-CONTINUING-PROCESS": "para iniciar a tarefa",
+        "TITLE-CONTINUING-ENTITY": "para editar",
+        "TABLE": {
+            "DATE-CREATED": "Data de Criação",
+            "INTERNAL-ID": "ID Interno",
+            "DATE-UPDATED": "Data de Atualização"
+        },
+        "SEARCH-BOX": "Procurar na tabela...",
+        "ERROR-LOADING-PROCESS": "Erro a carregar os processos. Por favor, tente novamente.",
+        "ERROR-LOADING-ENTITY": "Erro a carregar as entidades. Por favor, tente novamente."
+    },
+
+    "MODAL-USER-EVALUATED-EXPRESSION": {
+        "TITLE": "Por favor avalie esta expressão.",
+        "YES-BUTTON": "Sim",
+        "NO-BUTTON": "Não"
+    },
+
+    "PROCESS-DETAILS-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Detalhe de Processo",
+            "ERROR": "Ocorreu um erro ao criar o Detalhe de Processo. Por favor, tente novamente.",
+            "SUCCESS": "Detalhe de Processo criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Detalhe de Processo",
+            "ERROR": "Ocorreu um erro ao atualizar o Detalhe de Processo. Por favor, tente novamente.",
+            "SUCCESS": "Detalhe de Processo atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar este Detalhe de Processo?",
+            "SUCCESS": "Detalhe de Processo eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Detalhe de Processo. Por favor, tente novamente mais tarde."
+        },
+        "SELECT-PROCESS": {
+            "TITLE": "Processo",
+            "PLACEHOLDER": "Escolha um Tipo de Processo"
+        },
+        "SELECT-PROPERTY": {
+            "TITLE": "Propriedade",
+            "PLACEHOLDER": "Escolha uma Propriedade"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "PROCESS-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Tipo de Processo",
+            "ERROR": "Ocorreu um erro ao criar o Tipo de Processo. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Processo criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Tipo de Processo",
+            "ERROR": "Ocorreu um erro ao atualizar o Tipo de Processo. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Processo atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar este Tipo de Processo?",
+            "SUCCESS": "Tipo de Processo eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Tipo de Processo. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira o nome do tipo de processo"
+        },
+        "SELECT-STATE": {
+            "TITLE": "Estado",
+            "PLACEHOLDER": "Escolha um estado",
+            "OPTIONS": {
+                "ACTIVE": "Ativo",
+                "INACTIVE": "Inativo"
+            }
+        },
+        "COLOR-PICKER": {
+            "TITLE": "Cor",
+            "PLACEHOLDER": "Insira/Escolha uma cor"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "BLOCKLY-PAGE": {
+        "TITLE": "Gestão de Regras de Ação",
+        "ACTIONS": "Ações Possíveis",
+        "SHOW-CODE": "Mostrar Código",
+        "SHOW-XML-BLOCKLY": "Mostrar XML Blockly",
+        "SAVE-TO-DB": "Guardar Regra Ação",
+        "LOAD-AR": "Carregar Regra Ação",
+        "ACTION-RULES-MANAGER": "Gestor de Regras de Ação",
+        "SAVE-DRAFT": "Guardar Rascunho",
+        "UPDATE-DRAFT": "Atualizar Rascunho",
+        "LOAD-DRAFT": "Carregar Rascunho",
+        "NEW": "Nova Regra de Ação",
+        "LOSE-PROGRESS-WARNING": "Perderá todo o progresso. Tem a certeza de que pretende limpar o espaço de trabalho?"
+    },
+
+    "LOAD-AR-MODAL": {
+        "TITLE": "Carregar Regra de Ação",
+        "TITLE-DRAFT": "Carregar Rascunho de Regra de Ação",
+        "MAIN-TEXT": "Selecione abaixo a Regra de Ação que deseja carregar na Workspace do Blockly!",
+        "MAIN-TEXT-DRAFT": "Selecione abaixo o Rascunho de Regra de Ação que deseja carregar na Workspace do Blockly!",
+        "DEFAULT-OPTION": "Selecione uma opção...",
+        "PREVIEW": "Pré-visualização:",
+        "LOAD": "Carregar",
+        "DELETE": "Apagar",
+        "TRANS-TYPE": "Tipo da Transação",
+        "TRANS-STATE": "Estado da Transação"
+    },
+
+    "ACTION-RULE-DRAFT-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Rascunho de Regra de Ação",
+            "ERROR": "Ocorreu um erro ao criar o Rascunho de Regra de Ação. Por favor, tente novamente.",
+            "SUCCESS": "Rascunho de Regra de Ação criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Rascunho de Regra de Ação",
+            "ERROR": "Ocorreu um erro ao atualizar o Rascunho de Regra de Ação. Por favor, tente novamente.",
+            "SUCCESS": "Rascunho de Regra de Ação atualizado com sucesso!"
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "PREVIEW-FIELD": "Pré-visualização:",
+        "BUTTON": "Save"
+    },
+
+    "BLOCKLY-ACTIONS-NOTIFICATIONS": {
+        "SUCCESS": {
+            "LOAD-XML": "Regra Ação carregada com sucesso.",
+            "SAVE-AR": "Regra Ação guardada com sucesso.",
+            "DELETE-AR": "Regra Ação apagada com sucesso.",
+            "DELETE-AR-DRAFT": "Rascunho de Regra Ação apagado com sucesso.",
+            "LOAD-AR": "Regras Ação existentes carregadas com sucesso.",
+            "LOAD-AR-DRAFT": "Rascunhos de Regras Ação existentes carregados com sucesso.",
+            "LOAD-TEMPLATE-IN-BLOCK": "Informação do template atualizada com sucesso no bloco."
+        },
+        "ERROR": {
+            "LOAD-XML": "Ocorreu uma falha ao carregar a Regra Ação.",
+            "SAVE-AR": "Ocorreu uma falha ao guardar a Regra Ação.",
+            "DELETE-AR": "Ocorreu uma falha ao apagar a Regra Ação.",
+            "DELETE-AR-DRAFT": "Ocorreu uma falha ao apagar o Rascunho de Regra Ação.",
+            "LOAD-AR": "Ocorreu uma falha ao carregar as Regras de Ação",
+            "LOAD-AR-DRAFT": "Ocorreu uma falha ao carregar os Rascunhos de Regras de Ação"
+        },
+        "ASK-DELETE": "Tem a certeza que pretende apagar esta Regra de Ação?",
+        "ASK-DELETE-DRAFT": "Tem a certeza que pretende apagar este Rascunho de Regra de Ação?"
+    },
+
+    "BLOCKLY-CATEGORY": {
+        "GENERAL": "Geral",
+        "EVALUATE": "Avaliação",
+        "COMPUTE": "Computação",
+        "CONTEXT-VARIABLES": "Variáveis de Contexto",
+        "SCHEDULING-SLOTS": "Criação de Slots de Horário",
+        "USER-INPUT": "Criar Instância",
+        "PROPERTIES": "Propriedades",
+        "EXTERNAL-CALL": "Chamada Externa",
+        "LOCAL-ENDPOINT-CALL": "Chamada Endpoint Local"
+    },
+
+    "BLOCKLY-BLOCKS": {
+        "VALUE-TYPES": {
+            "TEXT": "texto",
+            "INT": "inteiro",
+            "DOUBLE": "double",
+            "ENUM": "enum",
+            "DATE": "data",
+            "TIME": "tempo",
+            "BOOL": "sim/não",
+            "FILE": "ficheiro",
+            "ENTITY": "entidade",
+            "REF": "ref"
+        },
+        "MULTIPLE-VALUES": "valores múltiplos",
+        "WHEN-IS-DO": {
+            "WHEN": "quando",
+            "ACT": "é",
+            "FACT": "foi",
+            "EXECUTION-TYPE": {
+                "TITLE": "tipo de execução",
+                "NATIVE-EXECUTION": "execução nativa",
+                "LOCAL-ENDPOINT-CALL": {
+                    "TITLE": "chamadas a endpoint local",
+                    "ENDPOINT": "endpoint local",
+                    "FINAL-ENDPOINT": "endpoint resultante",
+                    "FINAL-ENDPOINT-PLACEHOLDER": "endpoint resultante",
+                    "ENDPOINT-PLACEHOLDER": "Insira a extensão do endpoint local aqui",
+                    "ENDPOINT-PARAMETER": "parâmetro(s) do endpoint",
+                    "REQUEST-BODY": "corpo do pedido",
+                    "RESPONSE": "resposta"
+                }
+            },
+            "ACTIONS": "ação(ões)"
+        },
+        "ACTION": {
+            "TITLE": "ação",
+            "CHECKBOX-BLOCKCHAIN-EXECUTION": "execução na blockchain",
+            "DROPDOWN": {
+                "NONE": "Nenhum",
+                "ASSIGN-EXPRESSION": {
+                    "TITLE": "atribuir expressão"
+                },
+                "READ-VALUE": {
+                    "TITLE": "ler valor"
+                },
+                "PRODUCE-DOCUMENT": {
+                    "TITLE": "produzir documento"
+                },
+                "USER-OUTPUT": {
+                    "TITLE": "saída para utilizador",
+                    "DROPDOWN": {
+                        "NEW": "criar novo texto",
+                        "EXISTING": "texto"
+                    },
+                    "TEMPLATE-NAME": "nome",
+                    "DEFAULT-TEMPLATE-NAME-TEXT": "insira o nome do template aqui",
+                    "TEXT-NOT-EDITABLE": "Texto Personalizado",
+                    "TYPE": {
+                        "TITLE": "tipo",
+                        "MODAL": {
+                            "TITLE": "janela",
+                            "HEADER": "cabeçalho",
+                            "DEFAULT-HEADER": "informação",
+                            "BUTTON": "botão",
+                            "DEFAULT-BUTTON": "continuar"
+                        },
+                        "TOAST": {
+                            "TITLE": "notificação",
+                            "CLASS-DROPDOWN": {
+                                "SUCCESS": "sucesso",
+                                "INFORMATION": "informação",
+                                "WARNING": "aviso",
+                                "ERROR": "erro",
+                                "CUSTOM": "personalizada"
+                            },
+                            "CLASS": "classe",
+                            "COLOUR": "cor",
+                            "CUSTOM-TITLE": "título",
+                            "DEFAULT-CUSTOM-TITLE": "notificação",
+                            "CUSTOM-COLOURS": {
+                                "DARK-PINK": "rosa escuro",
+                                "PINK": "rosa",
+                                "LIGHT-PINK": "rosa claro",
+                                "PURPLE": "roxo",
+                                "LIGHT-PURPLE": "roxo escuro",
+                                "LIGHT-ORANGE": "laranja claro",
+                                "DARK-BLUE": "azul escuro",
+                                "DARK-RED": "vermelho escuro",
+                                "GREY": "cinzento"
+                            }
+                        },
+                        "DOC": {
+                            "TITLE": "documento"
+                        }
+                    },
+                    "DEFAULT-TEXT": "insira o novo texto aqui",
+                    "TEMPLATE-EDITOR-TEXT": "Abrir Editor de Templates"
+                },
+                "EXTERNAL-API-CALL": {
+                    "TITLE": "chamada a api externa",
+                    "EXTERNAL-ENDPOINT": {
+                        "TITLE": "endpoint externo",
+                        "PLACEHOLDER": "Insira o URL do endpoint externo aqui",
+                        "TYPE": {
+                            "POST": "criar",
+                            "GET": "ler",
+                            "PUT": "atualizar",
+                            "DELETE": "apagar"
+                        }
+                    },
+                    "PARAMETER": "parâmetro(s)",
+                    "ACTION": "ação(ões) interna(s)"
+                },
+                "CAUSAL-LINK": {
+                    "TITLE": "ligação causal",
+                    "MUST-BE": "tem de ser",
+                    "MIN": "min",
+                    "MAX": "max",
+                    "CANCEL-PROCESS": "cancela processo",
+                    "CONTINUE-SAME-USER": "continua se for mesmo utilizador"
+                },
+                "USER-INPUT": {
+                    "TITLE-MULTIPLE-ENT-TYPES": "criar instância - várias entidades",
+                    "TITLE-SINGLE-ENT-TYPE": "criar instância - uma entidade",
+                    "ACTION-NAME": "nome ação",
+                    "ACTION-NAME-DEFAULT-TEXT": "insira o nome da ação aqui",
+                    "PROPERTIES": "facto(s) de formulário",
+                    "TERM-PROPERTIES": "facto(s) derivado(s)"
+                },
+                "EDIT-ENTITY-INSTANCE": {
+                    "TITLE": "atualização de instância",
+                    "ENTITY-DETAILS": "detalhes da entidade",
+                    "ENTITY-FILTERS": "filtro da entidade",
+                    "ACTION-NAME": "nome ação",
+                    "ACTION-NAME-DEFAULT-TEXT": "insira o nome da ação aqui",
+                    "PROPERTIES": "facto(s) de formulário"
+                },
+                "CREATE-ENTITY": {
+                    "TITLE": "criar entidade",
+                    "ENTITY-TYPE": "tipo de entidade",
+                    "PROPERTY": "propriedade(s)"
+                },
+                "LOCAL_ENDPOINT_CALL": {
+                    "USER-INPUT": {
+                        "TITLE": "criação de registo"
+                    },
+                    "RECORD": {
+                        "SOFT-DELETED-OBJECTS": "consultar objetos eliminados"
+                    },
+                    "QUERY-RECORDS" : {
+                        "TITLE": "consultar registos",
+                        "VARIABLE-NAME": "insira o nome da variável aqui",
+                        "VARIABLE-NAME-LABEL": "variável"
+                    },
+                    "UPDATE-RECORD": {
+                        "TITLE": "atualizar recurso"
+                    },
+                    "DELETE-RECORD": {
+                        "TITLE": "apagar recurso"
+                    }
+                },
+                "CREATE-SCHEDULE-SLOTS": {
+                    "SCHEDULING-RECORD": "registo de programação de horários",
+                    "SLOT-RECORDS": "registos de slots",
+                    "TITLE": "criar slots de horários"
+                }
+            }
+        },
+        "SCHEDULE" : {
+            "TITLE": "horário",
+            "ENTITY-TYPE": "tipo de entidade",
+            "RESPONSIBLE-USER": "utilizador responsável",
+            "START-DATE": "data de início",
+            "START-TIME": "hora de início",
+            "END-DATE": "data de fim",
+            "END-TIME": "hora de fim",
+            "WEEKDAYS": "dia(s) da semana",
+            "DURATION": "duração",
+            "SLOT-COUNT": "contagem de slots"
+        },
+        "SCHEDULE-SLOT": {
+            "TITLE": "slot de horário",
+            "ENTITY-TYPE": "tipo de entidade",
+            "SCHEDULE-REF": "referência a horário",
+            "SLOT-NUMBER": "número de slot",
+            "DAY": "dia",
+            "START-TIME": "hora de início",
+            "END-TIME": "hora de fim",
+            "ADDITIONAL-PROPERTIES": "facto(s) adicional(ais)"
+        },
+        "SCHEDULING-PROPERTY": {
+            "TITLE": "propriedade de horário"
+        },
+        "TERM-PROPERTY-OUTPUT": {
+            "TITLE": "facto derivado"
+        },
+        "SCHEDULING-ADDITIONAL-PROPERTY": {
+            "TITLE": "atribuir facto adicional"
+        },
+        "QUERY-LEDGER-FILTER": {
+            "TITLE": "filtro de query"
+        },
+        "ENTITY-DETAILS": {
+            "TITLE": "detalhes da entidade",
+            "TOOLTIP": "escolha as propriedades a mostrar como detalhes da entidade no modal de seleção da instância da entidade."
+        },
+        "ENTITY-DETAILS-MUTATOR": {
+            "NO-PROPERTIES": "Sem propriedades disponíveis.",
+            "NO-PROPERTIES-TOOLTIP": "Selecione um tipo de entidade válido no bloco 'ação'."
+        },
+        "ENTITY-FILTERS": {
+            "TITLE": "filtros da entidade",
+            "TOOLTIP": "opções caso queira filtrar as entidades passíveis de serem editadas."
+        },
+        "ENTITY-FILTERS-MUTATOR": {
+            "INSTANCES-FROM-QUERY": "obter instâncias a partir de query",
+            "SPECIFIC-INSTANCE": "obter uma instância específica"
+        },
+        "ENT-TYPE-FORM": {
+            "TITLE": "inserção múltipla de tipo de entidade",
+            "PROPERTIES": "propriedade(s)",
+            "PROPERTY-PART-OF-TOOLTIP": "Propriedade automaticamente preenchida pelo sistema."
+        },
+        "IF_THEN": {
+            "IF": "se",
+            "THEN": "então",
+            "ELSE": "senão"
+        },
+        "WHILE": {
+            "WHILE": "enquanto",
+            "DO": "faz"
+        },
+        "FOR-EACH": {
+            "TITLE": "para cada",
+            "ITEM": "item em",
+            "DO": "faz"
+        },
+        "CONDITION": {
+            "TITLE": "condição",
+            "TERMS": "termo(s)",
+            "DROPDOWN": {
+                "IS-TRUE": "É verdade",
+                "NOT": "Negação",
+                "AND": "E",
+                "OR": "Ou"
+            }
+        },
+        "COMP-EVALUATED-EXPRESSION": {
+            "TITLE": "expressão avaliada pelo computador",
+            "OPERATOR": "operador"
+        },
+        "PROPERTY-REF-FILTER": {
+            "TITLE": "onde"
+        },
+        "USER-EVALUATED-EXPRESSION": {
+            "TITLE": "expressão avaliada pelo utilizador",
+            "EXPRESSION-NAME": "nome",
+            "EXPRESSION-TEXT": "texto",
+            "DROPDOWN": {
+                "NEW": "criar novo",
+                "EXISTING": "usar existente"
+            },
+            "DEFAULT-NAME": "insira o nome da expressão aqui",
+            "DEFAULT-TEXT": "insira o texto da expressão aqui",
+            "OPEN-EXPRESSION-EDITOR": "Abrir Editor de Expressões",
+            "TEXT-NOT-EDITABLE": "Texto Personalizado"
+        },
+        "COMPUTE-EXPRESSION": {
+            "TITLE": "expressão computação",
+            "TERMS": "termo(s)",
+            "RESULT-IN": {
+                "TITLE": "resultado em",
+                "SECONDS": "segundos",
+                "MINUTES": "minutos",
+                "HOURS": "horas",
+                "DAYS": "dias",
+                "WEEKS": "semanas",
+                "MONTHS": "meses",
+                "YEARS": "anos"
+            },
+            "AVERAGE-OPERATOR": "média"
+        },
+        "QUERY": {
+            "TITLE": "query",
+            "PARAMETERS-LABEL": "parâmetros da query",
+            "DROPDOWN-DEFAULT": "Nenhum"
+        },
+        "VALUE": {
+            "TITLE": "valor",
+            "DEFAULT-VALUE": "Insira valor aqui",
+            "VALUE-TYPE-DROPDOWN": {
+                "TITLE": "tipo valor",
+                "STRING": "String",
+                "INTEGER-NUMBER": "Número\u00A0Inteiro",
+                "REAL-NUMBER": "Número\u00A0Real",
+                "BOOLEAN": "Booleano",
+                "ENUM": "Enumerado",
+                "DATE": "Data",
+                "TIME": "Tempo"
+            }
+        },
+        "CONSTANT": {
+            "TITLE": "constante",
+            "DROPDOWN": {
+                "NEW": "Nova constante",
+                "EXISTING": "Constante Existente"
+            },
+            "NAME": "nome",
+            "VALUE": "valor",
+            "DEFAULT-TEXT-NAME": "Insira nome aqui",
+            "VALUE-TYPE-DROPDOWN": {
+                "TITLE": "tipo valor",
+                "STRING": "String",
+                "INTEGER-NUMBER": "Número\u00A0Inteiro",
+                "FLOAT-NUMBER": "Número\u00A0Real",
+                "BOOLEAN": "Booleano",
+                "DATE": "Data",
+                "TIME": "Tempo"
+            },
+            "DEFAULT-TEXT-VALUE": "Insira valor aqui"
+        },
+        "PROPERTY": {
+            "TITLE": "facto de formulário",
+            "ENT-TYPE": "tipo entidade",
+            "PROPERTY": "propriedade",
+            "DROPDOWN-DEFAULT": "Nenhum",
+            "FORM-COMPUTE": "cálculo em formulário",
+            "ENABLE-CONDITION": "condição habilitação",
+            "VALIDATION-CONDITION": "condição(ões) validação",
+            "PROPERTY-REF-FILTER": "filtro(s) para propriedade referenciada",
+            "PROPERTY-REF-QUERY": "opções de resultado de query",
+            "MANDATORY": "obrigatório",
+            "ALLOW-DUPLICATES": "permitir duplicados"
+        },
+        "FORM-PROPERTY-OUTPUT": {
+            "TITLE": "facto de formulário",
+            "ENT-TYPE": "tipo entidade",
+            "ENTITY-SCOPE": {
+                "SPECIFY-PROPERTY": "especificar propriedade",
+                "SPECIFY-ENTITY": "especificar entidade"
+            },
+            "VALUE-TYPE": "tipo de valor",
+            "ENTITY-INSTANCES-VALUE-TYPE": "instâncias de entidade"
+        },
+        "TERM-PROPERTY": {
+            "TITLE": "facto derivado"
+        },
+        "FORM-COMPUTE": {
+            "TITLE": "cálculo em formulário",
+            "TERMS": "termo(s)"
+        },
+        "ENABLE-CONDITION": {
+            "TITLE": "condição habilitação",
+            "CONDITION": "condição"
+        },
+        "VALIDATION-CONDITION": {
+            "TITLE": "condição(ões) validação",
+            "CONDITION": "condição(ões)"
+        },
+        "PROPERTY-FILTERS": {
+            "TITLE": "filtro(s) de propriedade",
+            "FILTER": "filtro(s)"
+        },
+        "CONDITION-VALIDATION-CONDITION": {
+            "TITLE": "condição validação",
+            "EXTRA-FIELDS": {
+                "NOT": "Negação",
+                "BELONGS-RANGE-TO": "até",
+                "MATCH-CASE": "Match Case",
+                "CURRENT-DATE": "Data Atual",
+                "CURRENT-TIME": "Hora Atual"
+            },
+            "VALIDATOR-WARNING": {
+                "HAS-CHARACTER": "Insira caráter aqui",
+                "HAS-WORD": "Insira palavra aqui",
+                "REGULAR-EXPRESSION": "Insira Expressão Regular aqui",
+                "CUSTOM-VALIDATION": "Insira Validação Personalizada aqui"
+            },
+            "DROPDOWN": {
+                "REQUIRED": "Obrigatório",
+                "IS-EMAIL": "É Email",
+                "IS-URL": "É URL",
+                "EQUAL-TO": "Igual a",
+                "LESS-EQUAL": "Menor ou Igual",
+                "HIGHER-EQUAL": "Maior ou Igual",
+                "HIGHER-THAN": "Maior que",
+                "LESS-THAN": "Menor que",
+                "MIN-LENGTH": "Comprimento Mínimo",
+                "MAX-LENGTH": "Comprimento Máximo",
+                "BELONGS-RANGE": "Pertence Intervalo",
+                "MIN-WORD-LENGTH": "Comprimento Mínimo Palavra",
+                "MAX-WORD-LENGTH": "Comprimento Máximo Palavra",
+                "HAS-CHARACTER": "Tem Caráter",
+                "HAS-WORD": "Tem Palavra",
+                "REGULAR-EXPRESSION": "Expressão Regular",
+                "CUSTOM-VALIDATION": "Validação Personalizada",
+                "AFTER-DATE": "Depois de Data",
+                "BEFORE-DATE": "Antes de Data",
+                "AFTER-TIME": "Depois de Hora",
+                "BEFORE-TIME": "Antes de Hora",
+                "MIN-CHOICE" : "Num. Mínimo de Escolhas",
+                "MAX-CHOICE" : "Num. Máximo de Escolhas"
+            }
+        },
+        "PROPERTY-SINGLE": {
+            "TITLE": "propriedade",
+            "SCOPE": "âmbito",
+            "ENT-TYPE": "tipo entidade",
+            "PROPERTY": "propriedade",
+            "VALUE-TYPE": "tipo de valor",
+            "ENTITY-SCOPE": {
+                "LABEL": "obter valor de",
+                "CURRENT-PROCESS": "processo atual",
+                "SPECIFIC-ENTITY": "entidade específica"
+            }
+        },
+        "PROPERTY-VALUE": {
+            "WARNING": "Nota: Por favor selecione uma opção na esquerda",
+            "TITLE": "valor propriedade"
+        },
+        "EXTERNAL-CALL-CREATE-ENTITY": {
+            "TITLE": "criar entidade(s)",
+            "ENTITY-TYPE": "tipo de entidade",
+            "PROPERTIES": "propriedade(s)"
+        },
+        "EXTERNAL-CALL-MATCHING-PROPERTY": {
+            "TITLE": "correspondendo",
+            "ENT-TYPE-PROPERTY": "propriedade do tipo de entidade",
+            "ENDPOINT-PROPERTY": "propriedade do endpoint"
+        },
+        "EXTERNAL-CALL-PARAMETER": {
+            "TITLE": "parâmetro"
+        },
+        "EXTERNAL-CALL-PARAMETER-VALUE": {
+            "TITLE": "valor",
+            "PLACEHOLDER": "Insira o valor aqui"
+        },
+        "LOCAL-ENDPOINT-CALL-PARAMETER": {
+            "TITLE": "parâmetro",
+            "NAME": "nome",
+            "NAME-PLACEHOLDER": "Isnira o nome do parâmetro aqui",
+            "DESCRIPTION": "descrição",
+            "DESCRIPTION-PLACEHOLDER": "descrição para documentação",
+            "ENT-TYPE": "tipo de entidade interno",
+            "PROPERTY": "propriedade interna",
+            "EXAMPLE": "exemplo de valor",
+            "EXAMPLE-PLACEHOLDER": "um exemplo de valor",
+            "MANDATORY": "obrigatório"
+        },
+        "LOCAL-ENDPOINT-CALL-PARAMETER-SET": {
+            "TITLE": "conjunto de parâmetros",
+            "NAME-PLACEHOLDER": "Insira o nome do conjunto aqui",
+            "DESCRIPTION": "descrição",
+            "DESCRIPTION-PLACEHOLDER": "descrição para documentação",
+            "PARAMETERS": "parâmetro(s)"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-PROPERTY": {
+            "TITLE": "propriedade da resposta",
+            "NAME-PLACEHOLDER": "Insira o nome da propriedade aqui",
+            "VALUE-TYPE": "tipo de valor"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-SET": {
+            "TITLE": "conjunto da resposta",
+            "NAME-PLACEHOLDER": "Insira o nome do conjunto aqui",
+            "ENT-TYPE": "tipo de entidade",
+            "PROPERTIES": "propriedade(s)"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-QUERIED-OBJECT": {
+            "TITLE": "objeto consultado da resposta",
+            "OBJECT": "objeto"
+        },
+        "LOCAL-ENDPOINT-CALL-SET-PROPERTY": {
+            "TITLE": "propriedade do conjunto",
+            "ENT-TYPE-PROPERTY": "propriedade do tipo de entidade"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-PROPERTY-OUTPUT": {
+            "TITLE": "propriedade da resposta",
+            "NAME-PLACEHOLDER": "Insira o nome da propriedade aqui"
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-SUCCESS": {
+            "TITLE": "sucesso",
+            "DROPDOWN": {
+                "SUCCESS": "mensagem de sucesso",
+                "SUCCESS-MESSAGE": "insira a mensagem de sucesso aqui",
+                "CREATED-OBJECT": "objeto criado",
+                "QUERIED-OBJECT": "objeto pesquisado",
+                "UPDATED-OBJECT": "objeto atualizado",
+                "DELETED-OBJECT-ID": "id do objeto apagado"
+            }
+        },
+        "LOCAL-ENDPOINT-CALL-RESPONSE-ERROR": {
+            "TITLE": "erro",
+            "DROPDOWN": {
+                "ERROR": "mensagem de erro"
+            }
+        },
+        "CURRENT-USER": {
+            "TITLE": "utilizador executante"
+        },
+        "CURRENT-USER-ROLE": {
+            "TITLE": "papel de utilizador executante"
+        },
+        "USER-ROLE": {
+            "TITLE": "papel de utilizador"
+        },
+        "ROLLBACK-TRANSACTION": {
+            "TITLE": "reversão da transação da regra de ação",
+            "ERROR-LABEL": "mensagem de erro",
+            "ERROR-LABEL-PLACEHOLDER": "insira a mensagem de erro aqui"
+        },
+        "SET-CONTEXT-VARIABLE": {
+            "TITLE": "definir variável de contexto",
+            "DEFAULT-NAME": "Insira o nome aqui",
+            "NEW": "nova",
+            "EXISTING": "existente"
+        },
+        "GET-CONTEXT-VARIABLE": {
+            "TITLE": "obter variável de contexto"
+        },
+        "UPDATE-CONTEXT-VARIABLE": {
+            "TITLE": "atualizar variável de contexto"
+        }
+    },
+
+    "FORM-MANAGEMENT": {
+        "FORM-NAME": "Nome Formulário",
+        "FORM-EDITOR": "Editor de Formulário",
+        "FORM-TRANSACTION-NAME": "Nome Transação",
+        "FORM-ACTION-NAME": "Nome Ação",
+        "FORM-UPDATED": "Atualizado a",
+        "FORM-CREATED": "Criado a",
+        "FORM-ACTION-RULE-DELETED": "Regra de Ação Apagada a",
+        "FORM-ACTIONS": "Ações",
+        "FORM-EDIT": "Editar",
+        "FORM-DELETE": "Apagar",
+        "FORM-DELETE-ALL-UNUSED-FORMS": "Apagar todos os formulários reformados",
+        "FORM-ACTIONS-AVAILABLE": "Ações Possíveis",
+        "FORM-CREATE": "Novo Formulário",
+        "FORM-MANAGEMENT": "Gestão de formulários",
+        "FORMS-NEED-UPDATING": "Formulários que Necessitam de Atualização",
+        "FORMS-IN-USE": "Formulários ativos",
+        "RETIRED-FORMS-ARCHIVE": "Arquivo de Formulários Reformados",
+        "ASK-DELETE": "Tem a certeza que pretende apagar o formulário?",
+        "ASK-DELETE-ALL-RETIRED-FORMS": "Tem a certeza que pretende apagar todos os formulários reformados?",
+        "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+        "OPERATION-ERROR": "Operação não realizada!",
+        "LABEL-NAME": "Nome",
+        "PLACEHOLDER-NAME": "Introduza o nome do formulário",
+        "LABEL-ACTION": "Ação",
+        "PLACEHOLDER-ACTION": "Introduza a ação",
+        "PROCEED-BUTTON": "Proceder"
+    },
+
+    "FORMIO": {
+        "HEADER": "Editor de formulário",
+        "SAVE-BUTTON": "Gravar Formulário",
+        "UPDATE-BUTTON": "Atualizar Formulário",
+        "ADD-ANOTHER-BUTTON": "Adicionar Outra",
+        "ERROR-INSERT-ALL-FIELDS":  "Precisa de preencher todos os campos!",
+        "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+        "ASK-YOU-SURE": "Tem a certeza que deseja gravar o formulário?",
+        "OPTION-TRUE": "Sim",
+        "OPTION-FALSE": "Não",
+        "LABEL-NAME": "Nome",
+        "LABEL-TYPE": "Tipo",
+        "SUBMIT-BUTTON": "Submeter",
+        "SAVE-SUCCESS": "Formulário guardado com sucesso.",
+        "SAVE-ERROR": "Ocorreu um erro ao guardar o formulário. Por favor, tente de novo.",
+        "UPDATE-SUCCESS": "Formulário atualizado com sucesso.",
+        "UPDATE-ERROR": "Ocorreu um erro ao atualizar o formulário. Por favor, tente de novo."
+    },
+
+    "FORM-RENDER": {
+        "FORM-NAME": "Nome Formulário",
+        "FORM-EDITOR": "Editor de Formulário",
+        "FORM-TRANSACTION-NAME": "Nome Transação",
+        "FORM-ACTION-NAME": "Nome Ação",
+        "FORM-UPDATED": "Atualizado a",
+        "FORM-CREATED": "Criado a",
+        "FORM-ACTIONS": "Ações",
+        "FORM-RENDER-ACTION": "Renderizar",
+        "FORM-ACTIONS-AVAILABLE": "Ações Possíveis",
+        "FORM-RENDER": "Renderizador de formulários",
+        "ASK-RENDER": "Tem a certeza que pretende renderizar o formulário?",
+        "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+        "OPERATION-ERROR": "Operação não realizada!",
+        "HEADER-RENDERED-FORM": "Formulário Renderizado",
+        "DATA-SAVED-SUCCESS": "Dados do formulário guardados com sucesso!",
+        "DATA-SAVED-ERROR": "Ocorreu um erro ao guardar os dados. Por favor, tente de novo.",
+        "BACK-BUTTON": "Voltar"
+    },
+
+    "TRANSLATOR": {
+        "FORMS": "Tradução de Formulários",
+        "FORM-NAME": "Nome Formulário",
+        "FORM-LANGUAGE-ABBRV": "Abreviatura da Linguagem",
+        "FORM-TRANSACTION-NAME": "Nome Transação",
+        "FORM-ACTION-NAME": "Nome Ação",
+        "FORM-UPDATED": "Atualizado a",
+        "FORM-CREATED": "Criado a",
+        "FORM-ACTIONS": "Ações",
+        "FORM-TRANSLATE-ACTION": "Traduzir",
+        "FORM-TRANSLATOR": "Tradução de Formulários",
+        "FORM-NAME-NEW": "Nome",
+        "PLACEHOLDER-NAME-NEW": "Introduza o nome para o novo formulário",
+        "LABEL-LANGUAGE": "Língua",
+        "PLACEHOLDER-LANGUAGE": "Selecione a linguagem para traduzir",
+        "PROCEED-BUTTON": "Avançar",
+        "OPERATION-SUCCESS": "Operação feita com sucesso!",
+        "OPERATION-ERROR": "Operação não realizada!",
+        "TRANSLATED-ACTION-NAME": "Nome de Ação Traduzido"
+    },
+
+    "DEFAULT-VALIDATION-ERROR": {
+        "IS-INTEGER": "Tem de ser um inteiro.",
+        "IS-INTEGER-NEGATION": "Não pode ser um inteiro.",
+        "IS-EMAIL": "Tem de ser um endereço de email válido.",
+        "IS-EMAIL-NEGATION": "Não pode ser um endereço de email válido.",
+        "IS-URL": "Tem de ser um URL válido.",
+        "IS-URL-NEGATION": "Não pode ser um URL válido.",
+        "EQUAL-TO": "Tem de ser igual a {{param1}}.",
+        "EQUAL-TO-NEGATION": "Não pode ser igual a {{param1}}.",
+        "LESS-EQUAL": "Tem de ser menor ou igual a {{param1}}.",
+        "LESS-EQUAL-NEGATION": "Não pode ser menor ou igual a {{param1}}.",
+        "HIGHER-EQUAL": "Tem de ser maior ou igual a {{param1}}.",
+        "HIGHER-EQUAL-NEGATION": "Não pode ser maior ou igual a {{param1}}.",
+        "HIGHER-THAN": "Tem de ser maior que {{param1}}.",
+        "HIGHER-THAN-NEGATION": "Não pode ser maior que {{param1}}.",
+        "LESS-THAN": "Tem de ser menor que {{param1}}.",
+        "LESS-THAN-NEGATION": "Não pode ser menor que {{param1}}.",
+        "MIN-LENGTH": "Tem de ter pelo menos {{param1}} caracteres.",
+        "MAX-LENGTH": "Tem de ter menos de {{param1}} caracteres.",
+        "BELONGS-RANGE": "Tem de estar entre {{param1}} e {{param2}}.",
+        "BELONGS-RANGE-NEGATION": "Não pode estar entre {{param1}} e {{param2}}.",
+        "MIN-WORD-LENGTH": "Tem de ter mais de {{param1}} palavras.",
+        "MAX-WORD-LENGTH": "Tem de ter menos de {{param1}} palavras.",
+        "HAS-CHARACTER": "Tem de conter o caracter \"{{param1}}\".",
+        "HAS-CHARACTER-NEGATION": "Não pode conter o caracter \"{{param1}}\".",
+        "HAS-WORD": "Tem de conter a palavra \"{{param1}}\".",
+        "HAS-WORD-NEGATION": "Não pode conter a palavra \"{{param1}}\".",
+        "REGULAR-EXPRESSION": "Tem de obedecer à expressão regular: {{param1}}.",
+        "REGULAR-EXPRESSION-NEGATION": "Não pode obedecer à expressão regular: {{param1}}.",
+        "AFTER-DATE": "Tem de ser uma data depois da selecionada em \"{{param1}}\".",
+        "BEFORE-DATE": "Tem de ser uma data antes da selecionada em \"{{param1}}\".",
+        "CUSTOM-VALIDATION": "Tem de seguir a validação personalizada: {{param1}}.",
+        "MIN-CHOICE": "Tem um mínimo de {{param1}} escolhas.",
+        "MAX-CHOICE": "Tem um máximo de {{param1}} escolhas."
+    },
+
+    "TEMPLATES-MANAGEMENT": {
+        "TITLE": "Gestão de Templates",
+        "CREATE": "Criar Template",
+        "TABLE": {
+            "NAME": "Nome",
+            "TYPE": "Tipo",
+            "UPDATED-AT": "Atualizado a",
+            "CREATED-AT": "Criado a",
+            "AVAILABLE-ACTIONS": "Ações Disponíveis",
+            "EDIT": "Editar",
+            "DELETE": "Apagar",
+            "TRANSLATE": "Traduzir"
+        },
+        "MODAL": {
+            "MODAL-TITLE": "Editor de Templates",
+            "MODAL-TITLE-TRANSLATION": "Tradutor de Templates",
+            "NAME": "Nome",
+            "NAME-PLACEHOLDER": "Insira o nome do template aqui.",
+            "NAME-INVALID": "Por favor, insira um nome para o template.",
+            "TYPE": "Tipo",
+            "TYPE-MODAL": "Janela",
+            "TYPE-TOAST": "Notificação",
+            "TYPE-DOC": "Documento",
+            "TYPE-INVALID": "Por favor, escolha um tipo de template.",
+            "WINDOW-HEADER": "Cabeçalho da Janela",
+            "WINDOW-HEADER-PLACEHOLDER": "Insira o texto do cabeçalho da janela aqui.",
+            "WINDOW-HEADER-INVALID": "Por favor, insira um texto para o cabeçalho da janela.",
+            "WINDOW-BUTTON": "Botão da Janela",
+            "WINDOW-BUTTON-PLACEHOLDER": "Insira o texto do botão da janela aqui.",
+            "WINDOW-BUTTON-INVALID": "Por favor, insira um texto para o botão da janela.",
+            "NOTIFICATION-CLASS": "Classe da Notificação",
+            "NOTIFICATION-CLASS-SUCCESS": "Sucesso",
+            "NOTIFICATION-CLASS-INFORMATION": "Informação",
+            "NOTIFICATION-CLASS-WARNING": "Aviso",
+            "NOTIFICATION-CLASS-ERROR": "Erro",
+            "NOTIFICATION-CLASS-CUSTOM": "Personalizado",
+            "NOTIFICATION-CLASS-INVALID": "Por favor, escolha uma classe da notificação.",
+            "NOTIFICATION-TITLE": "Título da Notificação",
+            "NOTIFICATION-TITLE-PLACEHOLDER": "Insira o texto do título da notificação aqui.",
+            "NOTIFICATION-TITLE-INVALID": "Por favor, insira um texto para o título da notificação.",
+            "NOTIFICATION-COLOUR": "Cor da Notificação",
+            "NOTIFICATION-COLOUR-INVALID": "Por favor, escolha uma cor para a notificação.",
+            "NOTIFICATION-COLOURS": {
+                "DARK-PINK": "rosa escuro",
+                "PINK": "rosa",
+                "LIGHT-PINK": "rosa claro",
+                "PURPLE": "roxo",
+                "LIGHT-PURPLE": "roxo escuro",
+                "LIGHT-ORANGE": "laranja claro",
+                "DARK-BLUE": "azul escuro",
+                "DARK-RED": "vermelho escuro",
+                "GREY": "cinzento"
+            },
+            "DYNAMIC-VALUES": {
+                "MENU-BUTTON-TEXT": "Valores Dinâmicos",
+                "MODAL-TITLE": "Inserir Valor Dinâmico",
+                "CONSTANTS-TAB": {
+                    "TITLE": "Constantes",
+                    "CONSTANT-SELECT": "Selecione uma constante",
+                    "CONSTANT-PLACEHOLDER": "Escolha uma constante"
+                },
+                "PROPERTIES-TAB": {
+                    "TITLE": "Properiedades",
+                    "ENTITY-SELECT": "Selecione um tipo de entidade",
+                    "PROPERTY-SELECT": "Selecione uma properiedade",
+                    "PROPERTY-PLACEHOLDER": "Escolha muma propriedade"
+                },
+                "QUERIES-TAB": {
+                    "TITLE": "Queries",
+                    "QUERY-SELECT": "Selecione uma query",
+                    "QUERY-PLACEHOLDER": "Escolha uma query"
+                },
+                "CONTEXT-VARIABLES-TAB": {
+                    "TITLE": "Variáveis de Contexto",
+                    "CONTEXT-VARIABLE-SELECT": "Selecione uma variável de contexto",
+                    "CONTEXT-VARIABLE-PLACEHOLDER": "Escolha uma variável de contexto"
+                },
+                "BUTTONS": {
+                    "CANCEL": "Cancelar",
+                    "INSERT": "Inserir"
+                }
+            },
+            "SHOW-SOURCE-CODE": "Mostrar Source Code",
+            "TEMPLATE-TEXT-DEFAULT": "Edite o texto a ser apresentado aqui.",
+            "SAVE": "Guardar",
+            "TRANSLATE": "Traduzir"
+        },
+        "ERROR": {
+            "TEMPLATE-INFORMATION": "Ocorreu um erro a obter a informação do template.",
+            "CREATING": "Ocorreu um erro ao criar o template. Por favor, tente novamente.",
+            "UPDATING": "Ocorreu um erro ao atualizar o template. Por favor, tente novamente.",
+            "DELETING": "Ocorreu um erro ao apagar o template. Por favor, tente novamente.",
+            "TRANSLATING": "Ocorreu um erro ao traduzir o template. Por favor, tente novamente."
+        },
+        "SUCCESS": {
+            "CREATING": "Template criado com sucesso.",
+            "UPDATING": "Template atualizado com sucesso.",
+            "DELETING": "Template apagado com sucesso.",
+            "TRANSLATING": "Template traduzido com sucesso."
+        },
+        "WARNING": {
+            "USED-IN-AR": "Este template está a ser utilizado numa Regra de Ação ativa, não pode ser eliminado."
+        },
+        "DELETE-CONFIRMATION-MESSAGE": "Tem a certeza que deseja apagar este template?"
+    },
+
+    "USER-EVALUATED-EXPRESSION-MANAGEMENT": {
+        "TITLE": "Gestão de Expressões Avalidadas pelo Utilizador",
+        "CREATE": "Nova Expressão Avaliada pelo Utilizador",
+        "TABLE": {
+            "NAME": "Nome",
+            "UPDATED-AT": "Atualizada a",
+            "CREATED-AT": "Criada a",
+            "AVAILABLE-ACTIONS": "Ações Disponíveis",
+            "EDIT": "Editar",
+            "DELETE": "Apagar",
+            "TRANSLATE": "Traduzir"
+        },
+        "MODAL": {
+            "TITLE": "Editor de Expressão Avaliada pelo Utilizador",
+            "TITLE-TRANSLATION": "Tradutor de Expressão Avaliada pelo Utilizador",
+            "NAME": "Nome",
+            "NAME-PLACEHOLDER": "Insira o nome da expressão aqui.",
+            "NAME-INVALID": "Por favor, escolha um nome para a expressão.",
+            "TEXT-DEFAULT": "Edite o texto a ser apresentado aqui.",
+            "SAVE": "Guardar",
+            "TRANSLATE": "Traduzir"
+        },
+        "ERROR": {
+            "CREATING": "Ocorreu um erro ao criar a expressão avalidada pelo utilizador. Por favor, tente novamente.",
+            "UPDATING": "Ocorreu um erro ao atualizar a expressão avalidada pelo utilizador. Por favor, tente novamente.",
+            "DELETING": "Ocorreu um erro ao apagar a expressão avalidada pelo utilizador. Por favor, tente novamente.",
+            "TRANSLATING": "Ocorreu um erro ao traduzir a expressão avalidada pelo utilizador. Por favor, tente novamente."
+        },
+        "SUCCESS": {
+            "CREATING": "Expressão Avaliada pelo Utilizador criada com sucesso.",
+            "UPDATING": "Expressão Avaliada pelo Utilizador atualizada com sucesso.",
+            "DELETING": "Expressão Avaliada pelo Utilizador apagada com sucesso..",
+            "TRANSLATING": "Expressão Avaliada pelo Utilizador traduzida com sucesso."
+        },
+        "WARNING": {
+            "USED-IN-AR": "Esta expressão avaliada pelo utilizador está a saer utilizada numa Regra de Ação ativa, não pode ser apagada."
+        },
+        "DELETE-CONFIRMATION-MESSAGE": "Tem a certeza que pretende apagar esta Expressão Avaliada pelo Utilizador?"
+    },
+
+    "DELEGATIONS": {
+        "TITLE": "Delegações",
+        "AVAILABLE-ACTIONS": {
+            "TITLE": "Ações Disponíveis",
+            "NEW": "Nova Delegação"
+        },
+        "TABLE": {
+            "DELEGATES-ROLE": "Função que delega",
+            "DELEGATED-ROLE": "Função delegada",
+            "DELEGATED-USER": "Utilizador delegado",
+            "TRANSACTION-STEP": "Passo de transação",
+            "START-TIME": "Data de início",
+            "END-TIME": "Data de fim",
+            "CREATED-AT": "Criada a",
+            "UPDATED-AT": "Atualizada a",
+            "ACTIONS": {
+                "TITLE": "Ações",
+                "EDIT": "Editar",
+                "DELETE": "Eliminar"
+            },
+            "TYPE": {
+                "TITLE": "Tipo",
+                "ACT": "é",
+                "FACT": "foi"
+            }
+        },
+        "ASK-DELETE": "Tem a certeza que pretende eliminar esta delegação?",
+        "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+        "OPERATION-ERROR": "Operação não realizada. Por favor, tente novamente."
+    },
+
+    "DELEGATIONS-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Delegação",
+            "ERROR": "Ocorreu um erro ao criar a delegação. Por favor, tente novamente.",
+            "SUCCESS": "Delegação criada com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Delegação",
+            "ERROR": "Ocorreu um erro ao atualizar a delegação. Por favor, tente novamente.",
+            "SUCCESS": "Delegação atualizada com sucesso!"
+        },
+        "SELECT-TRANSACTION-TYPE": {
+            "TITLE": "Tipo de Transação",
+            "PLACEHOLDER": "Escolha um Tipo de Transação"
+        },
+        "SELECT-TYPE": {
+            "TITLE": "Tipo",
+            "PLACEHOLDER": "Escolha um Tipo"
+        },
+        "SELECT-DELEGATES-ROLE": {
+            "TITLE": "Função Delegante",
+            "PLACEHOLDER": "Escolha a Função Delegante"
+        },
+        "SELECT-TRANSACTION-STATE": {
+            "TITLE": "Estado da Transação",
+            "PLACEHOLDER": "Escolha um Estado de Transação"
+        },
+        "SELECT-DELEGATED-ROLE": {
+            "TITLE": "Função Delegada",
+            "PLACEHOLDER": "Escolha a função delegada"
+        },
+        "SELECT-DELEGATED-USER": {
+            "TITLE": "Utilizador Delegado",
+            "PLACEHOLDER": "Escolha o utilizador delegado"
+        },
+        "VISIBLE-TO-DELEGATOR-LABEL": "Visível ao Delegante",
+        "DELEGATE-SPECIFIC-USER": "Delegar a um Utilizador Específico",
+        "DELEGATED-USER-CAN-DELEGATE": "Utilizador Delegado Pode Delegar",
+        "START-TIME": {
+            "TITLE": "Data de início",
+            "PLACEHOLDER": "Escolha a data de início para esta delegação"
+        },
+        "END-TIME": {
+            "TITLE": "Data de fim",
+            "PLACEHOLDER": "Escolha a data de fim para esta delegação"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "DYNAMIC-SEARCH": {
+        "QUERIES": {
+            "TITLE": "Selecione uma Pesquisa",
+            "NEW-QUERY": "Nova Pesquisa",
+            "TABLE-COL-1": "Nome da Pesquisa",
+            "TABLE-COL-2": "Atualizado a",
+            "TABLE-COL-3": "Criado a",
+            "TABLE-COL-4": {
+                "TITLE": "Ações",
+                "EDIT": "Mostrar/Editar",
+                "DELETE": "Apagar"
+            },
+            "GET": "Obter ",
+            "PROPERTIES": "como resultado das properiedades: ",
+            "FILTERS": "e como filtros: ",
+            "MORE-FILTERS": "e mais {{number}} filtros",
+            "SUCCESS-DELETE-QUERY": "Pesquisa apagada com sucesso!"
+        },
+        "STEP-1": {
+            "TITLE": "Passo 1: Selecionar Tipo de Entidade",
+            "BUTTON": "Obter Propriedades",
+            "BASE-TABLE-LABEL": "Tabela Base"
+        },
+        "STEP-2": {
+            "TITLE": "Passo 2: Selecionar Propriedades",
+            "BUTTON": "Especificar Filtros",
+            "ENT-TYPE-LABEL": "Tipo de Entidade",
+            "INCLUDE-PROPS": {
+                "LABEL": "Propriedades a Incluir",
+                "PLACEHOLDER": "Selecione Propriedades a Incluir no Resultado"
+            },
+            "FILTER-PROPS": {
+                "LABEL": "Propriedades a Filtrar",
+                "PLACEHOLDER": "Selecione Propriedades para Filtrar"
+            }
+        },
+        "STEP-3": {
+            "TITLE": "Passo 3: Especificar Filtros",
+            "BUTTON": "Mostrar Resultados",
+            "BUTTON-UPDATE": "Atualizar pesquisa",
+            "ERROR": {
+                "NO-CONNECTION-PROPS": "Sem conexão entre as \"Propriedades a Incluir\" dos tipos de entidade!",
+                "NO-INCL-PROPS": "Cada tipo de entidade selecionado tem de ter \"Propriedades a Incluir\"!",
+                "NO-FILTERS": "Não tem filtros. Clique em \"Mostrar Resultados\" para ver os resultados da pesquisa!"
+            },
+            "IS-PARAMETER": "É parâmetro?",
+            "RESULTS-AVAILABLE-RA": "Tornar os resultados disponíveis na interface API Rest",
+            "URL-PREVIEW": "Pré-visualização do Endpoint:",
+            "QUERY-ACTION": "Ação da pesquisa",
+            "PARAMETERS-COL-1": "Parâmetro ",
+            "PARAMETERS-COL-2": "Nome do parâmetro",
+            "PARAMETERS-COL-3": "Ações",
+            "PLACEHOLDER-PARAMETER": "Selecionar um parâmetro a incluir no endpoint",
+            "PLACEHOLDER-PARAMETER-NAME": "Nome do parâmetro que aparecerá no endpoint",
+            "FINAL-URL": "Resultado da pesquisa disponível em interface Rest Api através do endpoint:",
+            "BUTTON-SAVE-URL": "Guardar Endpoint",
+            "BUTTON-SAVE-QUERY": "Guardar Pesquisa",
+            "NAME-PLACEHOLDER": "Insira um nome para a pesquisa desenhada"
+        },
+        "STEP-4": {
+            "TITLE": "Passo 4: Resultados da Pesquisa",
+            "EXPORT-EXCEL": "Exportar Resultados para Excel",
+            "NO-RESULTS": "Sem Resultados Encontrados"
+        },
+        "SUCCESS": {
+            "SAVE-QUERY": "Query guardada com sucesso.",
+            "UPDATE-QUERY": "Query atualizada com sucesso.",
+            "DELETE-QUERY": "Query apagada com sucesso."
+        },
+        "ERROR": {
+            "SAVE-QUERY": "Ocorreu um erro ao criar a Pesquisa. Por favor, tente novamente.",
+            "UPDATE-QUERY": "Ocorreu um erro ao atualizar a Pesquisa. Por favor, tente novamente.",
+            "DELETE-QUERY": "Ocorreu um erro ao apagar a Pesquisa. Por favor, tente novamente."
+        }
+    },
+
+    "LANGUAGE-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Linguagem",
+            "ERROR": "Ocorreu um erro ao criar a Linguagem. Por favor, tente novamente.",
+            "SUCCESS": "Linguagem criada com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Linguagem",
+            "ERROR": "Ocorreu um erro ao atualizar a Linguagem. Por favor, tente novamente.",
+            "SUCCESS": "Linguagem atualizada com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar esta Linguagem?",
+            "SUCCESS": "Linguagem eliminada com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar a Linguagem. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira o nome da Linguagem"
+        },
+        "ABBRV-FIELD": {
+            "TITLE": "Abreviação",
+            "PLACEHOLDER": "Insira a abreviação da Linguagem"
+        },
+        "SELECT-STATE": {
+            "TITLE": "Estado",
+            "PLACEHOLDER": "Escolha um estado",
+            "OPTIONS": {
+                "ACTIVE": "Ativo",
+                "INACTIVE": "Inativo"
+            }
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "PARAMETERIZATION": {
+        "TITLE": "Parametrizaçã",
+        "BOOLEAN-FORMATTER": {
+            "TRUE": "Sim",
+            "FALSE": "Não"
+        },
+        "OPTIONAL-FIELD": "(Opcional)",
+        "TABLE-ITEMS": "Itens",
+        "AVAILABLE-ACTIONS": {
+            "TITLE": "Ações Disponíveis",
+            "NEW-LANGUAGE": "Nova Linguagem",
+            "NEW-USER": "Novo Utilizador",
+            "NEW-ROLE": "Nova Função",
+            "NEW-ROLE-INITIATES-TRANSACTION": "Novo registo de Função Inicia Tipo de Transação",
+            "NEW-ROLE-HAS-USER": "Nova Função de Utilizador",
+            "NEW-PROCESS-TYPE": "Novo Tipo de Processo",
+            "NEW-PROCESS-DETAIL": "Novo Detalhe de Processo",
+            "NEW-TRANSACTION-TYPE": "Novo Tipo de Transação",
+            "NEW-ENTITY-TYPE": "Novo Tipo de Entidade",
+            "NEW-PROPERTY": "Nova Propriedade",
+            "NEW-PROP-UNIT-TYPE": "Novo Tipo de Unidade de Propriedade",
+            "NEW-CONSTANT": "Nova Constante",
+            "NEW-WAITING-LINK": "Nova Ligação de Espera"
+        },
+        "TABLE-ACTIONS": {
+            "TITLE": "Ações",
+            "EDIT": "Editar",
+            "DELETE": "Apagar",
+            "TRANSLATE": "Traduzir"
+        },
+        "LANGUAGE": {
+            "TITLE": "Linguagens",
+            "TABLE": {
+                "NAME": "Nome",
+                "ABBRV": "Abreviação",
+                "STATE": "Estado",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a"
+            }
+        },
+        "USERS": {
+            "TITLE": "Utilizadores",
+            "TABLE": {
+                "NAME": "Nome",
+                "NIF": "NIF",
+                "EMAIL": "Email",
+                "USER-NAME": "Username",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "ROLES": {
+            "TITLE": "Funções",
+            "TABLE": {
+                "NAME": "Nome",
+                "UPDATED-AT": "Atualizada a",
+                "CREATED-AT": "Criada a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "ROLE-INITIATES-TRANSACTION-TYPE": {
+            "TITLE": "Função Inicia Tipo de Transação",
+            "TABLE": {
+                "ROLE": "Função",
+                "TRANSACTION-TYPE": "Tipo de Transação",
+                "OWN-USER-ACCESS-ONLY": "Acesso Restrito",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a"
+            }
+        },
+        "ROLES-HAVE-USERS": {
+            "TITLE": "Função de Utilizadores",
+            "TABLE": {
+                "ROLE": "Função",
+                "USER": "Utilizador",
+                "UPDATED-AT": "Atualizada a",
+                "CREATED-AT": "Criada a"
+            }
+        },
+        "PROCESS-TYPES": {
+            "TITLE": "Tipos de Processo",
+            "TABLE": {
+                "NAME": "Nome",
+                "STATE": "Estado",
+                "COLOR": "Cor",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "PROCESS-DETAILS": {
+            "TITLE": "Detalhes de Processo",
+            "TABLE": {
+                "PROCESS-TYPE": "Tipo de Processo",
+                "PROPERTY": "Proprieadade",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a"
+            }
+        },
+        "TRANSACTION-TYPES": {
+            "TITLE": "Tipos de Transação",
+            "TABLE": {
+                "T-NAME": "Nome",
+                "RT-NAME": "Nome do Resultado",
+                "STATE": "Estado",
+                "PROCESS-TYPE": "Tipo de Processo",
+                "INIT-PROC": "Inicia Processo",
+                "END-PROC": "Finaliza Processo",
+                "INTERM-TASK": "Tarefa Intermédia",
+                "EXTERNAL": "Tarefa Externa",
+                "TYPE": "Tipo",
+                "FRONTIER": "Tarefa de Fronteira",
+                "FRONTIER-TYPE": "Tipo de Fronteira",
+                "EXECUTER-ROLE": "Função Executora",
+                "OWN-USER-ACCESS-ONLY": "Acesso Restrito",
+                "AUTO-ACTIVATE": "Ativação Automática",
+                "FREQ-ACTIVATE": "Frequência Ativação",
+                "WHEN-ACTIVATE": "Quando é Ativada",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "ENTITY-TYPES": {
+            "TITLE": "Tipos de Entidade",
+            "TABLE": {
+                "NAME": "Nome",
+                "ID-NAME": "Nome Identificativo",
+                "STATE": "Estado",
+                "TRANSACTION-TYPE": "Tipo de Transação",
+                "NR-ENTITIES": "Número de Entidades",
+                "HAS-MANY": "Para Muitos",
+                "AUTO-GENERATED": "Auto-Gerado",
+                "EXTERNAL": "Externo",
+                "USER-DETAILS": "Detalhes de Utilizador",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "PROPERTY": {
+            "TITLE": "Propriedades",
+            "TABLE": {
+                "NAME": "Nome",
+                "VALUE-TYPE": "Tipo de Valor",
+                "ENT-TYPE": "Tipo de Entidade",
+                "STATE": "Estado",
+                "REQUIRES-TRANSLATION": "Requer Tradução",
+                "EDITABLE": "Editável",
+                "SOFT-DELETE": "Eliminação Suave",
+                "IS-A": "Especialização",
+                "IS-DEPENDENT": "Dependente",
+                "MULTIPLE-VALUES": "Múltiplos Valores",
+                "UPDATED-AT": "Atualizada a",
+                "CREATED-AT": "Criada a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "PROP-UNIT-TYPES": {
+            "TITLE": "Tipos de Unidade de Propriedade",
+            "TABLE": {
+                "NAME": "Nome",
+                "ABBRV": "Abreviação",
+                "STATE": "Estado",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "REFERENCED-PROPERTY-VALUES": {
+            "TITLE": "Valores de Proprieade Referenciada",
+            "SELECT-REFERENCED-PROPERTY": {
+                "TITLE": "Proprieade Referenciada",
+                "PLACEHOLDER": "Selecione uma proprieade referenciada."
+            },
+            "REFERENCED-BY": "Referenciada por",
+            "TABLE": {
+                "VALUE": "Valor",
+                "STATE": "Estado",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "CONSTANTS": {
+            "TITLE": "Constantes",
+            "TABLE": {
+                "NAME": "Nome",
+                "VALUE-TYPE": "Tipo de Valor",
+                "VALUE": "Valor",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a",
+                "LANGUAGE": "Linguagem"
+            }
+        },
+        "WAITING-LINK": {
+            "TITLE": "Ligações de Espera",
+            "TABLE": {
+                "IS": "é",
+                "HAS-BEEN": "foi",
+                "WAITING-TRANSACTION-STEP": "Passo de Transação à Espera",
+                "WAITED-TRANSACTION-STEP": "Espera pelo Passo de Transação",
+                "UPDATED-AT": "Atualizado a",
+                "CREATED-AT": "Criado a"
+            }
+        },
+        "PROCESS-DIAGRAM": {
+            "TITLE": "Criar Diagrama de Processo"
+        },
+        "FACT-DIAGRAM": {
+            "TITLE": "Criar Diagrama de Facto"
+        },
+        "RESET-DATA": {
+            "TITLE": "Reset Dados Utilização",
+            "CONFIRMATION": "⚠ Mensagem de Aviso\nTem certeza de que deseja excluir todos os dados inseridos pelos utilizadores? Esta ação é irreversível!",
+            "DOUBLE-CONFIRMATION": "\uD83D\uDD25 ATENÇÃO: Isto apagará permanentemente TODOS os dados inseridos pelos utilizadores. Esta ação NÃO PODE ser desfeita.",
+            "SUCCESS": "Dados Utilização Apagados",
+            "ERROR": "Ocorreu um erro. Tente novamente mais tarde."
+        }
+    },
+
+    "PROCESS-DIAGRAM": {
+        "BUTTON-SAVE-DIAGRAM": "Guardar Diagrama de Processo",
+        "SAVE-DATA": {
+            "BUTTON": "Guardar Dados",
+            "ALREADY-SAVED": "Os dados já estão guardados.",
+            "ERROR": "Ocorreu um erro ao guardar os dados do diagrama de processo. Por favor, tente novamente.",
+            "SUCCESS": "Dados do Diagrama de Processo guardados com sucesso!"
+        }
+    },
+
+    "PROCESS-DIAGRAM-MODAL": {
+        "TITLE": "Escolher origem dos dados para o diagrama de processo",
+        "SELECT-PROCESS-TYPE": {
+            "TITLE": "Selecione o Tipo de Processo",
+            "PLACEHOLDER": "Selecione o tipo de processo para o diagrama"
+        },
+        "SELECT-SOURCE": {
+            "TITLE": "Selecione a Origem dos Dados",
+            "PLACEHOLDER": "Selecione a origem dos dados para o diagrama de processo",
+            "OPTIONS": {
+                "CURRENT-DB": "Base de Dados Atual",
+                "XML-FILE": "Ficheiro XML",
+                "PROCESS-DIAGRAM-TABLE": "Tabela de Diagrama de Processo"
+            }
+        },
+        "XML-FILE": {
+            "TITLE": "Carregar Ficheiro XML",
+            "PLACEHOLDER": "Selecione um ficheiro XML para carregar"
+        },
+        "PROCESS-DIAGRAM-TABLE": {
+            "TITLE": "Diagrama de Processo Predefinido",
+            "PLACEHOLDER": "Selecione um diagrama de processo predefinido"
+        },
+        "BUTTON": "Gerar Diagrama"
+    },
+
+    "SAVE-PROCESS-DIAGRAM-MODAL": {
+        "TITLE": "Guardar Diagrama de Processo",
+        "SAVE": {
+            "ERROR": "Ocorreu um erro ao guardar o diagrama de processo. Por favor, tente novamente.",
+            "SUCCESS": "Diagrama de Processo guardado com sucesso!"
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome do Diagrama",
+            "PLACEHOLDER": "Insira um nome para o diagrama de processo"
+        },
+        "DESCRIPTION-FIELD": {
+            "TITLE": "Descrição do Diagrama",
+            "PLACEHOLDER": "Insira uma descrição para o diagrama de processo"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "FACT-DIAGRAM": {
+        "BUTTON-SAVE-DIAGRAM": "Guardar Diagrama de Facto",
+        "SAVE-DATA": {
+            "BUTTON": "Guardar Dados",
+            "ALREADY-SAVED": "Os dados já estão guardados.",
+            "ERROR": "Ocorreu um erro ao guardar os dados do diagrama de facto. Por favor, tente novamente.",
+            "SUCCESS": "Dados do Diagrama de Facto guardados com sucesso!"
+        }
+    },
+
+    "FACT-DIAGRAM-MODAL": {
+        "TITLE": "Escolher origem dos dados para o diagrama de facto",
+        "SELECT-SOURCE": {
+            "TITLE": "Selecione a Origem dos Dados",
+            "PLACEHOLDER": "Selecione a origem dos dados para o diagrama de facto",
+            "OPTIONS": {
+                "CURRENT-DB": "Base de Dados Atual",
+                "XML-FILE": "Ficheiro XML",
+                "FACT-DIAGRAM-TABLE": "Tabela de Diagrama de Facto"
+            }
+        },
+        "XML-FILE": {
+            "TITLE": "Carregar Ficheiro XML",
+            "PLACEHOLDER": "Selecione um ficheiro XML"
+        },
+        "FACT-DIAGRAM-TABLE": {
+            "TITLE": "Diagrama de Facto Predefinido",
+            "PLACEHOLDER": "Selecione um diagrama de facto predefinido"
+        },
+        "BUTTON": "Gerar Diagrama"
+    },
+
+    "SAVE-FACT-DIAGRAM-MODAL": {
+        "TITLE": "Guardar Diagrama de Facto",
+        "SAVE": {
+            "ERROR": "Ocorreu um erro ao guardar o diagrama de facto. Por favor, tente novamente.",
+            "SUCCESS": "Diagrama de Facto guardado com sucesso!"
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome do Diagrama",
+            "PLACEHOLDER": "Insira um nome para o diagrama de facto"
+        },
+        "DESCRIPTION-FIELD": {
+            "TITLE": "Descrição do Diagrama",
+            "PLACEHOLDER": "Insira uma descrição para o diagrama de facto"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "TRANSACTION-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Tipo de Transação",
+            "ERROR": "Ocorreu um erro ao criar o Tipo de Transação. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Transação criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Tipo de Transação",
+            "ERROR": "Ocorreu um erro ao atualizar o Tipo de Transação. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Transação atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar este Tipo de Transação?",
+            "SUCCESS": "Tipo de Transação eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Tipo de Transação. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "RESULT-NAME-FIELD": {
+            "TITLE": "Nome do Resultado",
+            "PLACEHOLDER": "Insira um nome do resultado"
+        },
+        "SELECT-STATE": {
+            "TITLE": "Estado",
+            "PLACEHOLDER": "Selecione um estado",
+            "OPTIONS": {
+                "ACTIVE": "Ativo",
+                "INACTIVE": "Inativo"
+            }
+        },
+        "SELECT-PROCESS-TYPE": {
+            "TITLE": "Tipo de Processo",
+            "PLACEHOLDER": "Selecione um tipo de processo"
+        },
+        "SELECT-EXECUTER-ROLE": {
+            "TITLE": "Função Executora",
+            "PLACEHOLDER": "Selecione uma função executora"
+        },
+        "SELECT-RESTRICTION-QUERY": {
+            "TITLE": "Filtrar Processos para Iniciar Tarefa",
+            "PLACEHOLDER": "Selecione uma query para limitar a iniciação da tarefa"
+        },
+        "SELECT-TYPE": {
+            "TITLE": "Tipo",
+            "PLACEHOLDER": "Selecione um tipo",
+            "OPTIONS": {
+                "ORIGINAL": "Original",
+                "INFORMATIONAL": "Informativa",
+                "DOCUMENTAL": "Documental"
+            }
+        },
+        "SELECT-FRONTIER-TYPE": {
+            "TITLE": "Tipo de Fronteira",
+            "PLACEHOLDER": "Selecione um tipo de fronteira",
+            "OPTIONS": {
+                "INTERNAL": "Interna",
+                "EXTERNAL": "Externa"
+            }
+        },
+        "CHECKBOX-INIT-PROC": "Inicia Processo",
+        "CHECKBOX-END-PROC": "Finaliza Processo",
+        "CHECKBOX-INTERM-TASK": "Tarefa Intermédia",
+        "CHECKBOX-EXTERNAL": "Tarefa Externa",
+        "CHECKBOX-FRONTIER": "Tarefa de Fronteira",
+        "CHECKBOX-OWN-USER-ACCESS-ONLY": "Acesso Apenas para o Utilizador Próprio",
+        "CHECKBOX-AUTO-ACTIVATE": "Ativação Automática",
+        "BUTTON": "Guardar"
+    },
+
+    "ENTITY-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Tipo de Entidade",
+            "ERROR": "Ocorreu um erro ao criar o Tipo de Entidade. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Entidade criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Tipo de Entidade",
+            "ERROR": "Ocorreu um erro ao atualizar o Tipo de Entidade. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Entidade atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar este Tipo de Entidade?",
+            "SUCCESS": "Tipo de Entidade eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Tipo de Entidade. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "ID-NAME-FIELD": {
+            "TITLE": "Nome Identificativo",
+            "PLACEHOLDER": "Insira um nome identificativo"
+        },
+        "SELECT-STATE": {
+            "TITLE": "Estado",
+            "PLACEHOLDER": "Selecione um estado",
+            "OPTIONS": {
+                "ACTIVE": "Ativo",
+                "INACTIVE": "Inativo"
+            }
+        },
+        "SELECT-TRANSACTION-TYPE": {
+            "TITLE": "Tipo de Transação",
+            "PLACEHOLDER": "Selecione um tipo de transação"
+        },
+        "CHECKBOX-HAS-MANY": "Tipo de Entidade Um-Para-Muitos ou Muitos-Para-Muitos",
+        "CHECKBOX-AUTO-GENERATED": "Tipo de Entidade Auto Gerado",
+        "CHECKBOX-EXTERNAL": "Tipo de Entidade Externo",
+        "CHECKBOX-USER-DETAILS": "Utilizada para a especificação de Detalhes de Utilizador",
+        "BUTTON": "Guardar"
+    },
+
+    "PROPERTY-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Propriedade",
+            "ERROR": "Ocorreu um erro ao criar a Propriedade. Por favor, tente novamente.",
+            "SUCCESS": "Propriedade criada com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Propriedade",
+            "ERROR": "Ocorreu um erro ao atualizar a Propriedade. Por favor, tente novamente.",
+            "SUCCESS": "Propriedade atualizada com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar esta Propriedade?",
+            "SUCCESS": "Propriedade eliminada com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar a Propriedade. Por favor, tente novamente mais tarde.",
+            "IN-USAGE-ACTIONS-QUERIES": "Não é possível eliminar a Propriedade. Está atualmente a ser utilizada em ações e queries ativas.",
+            "IN-USAGE-ACTIONS": "Não é possível eliminar a Propriedade. Está atualmente a ser utilizada em ações ativas.",
+            "IN-USAGE-QUERIES": "Não é possível eliminar a Propriedade. Está atualmente a ser utilizada em queries ativas."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "SELECT-ENTITY-TYPE": {
+            "TITLE": "Tipo de Entidade",
+            "PLACEHOLDER": "Selecione um tipo de entidade"
+        },
+        "SELECT-STATE": {
+            "TITLE": "Estado",
+            "PLACEHOLDER": "Selecione um estado",
+            "OPTIONS": {
+                "ACTIVE": "Ativo",
+                "INACTIVE": "Inativo"
+            }
+        },
+        "SELECT-VALUE-TYPE": {
+            "TITLE": "Tipo de Valor",
+            "PLACEHOLDER": "Selecione um tipo de valor",
+            "OPTIONS": {
+                "TEXT": "Texto",
+                "BOOL": "Booleano",
+                "INT": "Número Inteiro",
+                "DOUBLE": "Número Real",
+                "ENUM": "Enumerado",
+                "DATE": "Data",
+                "TIME": "Horário",
+                "PROP-REF": "Referência",
+                "FILE": "Ficheiro"
+            }
+        },
+        "PROP-ALLOWED-VALUES-TABLE": {
+            "TITLE": "Valores Permitidos de Propriedade",
+            "ADD-VALUE": "Adicionar Valor",
+            "REMOVE-VALUE": "Remover",
+            "VALUE-PLACEHOLDER": "Insira um valor",
+            "SELECT-STATE-PLACEHOLDER": "Selecione um estado"
+        },
+        "SELECT-SCOPE": {
+            "TITLE": "Âmbito",
+            "PLACEHOLDER": "Selecione um âmbito",
+            "OPTIONS": {
+                "ENTITY": "Entidade",
+                "PROCESS": "Processo",
+                "GLOBAL": "Global"
+            }
+        },
+        "SELECT-UNIT-TYPE": {
+            "TITLE": "Tipo de Unidade",
+            "PLACEHOLDER": "Selecione um tipo de unidade"
+        },
+        "SELECT-FK-PROPERTY": {
+            "TITLE": "Propriedade Referenciada",
+            "PLACEHOLDER": "Selecione a propriedade referenciada"
+        },
+        "SELECT-FK-ENTITY-TYPE": {
+            "TITLE": "Tipo de Entidade Referenciado",
+            "PLACEHOLDER": "Selecione o tipo de entidade referenciado"
+        },
+        "CHECKBOX-REFERENCE-SPECIFIC-PROPERTY": "Referenciar uma propriedade específica do tipo de entidade referenciado selecionado.",
+        "CHECKBOX-PART-OF": "Propriedade de Ligação de um Tipo de Entidade Um-Para-Muitos ou Muitos-Para-Muitos",
+        "CHECKBOX-REQUIRES-TRANSLATION": "Requer Tradução",
+        "CHECKBOX-EDITABLE": "Editável",
+        "CHECKBOX-SOFT-DELETE": "Eliminação Suave",
+        "CHECKBOX-IS-A": "Especialização",
+        "CHECKBOX-IS-DEPENDENT": "Dependente",
+        "CHECKBOX-MULTIPLE-VALUES": "Múltiplos Valores",
+        "ALREADY-ASSIGNED-TO-PROPERTY": "Já atribuído à propriedade",
+        "BUTTON": "Guardar"
+    },
+
+    "PROP-UNIT-TYPES-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Tipo de Unidade de Propriedade",
+            "ERROR": "Ocorreu um erro ao criar o Tipo de Unidade de Propriedade. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Unidade de Propriedade criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Tipo de Unidade de Propriedade",
+            "ERROR": "Ocorreu um erro ao atualizar o Tipo de Unidade de Propriedade. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Unidade de Propriedade atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar este Tipo de Unidade de Propriedade?",
+            "SUCCESS": "Tipo de Unidade de Propriedade eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Tipo de Unidade de Propriedade. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "ABBRV-FIELD": {
+            "TITLE": "Abreviação",
+            "PLACEHOLDER": "Insira uma abreviação identificativa"
+        },
+        "SELECT-STATE": {
+            "TITLE": "Estado",
+            "PLACEHOLDER": "Selecione um estado",
+            "OPTIONS": {
+                "ACTIVE": "Ativo",
+                "INACTIVE": "Inativo"
+            }
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "VALUE-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Valor de Propriedade Referenciada",
+            "ERROR": "Ocorreu um erro ao criar o Valor de Propriedade Referenciada. Por favor, tente novamente.",
+            "SUCCESS": "Valor de Propriedade Referenciada criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Valor de Propriedade Referenciada",
+            "ERROR": "Ocorreu um erro ao atualizar o Valor de Propriedade Referenciada. Por favor, tente novamente.",
+            "SUCCESS": "Valor de Propriedade Referenciada atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar este Valor de Propriedade Referenciada?",
+            "SUCCESS": "Valor de Propriedade Referenciada eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Valor de Propriedade Referenciada. Por favor, tente novamente mais tarde."
+        },
+        "VALUE-FIELD": {
+            "TITLE": "Valor",
+            "PLACEHOLDER": "Insira um valor"
+        },
+        "SELECT-STATE": {
+            "TITLE": "Estado",
+            "PLACEHOLDER": "Selecione um estado",
+            "OPTIONS": {
+                "ACTIVE": "Ativo",
+                "INACTIVE": "Inativo"
+            }
+        },
+        "BUTTON": "Atualizar"
+    },
+
+    "CONSTANTS-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Constante",
+            "ERROR": "Ocorreu um erro ao criar a Constante. Por favor, tente novamente.",
+            "SUCCESS": "Constante criada com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Constante",
+            "ERROR": "Ocorreu um erro ao atualizar a Constante. Por favor, tente novamente.",
+            "SUCCESS": "Constante atualizada com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar esta Constante?",
+            "SUCCESS": "Constante eliminada com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar a Constante. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "VALUE": {
+            "TITLE": "Valor",
+            "PLACEHOLDER": "Insira o valor da constante"
+        },
+        "SELECT-VALUE-TYPE": {
+            "TITLE": "Tipo de Valor",
+            "PLACEHOLDER": "Selecione um tipo de valor",
+            "OPTIONS": {
+                "TEXT": "Texto",
+                "BOOL": "Booleano",
+                "INT": "Inteiro",
+                "DOUBLE": "Real",
+                "ENUM": "Enumerado",
+                "DATE": "Data",
+                "TIME": "Tempo"
+            }
+        },
+        "SELECT-BOOL-VALUE": {
+            "PLACEHOLDER": "Selecione o valor da constante",
+            "TRUE": "Verdadeiro",
+            "FALSE": "Falso"
+        },
+        "ENUM-VALUES-TABLE": {
+            "TITLE": "Valores Enumerados da Constante",
+            "ADD-VALUE": "Adicionar Valor",
+            "REMOVE-VALUE": "Remover",
+            "VALUE-PLACEHOLDER": "Insira um valor"
+        },
+        "BUTTON": "Save"
+    },
+
+    "ROLES-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Função",
+            "ERROR": "Ocorreu um erro ao criar a Função. Por favor, tente novamente.",
+            "SUCCESS": "Função criada com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Função",
+            "ERROR": "Ocorreu um erro ao atualizar a Função. Por favor, tente novamente.",
+            "SUCCESS": "Função atualizada com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar esta Função?",
+            "SUCCESS": "Função eliminada com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar a Função. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "USERS-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Utilizador",
+            "ERROR": "Ocorreu um erro ao criar o Utilizador. Por favor, tente novamente.",
+            "SUCCESS": "Utilizador criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Utilizador",
+            "ERROR": "Ocorreu um erro ao atualizar o Utilizador. Por favor, tente novamente.",
+            "SUCCESS": "Utilizador atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar este Utilizador?",
+            "SUCCESS": "Utilizador eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Utilizador. Por favor, tente novamente mais tarde."
+        },
+        "NAME-FIELD": {
+            "TITLE": "Nome",
+            "PLACEHOLDER": "Insira um nome"
+        },
+        "NIF-FIELD": {
+            "TITLE": "NIF",
+            "PLACEHOLDER": "Insira um NIF"
+        },
+        "EMAIL-FIELD": {
+            "TITLE": "Email",
+            "PLACEHOLDER": "Insira um email"
+        },
+        "PASSWORD-FIELD": {
+            "TITLE": "Password",
+            "PLACEHOLDER": "Insira uma password"
+        },
+        "CONFIRM-PASSWORD-FIELD": {
+            "TITLE": "Confirmação Password",
+            "PLACEHOLDER": "Confirme a password"
+        },
+        "USERNAME-FIELD": {
+            "TITLE": "Username",
+            "PLACEHOLDER": "Insira um username"
+        },
+        "SELECT-LANGUAGE": {
+            "TITLE": "Linguagem",
+            "PLACEHOLDER": "Escolha uma linguagem"
+        },
+        "SELECT-USER-DETAILS-ENT-TYPE": {
+            "TITLE": "Tipo de Entidade para Detalhes de Utilizador",
+            "PLACEHOLDER": "Escolha um tipo de entidade para a especificação de detalhes de utilizador"
+        },
+        "CHECKBOX-USER-DETAILS-SPECIFICATION": "Especificar Detalhes de Utilizador Extra",
+        "CHECKBOX-CHANGE-PASSWORD": "Mudar Password",
+        "PASSWORDS-DONT-MATCH": "As passwords não são iguais.",
+        "BUTTON": "Guardar"
+    },
+
+    "ROLE-INITIATES-TRANSACTIONS-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar registo de Função Inicia Transação",
+            "ERROR": "Ocorreu um erro ao criar o registo de Função Inicia Transação. Por favor, tente novamente.",
+            "SUCCESS": "Registo de Função Inicia Transação criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar registo de Função Inicia Transação",
+            "ERROR": "Ocorreu um erro ao atualizar o registo de Função Inicia Transação. Por favor, tente novamente.",
+            "SUCCESS": "Registo de Função Inicia Transação atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar esta registo de Função Inicia Transação?",
+            "SUCCESS": "Registo de Função Inicia Transação eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o registo de Função Inicia Transação. Por favor, tente novamente mais tarde."
+        },
+        "SELECT-ROLE": {
+            "TITLE": "Função",
+            "PLACEHOLDER": "Selecione uma função"
+        },
+        "SELECT-TRANSACTION-TYPE": {
+            "TITLE": "Tipo de Transação",
+            "PLACEHOLDER": "Selecione um tipo de transação"
+        },
+        "CHECKBOX-OWN-USER-ACCESS-ONLY": "Acesso Apenas para o Utilizador Próprio",
+        "BUTTON": "Guardar"
+    },
+
+    "ROLE-HAS-USERS-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar registo de Função de Utilizador",
+            "ERROR": "Ocorreu um erro ao criar o registo de Função de Utilizador. Por favor, tente novamente.",
+            "SUCCESS": "Registo de Função de Utilizador criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar registo de Função de Utilizador",
+            "ERROR": "Ocorreu um erro ao atualizar o registo de Função de Utilizador. Por favor, tente novamente.",
+            "SUCCESS": "Registo de Função de Utilizador atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar esta registo de Função de Utilizador?",
+            "SUCCESS": "Registo de Função de Utilizador eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o registo de Função de Utilizador. Por favor, tente novamente mais tarde."
+        },
+        "SELECT-ROLE": {
+            "TITLE": "Função",
+            "PLACEHOLDER": "Selecione uma função"
+        },
+        "SELECT-USER": {
+            "TITLE": "Utilizador",
+            "PLACEHOLDER": "Selecione um utilizador"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "WAITING-LINKS-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Waiting Link",
+            "ERROR": "Ocorreu um erro ao criar o Waiting Link. Por favor, tente novamente.",
+            "SUCCESS": "Waiting Link criado com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Waiting Link",
+            "ERROR": "Ocorreu um erro ao atualizar o Waiting Link. Por favor, tente novamente.",
+            "SUCCESS": "Waiting Link atualizado com sucesso!"
+        },
+        "DELETE": {
+            "CONFIRMATION": "Tem a certeza que prentende eliminar esta Waiting Link?",
+            "SUCCESS": "Waiting Link eliminado com sucesso.",
+            "ERROR": "Ocorreu um erro ao eliminar o Waiting Link. Por favor, tente novamente mais tarde."
+        },
+        "GROUP-WAITED-TRANSACTION-STEP": "Espera pelo Passo de Transação",
+        "IS": "é",
+        "HAS-BEEN": "foi",
+        "GROUP-WAITING-TRANSACTION-STEP": "Passo de Transação à Espera",
+        "SELECT-WAITED-TRANSACTION-TYPE": {
+            "TITLE": "Espera pelo Tipo de Transação",
+            "PLACEHOLDER": "Selecione um tipo de transação"
+        },
+        "SELECT-WAITED-TRANSACTION-STATE": {
+            "TITLE": "Espera pelo Tipo de Estado",
+            "PLACEHOLDER": "Selecione um estado de transação"
+        },
+        "SELECT-WAITING-TRANSACTION-TYPE": {
+            "TITLE": "Tipo de Estado à Espera",
+            "PLACEHOLDER": "Selecione um estado de transação"
+        },
+        "SELECT-WAITING-TRANSACTION-STATE": {
+            "TITLE": "Tipo de Estado à Espera",
+            "PLACEHOLDER": "Selecione um estado de transação"
+        },
+        "MAX-FIELD": {
+            "TITLE": "Máximo",
+            "PLACEHOLDER": "Insira o número máximo de ocurrências"
+        },
+        "MIN-FIELD": {
+            "TITLE": "Mínimo",
+            "PLACEHOLDER": "Insira o número mínimo de ocurrências"
+        },
+        "BUTTON": "Guardar"
+    },
+
+    "MODAL-PARAMETERIZATION-TRANSLATION": {
+        "TITLE": "Tradução",
+        "NAME-FIELD": "Nome",
+        "VALUE-FIELD": "Valor",
+        "RT-NAME-FIELD": "Nome do Resultado",
+        "ID-NAME-FIELD": "Nome Identificativo",
+        "ID-NAME-PLACEHOLDER": "Insira um nome identificativo",
+        "ROLE": {
+            "TITLE": "Função",
+            "ERROR": "Ocorreu um erro ao traduzir a Função. Por favor, tente novamente.",
+            "SUCCESS": "Função traduzida com sucesso!"
+        },
+        "PROCESS-TYPE": {
+            "TITLE": "Tipo de Processo",
+            "ERROR": "Ocorreu um erro ao traduzir o Tipo de Processo. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Processo traduzido com sucesso!"
+        },
+        "TRANSACTION-TYPE": {
+            "TITLE": "Tipo de Transação",
+            "ERROR": "Ocorreu um erro ao traduzir o Tipo de Transação. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Transação traduzido com sucesso!"
+        },
+        "ENTITY-TYPE": {
+            "TITLE": "Tipo de Entidade",
+            "ERROR": "Ocorreu um erro ao traduzir o Tipo de Entidade. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Entidade traduzido com sucesso!"
+        },
+        "PROPERTY": {
+            "TITLE": "Propriedade",
+            "ERROR": "Ocorreu um erro ao traduzir a Propriedade. Por favor, tente novamente.",
+            "SUCCESS": "Propriedade traduzida com sucesso!",
+            "PROP-ALLOWED-VALUES-TABLE-TITLE": "Valores Permitidos de Propriedade"
+        },
+        "PROP-UNIT-TYPE": {
+            "TITLE": "Tipo de Unidade de Propriedade",
+            "ERROR": "Ocorreu um erro ao traduzir o Tipo de Unidade de Propriedade. Por favor, tente novamente.",
+            "SUCCESS": "Tipo de Unidade de Propriedade traduzido com sucesso!"
+        },
+        "REFERENCED-PROPERTY-VALUE": {
+            "TITLE": "Valor de Proprieade Referenciada",
+            "ERROR": "Ocorreu um erro ao traduzir o Valor de Proprieade Referenciada. Por favor, tente novamente.",
+            "SUCCESS": "Valor de Proprieade Referenciada traduzido com sucesso!"
+        },
+        "CONSTANT": {
+            "TITLE": "Constante",
+            "ERROR": "Ocorreu um erro ao traduzir a Constante. Por favor, tente novamente.",
+            "SUCCESS": "Constante traduzida com sucesso!",
+            "ENUM-VALUES-TABLE-TITLE": "Valores Enumerados"
+        },
+        "BUTTON": "Traduzir"
+    },
+
+    "USER-DETAILING-DASHBOARD-MODAL": {
+        "CREATE": {
+            "TITLE": "Criar Detalhes de Utilizador",
+            "ERROR": "Ocorreu um erro ao criar os Detalhes de Utilizador. Por favor, tente novamente.",
+            "SUCCESS": "Detalhes de Utilizador criados com sucesso!"
+        },
+        "UPDATE": {
+            "TITLE": "Atualizar Detalhes de Utilizador",
+            "ERROR": "Ocorreu um erro ao atualizar os Detalhes de Utilizador. Por favor, tente novamente.",
+            "SUCCESS": "Detalhes de Utilizador atualizados com sucesso!"
+        },
+        "SELECT-USER": {
+            "TITLE": "Utilizador",
+            "PLACEHOLDER": "Selecione um utilizador"
+        },
+        "BUTTON": "Continuar"
+    },
+
+    "MODAL-FORM-DASHBOARD-HEADER": "Preencha o seguinte formulário",
+
+    "BI-MANAGEMENT": {
+        "BI-DASHBOARD": {
+            "CONTROL-PANEL": "Painel de Controlo",
+            "BI-ELEMENTS": "Elementos BI",
+            "COLLECTION": "Coleção",
+            "KNOWAGE-ELEMENTS": "Elementos Knowage",
+            "BI-TOOLS": "Ferramentas BI"
+        },
+        "BI-ELEMENT": {
+            "COLLECTION": {
+                "SEARCH": {
+                    "PLACEHOLDER": "Procurar por título e descrição",
+                    "ACTION": "Procurar"
+                },
+                "DELETE": {
+                    "CONFIRMATION": "Tem a certeza que prentende eliminar este Elemento de BI da sua coleção?",
+                    "SUCCESS": "Elemento de BI eliminado da sua coleção.",
+                    "ERROR": "Ocorreu um erro ao eliminar o Elemento BI da sua coleção. Por favor, tente novamente mais tarde."
+                },
+                "DETAILS": "Detalhes",
+                "NO-ELEMENTS": "Não há Elementos BI na sua coleção."
+            },
+            "DETAILS": {
+                "ADD": {
+                    "SUCCESS": "O elemento foi adicionado à sua coleção.",
+                    "ERROR": "Ocorreu um erro ao adicionar o Elemento BI à sua coleção. Por favor, tente novamente mais tarde."
+                },
+                "TABLE": {
+                    "DESCRIPTION": "Descrição",
+                    "TYPE": "Tipo",
+                    "BI-TOOL": "Ferramenta BI",
+                    "CREATED-AT": "Criado a"
+                },
+                "CLOSE": "Fechar",
+                "VIEW": "Ver",
+                "ELEMENT-DETAILS": "detalhes"
+            },
+            "MANAGEMENT": {
+                "DELETE": {
+                    "CONFIRMATION": "Tem a certeza que prentende eliminar este Elemento de BI?",
+                    "SUCCESS": "Elemento de BI eliminado com sucesso.",
+                    "ERROR": "Ocorreu um erro ao eliminar o Elemento BI. Por favor, tente novamente mais tarde."
+                },
+                "CREATE": "Novo Elemento BI",
+                "TABLE": {
+                    "TITLE": "Tabela de Elementos BI",
+                    "PREVIEW": "Pré-Visualização",
+                    "NAME": "Nome",
+                    "DESCRIPTION": "Descrição",
+                    "TYPE-SLUG": "Slug de Tipo",
+                    "BI-TOOL": "Ferramenta BI",
+                    "CREATED-AT": "Criado a",
+                    "DETAILS": "Detalhes",
+                    "EDIT": "Editar",
+                    "DELETE": "Apagar"
+                },
+                "LOADING": "Carregando",
+                "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+                "OPERATION-ERROR": "Operação não realizada! Por favor, tente mais tarde."
+            },
+            "MODAL": {
+                "TITLE": "Elementos BI",
+                "BI-TOOLS": "Ferramentas BI",
+                "BI-TOOL": "Ferramenta BI",
+                "BI-TOOLS-PLACEHOLDER": "Escolha uma ferramenta BI",
+                "SLUG-TYPE": "Tipo",
+                "SLUG-TYPES": "Slug de Tipos",
+                "SLUG-TYPES-PLACEHOLDER": "Escolha um tipo",
+                "NAME": "Nome",
+                "NAME-PLACEHOLDER": "Insira o nome do elemento BI",
+                "DESCRIPTION": "Descrição",
+                "DESCRIPTION-PLACEHOLDER": "Insira a descrição do elemento BI",
+                "INTEGRATION-URL": "URL de Integração",
+                "INTEGRATION-URL-PLACEHOLDER": "Insira o URL de Integração do elemento BI",
+                "PREVIEW-IMAGE": "Imagem de Pré-Visualização",
+                "REMOVE-IMAGE": "Remover imagem",
+                "SAVE": "Guardar",
+                "MAXIMUM-SIZE-ALLOWED": "O tamanho máximo permitido é",
+                "ONLY-IMAGES-ALLOWED": "Apenas imagens são permitidas( JPG | PNG )",
+                "MAXIMUM-DIMENSIONS-ALLOWED": "Dimensões máximas permitidas"
+            },
+            "TYPE": {
+                "DELETE": {
+                    "CONFIRMATION": "Tem a certeza que prentende eliminar este Tipo de Elemento de BI?",
+                    "SUCCESS": "Tipo de Elemento de BI eliminado com sucesso.",
+                    "ERROR": "Ocorreu um erro ao eliminar o Tipo de Elemento BI. Por favor, tente novamente mais tarde."
+                },
+                "CREATE": "Criar Tipo de Elemento BI",
+                "TABLE": {
+                    "TITLE": "Tabela de Tipos de Elemento BI",
+                    "NAME": "Nome",
+                    "SLUG": "Slug",
+                    "DESCRIPTION": "Descrição",
+                    "ACTIONS": "Ações",
+                    "EDIT": "Editar",
+                    "DELETE": "Apagar"
+                },
+                "LOADING": "Carregando",
+                "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+                "OPERATION-ERROR": "Operação não realizada! Por favor, tente mais tarde."
+            },
+            "TYPE-MODAL": {
+                "TITLE": "Tipos de Elemento BI",
+                "NAME": "Nome",
+                "NAME-PLACEHOLDER": "Insira um nome para este Tipo de Elemento BI",
+                "SLUG": "Slug",
+                "SLUG-PLACEHOLDER": "Insira um slug para este Tipo de Elemento BI",
+                "DESCRIPTION": "Descrição",
+                "DESCRIPTION-PLACEHOLDER": "Insira uma descrição para este Tipo de Elemento BI",
+                "SAVE": "Guardar"
+            },
+            "ELEMENT": {
+                "SEARCH": {
+                    "PLACEHOLDER": "Procurar por título e descrição",
+                    "ACTION": "Procurar"
+                },
+                "DETAILS": "Detalhes"
+            }
+        },
+        "BI-ENGINE": {
+            "BI-ELEMENTS": {
+                "DETAILS": "Detalhes"
+            },
+            "MANAGEMENT": {
+                "DELETE": {
+                    "CONFIRMATION": "Tem a certeza que prentende eliminar esta Ferramenta BI?",
+                    "SUCCESS": "Ferramenta BI BI eliminada com sucesso.",
+                    "ERROR": "Ocorreu um erro ao eliminar a Ferramenta BI. Por favor, tente novamente mais tarde."
+                },
+                "CREATE": "Criar Ferramenta BI",
+                "TABLE": {
+                    "TITLE": "Tabela de Ferramentas BI",
+                    "PREVIEW": "Pré-Visualização",
+                    "NAME": "Nome",
+                    "CREATED-AT": "Criada a",
+                    "ACTIONS": "Ações",
+                    "EDIT": "Editar",
+                    "DELETE": "Apagar"
+                },
+                "LOADING": "Carregando",
+                "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+                "OPERATION-ERROR": "Operação não realizada! Por favor, tente mais tarde."
+            },
+            "MODAL": {
+                "TITLE": "Ferramentas BI",
+                "NAME": "Nome",
+                "NAME-PLACEHOLDER": "Insira o nome da Ferramenta BI",
+                "PREVIEW-IMAGE": "Imagem de Pré-Visualização",
+                "REMOVE-IMAGE": "Remover imagem",
+                "SAVE": "Guardar",
+                "MAXIMUM-SIZE-ALLOWED": "O tamanho máximo permitido é",
+                "ONLY-IMAGES-ALLOWED": "Apenas imagens são permitidas( JPG | PNG )",
+                "MAXIMUM-DIMENSIONS-ALLOWED": "Dimensões máximas permitidas"
+            },
+            "ENGINE": {
+                "BI-ELEMENTS": "Lista de Elementos BI"
+            }
+        },
+        "BI-KNOWAGE": {
+            "DETAILS": {
+                "TITLE": "detalhes",
+                "DESCRIPTION": "Descrição",
+                "TYPE": "Tipo",
+                "PROFILE": "Perfil",
+                "CREATED-AT": "Criado a",
+                "CLOSE": "Fechar",
+                "OPEN-DOCUMENT": "Abrir Documento",
+                "ANALYSE": "Analisar",
+                "DATASET": "Conjunto de Dados",
+                "ANALYSE-DATASET": "Analisar conjunto de dados"
+            },
+            "LOGIN": {
+                "TITLE": "Login Knowage",
+                "USERNAME": "UserName",
+                "PASSWORD": "Password",
+                "BUTTON": "Login"
+            },
+            "MANAGEMENT": {
+                "DELETE": {
+                    "CONFIRMATION": "Tem a certeza que prentende eliminar este Elemento do Knowage?",
+                    "SUCCESS": "Elemento do Knowage eliminado com sucesso.",
+                    "ERROR": "Ocorreu um erro ao eliminar o Elemento do Knowage. Por favor, tente novamente mais tarde."
+                },
+                "ADD-ELEMENTS": "Criar Elemento do Knowage",
+                "SEE-DOCS": "Ver Documentos do Knowage",
+                "TABLE": {
+                    "TITLE": "Tabela de Elementos Knowage",
+                    "LABEL": "Rótulo",
+                    "PREVIEW": "Pré-Visualização",
+                    "NAME": "Nome",
+                    "DESCRIPTION": "Descrição",
+                    "TYPE": "Tipo",
+                    "PROFILE": "Perfil",
+                    "DATASET-LABEL": "Rótulo do Conjunto de Dados",
+                    "CREATED-AT": "Criado a",
+                    "ACTIONS": "Ações",
+                    "DETAILS": "Detalhes",
+                    "EDIT": "Editar",
+                    "DELETE": "Apagar"
+                },
+                "LOADING": "Carregando",
+                "OPERATION-SUCCESS": "Operação realizada com sucesso!",
+                "OPERATION-ERROR": "Operação não realizada! Por favor, tente mais tarde."
+            },
+            "MODAL": {
+                "TITLE": "Elementos do Knowage",
+                "LABEL": "Rótulo",
+                "LABEL-PLACEHOLDER": "Selecione o rótulo",
+                "LABELS": "Rótulos",
+                "NAME": "Nome",
+                "NAME-PLACEHOLDER": "Insira o nome do Knowage BI.",
+                "DESCRIPTION": "Descrição",
+                "DESCRIPTION-PLACEHOLDER": "Insira a descrição do Knowage BI",
+                "TYPE": "Tipo ",
+                "TYPE-PLACEHOLDER": "Insira o tipo do Knowage BI",
+                "PROFILE": "Perfil",
+                "PROFILE-PLACEHOLDER": "Insira o papel de perfil do Knowage BI",
+                "DATASET-LABEL": "Rótulo do Conjunto de Dados",
+                "DATASET-LABEL-PLACEHOLDER": "Insira o rótulo do conjunto de dados do Knowage BI",
+                "PREVIEW-IMAGE": "Imagem de Pré-Visualização",
+                "REMOVE-IMAGE": "Remover imagem",
+                "DISPLAY-TOOLBAR": "Mostrar Toolbar",
+                "DISPLAY-SLIDERS": "Mostrar Sliders",
+                "RESET-PARAMETERS": "Permitir reset dos parâmetros",
+                "SAVE": "Guardar",
+                "MAXIMUM-SIZE-ALLOWED": "O tamanho máximo permitido é",
+                "ONLY-IMAGES-ALLOWED": "Apenas imagens são permitidas( JPG | PNG )",
+                "MAXIMUM-DIMENSIONS-ALLOWED": "Dimensões máximas permitidas"
+            },
+            "ELEMENT": {
+                "SEARCH": {
+                    "PLACEHOLDER": "Procurar por título e descrição",
+                    "ACTION": "Procurar"
+                },
+                "DETAILS": "Detalhes"
+            }
+        },
+        "BI-WIDGETS": {
+            "CHARTS": {
+                "BI-ELEMENTS": "Elementos BI",
+                "KNOWAGE-ELEMENTS": "Elementos Knowage"
+            },
+            "COUNTER": {
+                "BI-ELEMENTS": "Elementos BI",
+                "SEE-DETAILS": "Ver Detalhes",
+                "KNOWAGE-ELEMENTS": "Elementos Knowage",
+                "TYPES": "Tipos",
+                "BI-TOOLS": "Ferramentas BI"
+            }
+        }
+    }
+}

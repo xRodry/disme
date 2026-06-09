@@ -1,0 +1,60 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body card-counter primary">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                <span class="count-numbers">{{ biElements.elementCounter }}</span>
+                <span class="count-name">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.BI-ELEMENTS' | translate }}</span>
+            </div>
+            <div class="card-footer primary d-flex align-items-center justify-content-between primary">
+                <a class="small text-white stretched-link" routerLink="/biManagement/BiElementManagement">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.SEE-DETAILS' | translate }}</a>
+                <div class="small text-white"><i class="fa fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-white mb-4">
+            <div class="card-body card-counter danger">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+                <span class="count-numbers">{{ biKnowages.elementCounter }}</span>
+                <span class="count-name">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.KNOWAGE-ELEMENTS' | translate }}</span>
+            </div>
+            <div class="card-footer danger d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" routerLink="/biManagement/BiKnowageManagement">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.SEE-DETAILS' | translate }}</a>
+                <div class="small text-white"><i class="fa fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4" >
+            <div class="card-body card-counter info">
+                <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                <span class="count-numbers">{{ biElementTypes.elementCounter }}</span>
+                <span class="count-name">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.TYPES' | translate }}</span>
+            </div>
+            <div class="card-footer info d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" routerLink="/biManagement/BiElementTypeManagement">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.SEE-DETAILS' | translate }}</a>
+                <div class="small text-white"><i class="fa fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body card-counter success">
+                <i class="fa fa-database"></i>
+                <span class="count-numbers">{{ biEngines.elementCounter }}</span>
+                <span class="count-name">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.BI-TOOLS' | translate }}</span>
+            </div>
+            <div class="card-footer success d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" routerLink="/biManagement/BiEngineManagement">{{ 'BI-MANAGEMENT.BI-WIDGETS.COUNTER.SEE-DETAILS' | translate }}</a>
+                <div class="small text-white"><i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

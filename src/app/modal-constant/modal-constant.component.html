@@ -1,0 +1,89 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!constant.id" class="modal-title">{{ 'CONSTANTS-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="constant.id" class="modal-title">{{ 'CONSTANTS-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'CONSTANTS-MODAL.NAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="constant.name" type="text"
+                       placeholder="{{ 'CONSTANTS-MODAL.NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="state">{{ 'CONSTANTS-MODAL.SELECT-VALUE-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="state"
+                           [items]="constantValueTypes"
+                           placeholder="{{ 'CONSTANTS-MODAL.SELECT-VALUE-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           (change)="clearValueInput()"
+                           [(ngModel)]="constant.value_type">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="valueTypeText">{{ 'CONSTANTS-MODAL.VALUE.TITLE' | translate }}</label>
+                <input *ngIf="!constant.value_type || constant.value_type === 'text'" class="form-control" id="valueTypeText"
+                       [(ngModel)]="constant.value" type="text" placeholder="{{ 'CONSTANTS-MODAL.VALUE.PLACEHOLDER' | translate }}">
+                <input *ngIf="constant.value_type === 'int'" class="form-control" id="valueTypeInt" [(ngModel)]="constant.value"
+                       type="number" placeholder="{{ 'CONSTANTS-MODAL.VALUE.PLACEHOLDER' | translate }}">
+                <input *ngIf="constant.value_type === 'double'" class="form-control" id="valueTypeDouble" [(ngModel)]="constant.value"
+                       type="number" placeholder="{{ 'CONSTANTS-MODAL.VALUE.PLACEHOLDER' | translate }}">
+                <input *ngIf="constant.value_type === 'date'" class="form-control" ngbDatepicker #dateValue="ngModel" #e="ngbDatepicker" (click)="e.toggle()" [autoClose]="true"
+                       id="valueTypeDate" (ngModelChange)="formatDate($event)" (change)="invalidDate = dateValue.invalid" [(ngModel)]="constant.ngbDate">
+                <input *ngIf="constant.value_type === 'time'" class="form-control" id="valueTypeTime" [(ngModel)]="constant.value"
+                       type="time">
+                <ng-select *ngIf="constant.value_type === 'bool'" id ="valueTypeBool"
+                           placeholder="{{ 'CONSTANTS-MODAL.SELECT-BOOL-VALUE.PLACEHOLDER' | translate }}"
+                           [items]="boolSelectValues"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="constant.value">
+                </ng-select>
+                <div *ngIf="constant.value_type === 'enum'" class="col-sm-12 table-responsive">
+                    <table ngDefaultControl class="form-group table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th><button type="button" (click)="addEnumValue()" class="btn btn-primary">{{ 'CONSTANTS-MODAL.ENUM-VALUES-TABLE.ADD-VALUE' | translate }}</button></th>
+                            <th colspan="2">{{ 'CONSTANTS-MODAL.ENUM-VALUES-TABLE.TITLE' | translate }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let constantEnumValue of constant.enumValues; let i = index">
+                            <td>
+                                <button [disabled]="constant.enumValues.length === 1" (click)="removeEnumValue(i)" class="btn btn-danger">
+                                    {{ 'CONSTANTS-MODAL.ENUM-VALUES-TABLE.REMOVE-VALUE' | translate }}
+                                </button>
+                            </td>
+                            <td  style="min-width: 150px">
+                                <input type="text" class="form-control" [(ngModel)]="constantEnumValue.value"
+                                       placeholder="{{ 'CONSTANTS-MODAL.ENUM-VALUES-TABLE.VALUE-PLACEHOLDER' | translate }}">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="disableSaveButton()">
+        {{ 'CONSTANTS-MODAL.BUTTON' | translate }}</button>
+</div>

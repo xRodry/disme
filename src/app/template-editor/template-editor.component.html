@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('template')">
+                <i class="fa fa-align-justify"></i> {{ 'TEMPLATES-MANAGEMENT.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openTemplateEditorModal()">
+                    {{ 'TEMPLATES-MANAGEMENT.CREATE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{templates.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('template')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="templateGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="templates"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "templateColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" role="button" (click)="showOrHideTable('userEvaluatedExpression')">
+                <i class="fa fa-align-justify"></i> {{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.TITLE' | translate }}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openUserEvaluatedExpressionEditorModal()">
+                    {{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.CREATE' | translate }}
+                </button>
+
+                <br>
+                <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{userEvaluatedExpressions.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+            </div>
+            <div [ngbCollapse]="!tablesToShow.includes('userEvaluatedExpression')" class="card-body">
+                <ag-grid-angular
+                    #agGrid
+                    style="width: 100%;"
+                    id="userEvaluatedExpressionGrid"
+                    class="ag-theme-blue"
+                    domLayout="autoHeight"
+                    [rowData]="userEvaluatedExpressions"
+                    [animateRows]="true"
+                    [pagination]="true"
+                    [suppressDragLeaveHidesColumns]="true"
+                    [paginationAutoPageSize]="false"
+                    [paginationPageSize]="10"
+                    [gridOptions]="gridOptions"
+                    [columnDefs] = "userEvaluatedExpressionColumnDefs"
+                ></ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

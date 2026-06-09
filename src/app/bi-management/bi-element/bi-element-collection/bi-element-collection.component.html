@@ -1,0 +1,61 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="row" >
+    <div class="col-sm-12">
+        <nav>
+            <div class="nav nav-tabs" >
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/biManagement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.CONTROL-PANEL' | translate }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/biManagement/biElement">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-ELEMENTS' | translate }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/biManagement/biElementCollection">{{ 'BI-MANAGEMENT.BI-DASHBOARD.COLLECTION' | translate }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/biManagement/biKnowage">{{ 'BI-MANAGEMENT.BI-DASHBOARD.KNOWAGE-ELEMENTS' | translate }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/biManagement/biEngines">{{ 'BI-MANAGEMENT.BI-DASHBOARD.BI-TOOLS' | translate }}</a>
+                </li>
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="input-group mb-5 col-12">
+                <input class="form-control form-control-lg" type="text" name="search" [(ngModel)]="searchText"
+                       autocomplete="off" placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.COLLECTION.SEARCH.PLACEHOLDER' | translate }}">
+                <div class="input-group-append">
+                    <button class="btn btn-danger btn-lg" type="button" >{{ 'BI-MANAGEMENT.BI-ELEMENT.COLLECTION.SEARCH.ACTION' | translate }}</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="biUserCollection?.length; else noBiElCol">
+            <div class="col-md-4" *ngFor="let biUserCollectionElement of biUserCollection | filter:searchText">
+                <div class="card" >
+                    <img [src]="biUserCollectionElement.preview" alt="{{ biUserCollectionElement.name }}" class="card-img-top" style="display: block;margin-left: auto;margin-right: auto; width: 100%; height: 160px;"/>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ biUserCollectionElement.name }}</h5>
+                        <p class="card-text">{{ biUserCollectionElement.description }}</p>
+                        <button class="btn btn-primary" routerLink="/biManagement/biElementDetails/{{ biUserCollectionElement.bi_element_id }}">
+                            <i class="fa fa-eye"></i> {{ 'BI-MANAGEMENT.BI-ELEMENT.COLLECTION.DETAILS' | translate }}
+                        </button>
+                        <button class="btn btn-danger float-right" (click)="deleteBiUserCollection( biUserCollectionElement.bi_element_id )">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #noBiElCol>
+            <div class="alert alert-info" role="alert">
+                {{ 'BI-MANAGEMENT.BI-ELEMENT.COLLECTION.NO-ELEMENTS' | translate }}
+            </div>
+        </ng-template>
+    </div>
+</div>

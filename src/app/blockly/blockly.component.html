@@ -1,0 +1,284 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong>{{ 'BLOCKLY-PAGE.ACTIONS' | translate }}</strong>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                        <button class="btn btn-block btn-primary" (click)='openLoadARModal(false)'>{{ 'BLOCKLY-PAGE.LOAD-AR' | translate }}
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                        <button class="btn btn-block btn-primary" (click)='parseXMLAndStoreActionRule()'>{{ 'BLOCKLY-PAGE.SAVE-TO-DB' | translate }}
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                        <button class="btn btn-block btn-dark" (click)='showCode()'>{{ 'BLOCKLY-PAGE.SHOW-CODE' | translate }}
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                        <button class="btn btn-block btn-dark" (click)='showXmlCode()'>{{ 'BLOCKLY-PAGE.SHOW-XML-BLOCKLY' | translate }}
+                        </button>
+                    </div>
+                    <div *ngIf="!this.actionRuleDraft"  class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                        <button [disabled]="!this.workspace.getAllBlocks().length" class="btn btn-block btn-primary"
+                                (click)='openActionRuleDraftModal()'>{{ 'BLOCKLY-PAGE.SAVE-DRAFT' | translate }}
+                        </button>
+                    </div>
+                    <div *ngIf="this.actionRuleDraft" class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                        <button class="btn btn-block btn-primary" (click)='openActionRuleDraftModal()'>{{ 'BLOCKLY-PAGE.UPDATE-DRAFT' | translate }}
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                        <button class="btn btn-block btn-primary" (click)='openLoadARModal(true)'>{{ 'BLOCKLY-PAGE.LOAD-DRAFT' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i>{{'BLOCKLY-PAGE.ACTION-RULES-MANAGER' | translate}}
+
+                <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); newActionRule()">
+                    {{ 'BLOCKLY-PAGE.NEW' | translate }}
+                </button>
+            </div>
+
+            <div class="card-body">
+
+                <div id="blocklyDiv" style="height: 600px; width: 100%"></div>
+
+                <xml id="toolbox" style="display: none;">
+
+                    <category id = "cat1" name = "General" colour="315">
+                        <block type="when_is_do"></block>
+                        <sep gap="40"></sep>
+                        <block type="action"></block>
+                        <sep gap="10"></sep>
+                        <block type="if_then">
+                            <value name="if_input">
+                                <block type="condition"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                        <block type="while">
+                            <value name="while_condition">
+                                <block type="condition"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                        <block type="for_each_set_do"></block>
+                    </category>
+
+                    <category id = "cat2" name = "Evaluate" colour = 140>
+                        <block type="condition"></block>
+                        <sep gap="10"></sep>
+                        <block type="comp_evaluated_expression"></block>
+                        <sep gap="10"></sep>
+                        <block type="user_evaluated_expression"></block>
+                    </category>
+
+                    <category id = "cat3" name = "Compute" colour="210">
+                        <block type="compute_expression"></block>
+                        <sep gap="10"></sep>
+                        <block type="query"></block>
+                        <sep gap="10"></sep>
+                        <block type="constant"></block>
+                        <sep gap="10"></sep>
+                        <block type="value"></block>
+                        <sep gap="10"></sep>
+                        <block type="current_user"></block>
+                        <sep gap="10"></sep>
+                        <block type="current_user_role"></block>
+                        <sep gap="10"></sep>
+                        <block type="user_role"></block>
+                        <sep gap="10"></sep>
+                        <block type="form_property_output"></block>
+                    </category>
+
+                    <category id = "cat8" name = "Context Variables" colour="245">
+                        <block type="set_context_variable"></block>
+                        <sep gap="10"></sep>
+                        <block type="get_context_variable"></block>
+                        <sep gap="10"></sep>
+                        <block type="update_context_variable"></block>
+                    </category>
+
+                    <category id = "cat9" name = "Scheduling Slots" colour="260">
+                        <block type="schedule_block">
+                            <value name="scheduling_user">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduling_start_date">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduling_start_time">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduling_end_date">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="schedule_end_time">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="schedule_weekdays">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="schedule_duration">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduling_slots_count">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                        <block type="scheduling_slot">
+                            <value name="scheduled_slot_agenda">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduled_slot_number">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduled_slot_day">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduled_slot_start_time">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                            <value name="scheduled_slot_end_time">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                        <block type="scheduling_additional_property">
+                            <value name="scheduling_additional_property">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                        </block>
+                    </category>
+
+                    <category id = "cat4" name = "User Input" colour="280">
+                        <block type="property"></block>
+                        <sep gap="10"></sep>
+                        <block type="property_simplified"></block>
+                        <sep gap="10"></sep>
+                        <block type="ent_type_form"></block>
+                        <sep gap="10"></sep>
+                        <block type="term_property">
+                            <value name="term_property_property_input">
+                                <block type="property_simplified_output"></block>
+                            </value>
+                        </block>
+                        <sep gap="40"></sep>
+                        <block type="condition_validation_condition"></block>
+                        <sep gap="10"></sep>
+                        <block type="filter_property_filter">
+                            <value name="filtered_property">
+                                <block type="filter_referenced_property_select"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                        <block type="form_calculation"></block>
+                        <sep gap="10"></sep>
+                        <block type="validation_condition">
+                            <value name="conditions">
+                                <block type="condition_validation_condition"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                        <block type="enable_condition">
+                            <value name="condition">
+                                <block type="condition">
+                                    <value name="input_terms">
+                                        <block type="comp_evaluated_expression"></block>
+                                    </value>
+                                </block>
+                            </value>
+                        </block>
+                        <block type="property_filter">
+                            <value name="filters">
+                                <block type="filter_property_filter">
+                                    <value name="filtered_property">
+                                        <block type="filter_referenced_property_select"></block>
+                                    </value>
+                                </block>
+                            </value>
+                        </block>
+                    </category>
+
+                    <category id = "cat5" name = "Properties" colour="50">
+                        <block type="property_single"></block>
+                        <sep gap="10"></sep>
+                        <block type="property_value"></block>
+                    </category>
+
+                    <category id = "cat6" name = "External Call" colour = "200">
+                        <block type="create_entity_external_call"></block>
+                        <sep gap="10"></sep>
+                        <block type="matching_property_crud_entity_action"></block>
+                        <sep gap="10"></sep>
+                        <block type="parameter_external_call"></block>
+                        <sep gap="10"></sep>
+                        <block type="property_single"></block>
+                        <sep gap="10"></sep>
+                        <block type="constant"></block>
+                        <sep gap="10"></sep>
+                        <block type="parameter_value"></block>
+                        <sep gap="10"></sep>
+                    </category>
+
+                    <category id = "cat7" name = "Local Endpoint Call" colour = "240">
+                        <block type="parameter_local_endpoint_call"></block>
+                        <sep gap="10"></sep>
+                        <block type="parameter_set_local_endpoint_call">
+                            <value name="parameters">
+                                <block type="parameter_local_endpoint_call"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                        <block type="matching_property_crud_entity_action"></block>
+                        <sep gap="10"></sep>
+                        <block type="response_queried_object"></block>
+                        <sep gap="10"></sep>
+                        <block type="response_property_local_endpoint_call"></block>
+                        <sep gap="10"></sep>
+                        <block type="response_set_local_endpoint_call">
+                            <value name="internal_property">
+                                <block type="response_property_local_endpoint_call"></block>
+                            </value>
+                        </block>
+                        <sep gap="10"></sep>
+                    </category>
+
+                    <category id = "cat6" name = "Blockchain" colour = "60">
+                        <block type="query"></block>
+                        <sep gap="10"></sep>
+                        <block type="rollback_transaction"></block>
+                        <sep gap="10"></sep>
+                        <block type="property_value"></block>
+                        <sep gap="10"></sep>
+                        <block type="constant"></block>
+                        <sep gap="10"></sep>
+                        <block type="value"></block>
+                        <sep gap="10"></sep>
+                        <block type="current_user"></block>
+                        <sep gap="10"></sep>
+                        <block type="current_user_role"></block>
+                        <sep gap="10"></sep>
+                        <block type="user_role"></block>
+                    </category>
+
+                </xml>
+            </div>
+        </div>
+    </div>
+</div>

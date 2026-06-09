@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'TRANSLATOR.FORM-TRANSLATOR' | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'TRANSLATOR.FORM-NAME-NEW' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="formBeingTranslated.name" type="text"
+                       placeholder="{{oldFormName}}">
+            </div>
+            <div *ngIf="!formBeingTranslated.hasTranslatedActionName" class="form-group">
+                <label for="translatedActionName">{{ 'TRANSLATOR.TRANSLATED-ACTION-NAME' | translate }}</label>
+                <input class="form-control" id="translatedActionName" [(ngModel)]="formBeingTranslated.action_name_user_language" type="text"
+                       placeholder= "{{formBeingTranslated.action_name}}" >
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" [disabled]="!(formBeingTranslated.action_name_user_language && formBeingTranslated.name)" (click)="saveData()">{{ 'FORM-MANAGEMENT.PROCEED-BUTTON' | translate }}</button>
+</div>

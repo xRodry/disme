@@ -1,0 +1,40 @@
+<!--
+  ~ Copyright © 2016 - 2024 Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.NAME' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="biElementType.name" type="text" placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.NAME-PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="slug">{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.SLUG' | translate }}</label>
+                <input class="form-control" id="slug" [(ngModel)]="biElementType.slug" type="text" placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.SLUG-PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="description">{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.DESCRIPTION' | translate }}</label>
+                <input class="form-control" id="description" [(ngModel)]="biElementType.description" type="text" placeholder="{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.DESCRIPTION-PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" [disabled]="cantSaveElementType()" (click)="saveData()">{{ 'BI-MANAGEMENT.BI-ELEMENT.TYPE-MODAL.SAVE' | translate }}</button>
+</div>

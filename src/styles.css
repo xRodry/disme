@@ -1,0 +1,43 @@
+/*
+ * Copyright © 2016 - 2024  Enterprise Engineering Lab /
+ * University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+ */
+
+/* You can add global styles to this file, and also import other style files */
+
+/**
+ * Blockly - Styles to be used in Blockly Blocks' FieldLabels.
+**/
+
+.blockTitle {
+    font-style: italic !important;
+    font-weight: bold !important;
+    font-size: 10pt !important;
+}
+
+.blockValueType {
+    font-style: italic !important;
+    font-size: 10pt !important;
+}
+
+/**
+ * DataTables - Styles for using striped-rows and fixedColumns at same time
+**/
+
+table.dataTable tbody tr:nth-of-type(odd) > .dtfc-fixed-left, table.dataTable tbody tr:nth-of-type(odd) > .dtfc-fixed-right {
+    background: #F3F3F3 !important;
+}
+
+table.dataTable tbody tr:nth-of-type(even) > .dtfc-fixed-left, table.dataTable tbody tr:nth-of-type(even) > .dtfc-fixed-right {
+    background: white !important;
+}
+
+/**
+ * Forms - Styles for the select options' label + descriptions
+**/
+
+.tooltip-container {
+    white-space: normal; /* Allows the text to wrap to the next line */
+    max-width: 300px; /* Adjust width as necessary */
+    word-wrap: break-word; /* Ensures long words wrap properly */
+}

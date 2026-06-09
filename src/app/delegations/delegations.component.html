@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> {{ 'DELEGATIONS.TITLE' | translate }}
+
+                    <button class="btn btn-sm btn-primary float-right" type="button" (click)="$event.stopPropagation(); openModal()">
+                        {{ 'DELEGATIONS.AVAILABLE-ACTIONS.NEW' | translate }}
+                    </button>
+
+                    <br>
+                    <small><i class="fa fa-bar-chart mr-0" aria-hidden="true"></i> {{delegations.length}} {{'PARAMETERIZATION.TABLE-ITEMS' | translate}}</small>
+                </div>
+                <div class="card-body">
+                    <ag-grid-angular
+                        #agGrid
+                        style="width: 100%;"
+                        id="delegations"
+                        class="ag-theme-blue"
+                        domLayout="autoHeight"
+                        [rowData]="delegations"
+                        [animateRows]="true"
+                        [pagination]="true"
+                        [suppressDragLeaveHidesColumns]="true"
+                        [paginationAutoPageSize]="false"
+                        [paginationPageSize]="10"
+                        [gridOptions]="gridOptions"
+                    ></ag-grid-angular>
+                </div>
+        </div>
+    </div>
+</div>

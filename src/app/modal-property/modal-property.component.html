@@ -1,0 +1,266 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!property.id" class="modal-title">{{ 'PROPERTY-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="property.id" class="modal-title">{{ 'PROPERTY-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'PROPERTY-MODAL.NAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="property.name" type="text"
+                       placeholder="{{ 'PROPERTY-MODAL.NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="state">{{ 'PROPERTY-MODAL.SELECT-STATE.TITLE' | translate }}</label>
+                <ng-select id ="state"
+                           [items]="propertyStates"
+                           placeholder="{{ 'PROPERTY-MODAL.SELECT-STATE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="property.state">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="entType">{{ 'PROPERTY-MODAL.SELECT-ENTITY-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="entType"
+                           [items]="entityTypes"
+                           placeholder="{{ 'PROPERTY-MODAL.SELECT-ENTITY-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="property.ent_type_id"
+                           (change)="changeSelectedEntityType()">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="valueType">{{ 'PROPERTY-MODAL.SELECT-VALUE-TYPE.TITLE' | translate }}</label>
+                <ng-select id ="valueType" [disabled]="property.cant_change_value_type_fk_ent_type"
+                           [items]="propertyValueTypes"
+                           placeholder="{{ 'PROPERTY-MODAL.SELECT-VALUE-TYPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="property.value_type"
+                           (change)="changeValueType()">
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="col-sm-12" *ngIf="property.value_type === 'enum'">
+            <div class="col-sm-12 table-responsive">
+                <table ngDefaultControl class="form-group table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th><button type="button" (click)="addPropAllowedValue()" class="btn btn-primary">{{ 'PROPERTY-MODAL.PROP-ALLOWED-VALUES-TABLE.ADD-VALUE' | translate }}</button></th>
+                            <th colspan="2">{{ 'PROPERTY-MODAL.PROP-ALLOWED-VALUES-TABLE.TITLE' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let propAllowedValue of property.property_values; let i = index">
+                            <td>
+                                <button [disabled]="property.property_values.length === 1" (click)="removePropAllowedValue(i)" class="btn btn-danger">
+                                    {{ 'PROPERTY-MODAL.PROP-ALLOWED-VALUES-TABLE.REMOVE-VALUE' | translate }}
+                                </button>
+                            </td>
+                            <td  style="min-width: 150px">
+                                <input type="text" class="form-control" [(ngModel)]="propAllowedValue.value"
+                                       placeholder="{{ 'PROPERTY-MODAL.PROP-ALLOWED-VALUES-TABLE.VALUE-PLACEHOLDER' | translate }}">
+                            </td>
+                            <td style="min-width: 150px">
+                                <ng-select
+                                           [items]="propertyStates"
+                                           placeholder="{{ 'PROPERTY-MODAL.PROP-ALLOWED-VALUES-TABLE.SELECT-STATE-PLACEHOLDER' | translate }}"
+                                           bindLabel="name"
+                                           bindValue="id"
+                                           [(ngModel)]="propAllowedValue.state">
+                                </ng-select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-12" *ngIf="property.value_type === 'prop_ref'">
+            <div class="col-sm-12" *ngIf="property.value_type === 'prop_ref'">
+                <div class="form-group">
+                    <label for="fkEntityType">{{ 'PROPERTY-MODAL.SELECT-FK-ENTITY-TYPE.TITLE' | translate }}</label>
+                    <ng-select id ="fkEntityType" [disabled]="property.cant_change_value_type_ent_type"
+                               [items]="possibleFKEntityTypes"
+                               placeholder="{{ 'PROPERTY-MODAL.SELECT-FK-ENTITY-TYPE.PLACEHOLDER' | translate }}"
+                               bindLabel="name"
+                               bindValue="id"
+                               [(ngModel)]="property.fk_entity_type_id"
+                               (change)="changePossibleFkProperties()">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-sm-12" *ngIf="property.fk_entity_type_id">
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="referenceSpecificProperty" [(ngModel)]="referenceSpecificProperty"
+                        (change)="changeReferenceSpecificProperty()">
+                        <label class="custom-control-label" for="referenceSpecificProperty">
+                            {{ 'PROPERTY-MODAL.CHECKBOX-REFERENCE-SPECIFIC-PROPERTY' | translate }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12" *ngIf="referenceSpecificProperty">
+                <div class="form-group">
+                    <label for="fkProperty">{{ 'PROPERTY-MODAL.SELECT-FK-PROPERTY.TITLE' | translate }}</label>
+                    <ng-select id ="fkProperty"
+                               [items]="possibleFKProperties"
+                               placeholder="{{ 'PROPERTY-MODAL.SELECT-FK-PROPERTY.PLACEHOLDER' | translate }}"
+                               bindLabel="name"
+                               bindValue="id"
+                               [(ngModel)]="property.fk_property_id">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="scope">{{ 'PROPERTY-MODAL.SELECT-SCOPE.TITLE' | translate }}</label>
+                <ng-select id ="scope" [items]="propertyScopes"
+                           placeholder="{{ 'PROPERTY-MODAL.SELECT-SCOPE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="property.scope">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="unitType">{{ 'PROPERTY-MODAL.SELECT-UNIT-TYPE.TITLE' | translate }}
+                    <small><i>{{ 'PARAMETERIZATION.OPTIONAL-FIELD' | translate }}</i></small></label>
+                <ng-select id ="unitType"
+                           [disabled]="!propUnitTypes.length"
+                           [items]="propUnitTypes"
+                           placeholder="{{ 'PROPERTY-MODAL.SELECT-UNIT-TYPE.PLACEHOLDER' | translate }}"
+                           bindValue="id"
+                           [(ngModel)]="property.unit_type_id">
+                    <ng-template ng-label-tmp ng-option-tmp let-item="item">
+                        <div>
+                            {{item.name}} | <b> {{item.abbrv}} </b>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="selectedEntTypeIsHasMany">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input [disabled]="!!selectedEntTypeAlreadyHasPartOfProperty" type="checkbox" class="custom-control-input" id="partOf" [(ngModel)]="property.part_of">
+                    <label *ngIf="!selectedEntTypeAlreadyHasPartOfProperty" class="custom-control-label" for="partOf">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-PART-OF' | translate }}
+                    </label>
+                    <label *ngIf="selectedEntTypeAlreadyHasPartOfProperty" class="custom-control-label" for="partOf">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-PART-OF' | translate }}
+                        <p class="m-0"><small> {{ 'PROPERTY-MODAL.ALREADY-ASSIGNED-TO-PROPERTY' | translate }} : {{ selectedEntTypeAlreadyHasPartOfProperty.name }} </small></p>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="property.value_type === 'text'">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="requiresTranslation" [(ngModel)]="property.requires_translation">
+                    <label class="custom-control-label" for="requiresTranslation">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-REQUIRES-TRANSLATION' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="editable" [(ngModel)]="property.editable">
+                    <label class="custom-control-label" for="editable">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-EDITABLE' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="softDelete" [(ngModel)]="property.soft_delete">
+                    <label class="custom-control-label" for="softDelete">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-SOFT-DELETE' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="property.value_type === 'prop_ref'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="isA" [(ngModel)]="property.is_a">
+                    <label class="custom-control-label" for="isA">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-IS-A' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="property.value_type === 'prop_ref'" class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="isDependent" [(ngModel)]="property.is_dependent">
+                    <label class="custom-control-label" for="isDependent">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-IS-DEPENDENT' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="multipleValues" [(ngModel)]="property.multiple_values">
+                    <label class="custom-control-label" for="multipleValues">
+                        {{ 'PROPERTY-MODAL.CHECKBOX-MULTIPLE-VALUES' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="disableSaveButton()">{{ 'PROPERTY-MODAL.BUTTON' | translate }}</button>
+</div>

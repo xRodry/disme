@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="!processType.id" class="modal-title">{{ 'PROCESS-TYPES-MODAL.CREATE.TITLE' | translate }}</h4>
+    <h4 *ngIf="processType.id" class="modal-title">{{ 'PROCESS-TYPES-MODAL.UPDATE.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'PROCESS-TYPES-MODAL.NAME-FIELD.TITLE' | translate }}</label>
+                <input class="form-control" id="name" [(ngModel)]="processType.name" type="text"
+                       placeholder="{{ 'PROCESS-TYPES-MODAL.NAME-FIELD.PLACEHOLDER' | translate }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="state">{{ 'PROCESS-TYPES-MODAL.SELECT-STATE.TITLE' | translate }}</label>
+                <ng-select id ="state"
+                           [items]="processTypeState"
+                           placeholder="{{ 'PROCESS-TYPES-MODAL.SELECT-STATE.PLACEHOLDER' | translate }}"
+                           bindLabel="name"
+                           bindValue="id"
+                           [(ngModel)]="processType.state">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="color">{{ 'PROCESS-TYPES-MODAL.COLOR-PICKER.TITLE' | translate }}</label>
+                <input  [(ngModel)]="processType.color" [(colorPicker)]="processType.color" [style.background]="processType.color" [style.color]="processType.color" class="form-control" id="color" [cpOutputFormat]="'hex'" [cpPosition]="'auto'" [cpOKButton]="true" [cpSaveClickOutside]="true" [cpOKButtonClass]= "'btn btn-primary btn-xs'"
+                placeholder="{{ 'PROCESS-TYPES-MODAL.COLOR-PICKER.PLACEHOLDER' | translate }}"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="saveData()" [disabled]="!(processType.name && processType.state &&
+     processType.color)">{{ 'PROCESS-TYPES-MODAL.BUTTON' | translate }}</button>
+</div>

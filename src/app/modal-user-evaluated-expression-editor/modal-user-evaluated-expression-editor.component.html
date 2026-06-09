@@ -1,0 +1,55 @@
+<!--
+  ~ Copyright © 2016 - 2024  Enterprise Engineering Lab /
+  ~ University of Madeira /Regional Agency for the Development of Research, Technology and Innovation - ARDITI
+  -->
+
+<div class="modal-header">
+    <h4 *ngIf="expressionTranslation" class="modal-title">{{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.MODAL.TITLE-TRANSLATION' | translate }}</h4>
+    <h4 *ngIf="!expressionTranslation" class="modal-title">{{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.MODAL.TITLE' | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">{{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.MODAL.NAME' | translate }}</label>
+                <input *ngIf="expressionTranslation" type="text" class="form-control" id="nameTranslation"
+                       [(ngModel)]="userEvaluatedExpression.expression_name" [placeholder]="translationNamePlaceholder" required>
+                <input *ngIf="!expressionTranslation" type="text" class="form-control" id="name" [(ngModel)]="userEvaluatedExpression.expression_name"
+                       placeholder="{{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.MODAL.NAME-PLACEHOLDER' | translate }}" required>
+                <div class="invalid-feedback">
+                    {{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.MODAL.NAME-INVALID' | translate }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <editor
+        [(ngModel)]="userEvaluatedExpression.expression_text"
+        apiKey="mmun0ey6stgzacfxrzupwc5z7ftf7xw8luinw8qx3vyxslnp"
+        [init]="{
+      inline: false,
+      branding: false,
+      min_height: 300,
+      plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table paste template noneditable'
+      ],
+      toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+      }"
+    >
+    </editor>
+    <!-- {{userEvaluatedExpression.text}} -->
+</div>
+<div class="modal-footer">
+    <button *ngIf="expressionTranslation" type="button" class="btn btn-success" [disabled]="!(userEvaluatedExpression.expression_name &&
+    userEvaluatedExpression.expression_text)" (click)="passBack()">
+        {{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.MODAL.TRANSLATE' | translate }}
+    </button>
+    <button *ngIf="!expressionTranslation" type="button" class="btn btn-success" [disabled]="!(userEvaluatedExpression.expression_name &&
+    userEvaluatedExpression.expression_text)" (click)="passBack()">
+        {{ 'USER-EVALUATED-EXPRESSION-MANAGEMENT.MODAL.SAVE' | translate }}
+    </button>
+</div>
