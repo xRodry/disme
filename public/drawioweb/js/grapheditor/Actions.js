@@ -26,7 +26,15 @@ Actions.prototype.init = function () {
 
     // File actions
     this.addAction("new...", function () {
-        graph.openLink(ui.getUrl());
+        var uiRef = ui;
+
+        uiRef.showDiagramTypeDialog(function (type) {
+            console.log("Tipo:", type);
+
+            uiRef.diagramType = type;
+
+            uiRef.createFile();
+        });
     });
     this.addAction("open...", function () {
         window.openNew = true;
@@ -136,9 +144,7 @@ Actions.prototype.init = function () {
         if (file) {
             file.saveAs(
                 function () {
-                    ui.showNotification(
-                        mxResources.get("saved") || "Saved to Database"
-                    );
+                    ui.showNotification(mxResources.get("savedToDatabase"));
                 },
                 function (err) {
                     ui.handleError(

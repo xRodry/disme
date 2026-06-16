@@ -145,33 +145,86 @@
         }
 
         editorUi.actions.addAction("new...", function () {
-            var compact = editorUi.isOffline();
+            var ui = editorUi;
 
-            var dlg = new NewDialog(
-                editorUi,
-                compact,
-                !(
-                    editorUi.mode == App.MODE_DEVICE &&
-                    "chooseFileSystemEntries" in window
-                )
-            );
+            ui.showDiagramTypeDialog(function (type) {
+                console.log("Tipo escolhido:", type);
 
-            editorUi.showDialog(
-                dlg.container,
-                compact ? 350 : 620,
-                compact ? 70 : 460,
-                true,
-                true,
-                function (cancel) {
-                    editorUi.sidebar.hideTooltip();
+                ui.diagramType = type;
+                ui.hideDialog();
+                ui.editor.setStatus("");
 
-                    if (cancel && editorUi.getCurrentFile() == null) {
-                        editorUi.showSplash();
+                var title = ui.defaultFilename || "Diagrama sem nome.drawio";
+                var xml = ui.emptyDiagramXml;
+
+                if (typeof ui.createFile === "function") {
+                    if (ui.getCurrentFile() != null) {
+                        ui.getCurrentFile().setModified(false);
                     }
-                }
-            );
+                    ui.setCurrentFile(null);
 
-            dlg.init();
+                    var onFileCreated = function () {
+                        var currentFile = ui.getCurrentFile();
+
+                        if (currentFile != null) {
+                            currentFile.diagramTypeFlag = type;
+                        }
+
+                        if (ui.sidebar != null) {
+                            if (ui.sidebar.palettes != null) {
+                                for (var paletteId in ui.sidebar.palettes) {
+                                    ui.sidebar.showPalette(paletteId, false);
+                                }
+                            }
+
+                            if (type === "process diagram") {
+                                ui.sidebar.addProcessModelPalette(true);
+                            } else if (type === "fact diagram") {
+                                ui.sidebar.addFactModelPalette(true);
+                            }
+                        }
+                    };
+
+                    ui.createFile(
+                        title,
+                        xml,
+                        null,
+                        App.MODE_DB,
+                        onFileCreated,
+                        true,
+                        null,
+                        false
+                    );
+                } else if (typeof LocalFile !== "undefined") {
+                    var isTemp = ui.mode == null ? true : false;
+                    var newFile = new LocalFile(ui, xml, title, isTemp);
+
+                    newFile.diagramTypeFlag = type;
+
+                    if (typeof ui.fileCreated === "function") {
+                        ui.fileCreated(newFile);
+                    } else if (typeof ui.fileLoaded === "function") {
+                        ui.fileLoaded(newFile);
+                    }
+
+                    if (ui.sidebar != null) {
+                        if (ui.sidebar.palettes != null) {
+                            for (var paletteId in ui.sidebar.palettes) {
+                                ui.sidebar.showPalette(paletteId, false);
+                            }
+                        }
+                        if (type === "process diagram") {
+                            ui.sidebar.addProcessModelPalette(true);
+                        } else if (type === "fact diagram") {
+                            ui.sidebar.addFactModelPalette(true);
+                        }
+                    }
+                } else {
+                    console.error(
+                        "Não foi possível encontrar o gestor de ficheiros nativo do diagrams.net."
+                    );
+                }
+            });
         });
 
         editorUi.actions.put(

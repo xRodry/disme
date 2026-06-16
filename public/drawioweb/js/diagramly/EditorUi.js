@@ -6163,6 +6163,23 @@
         dlg.init();
     };
 
+    EditorUi.prototype.updatePalettesByFlag = function (diagramType) {
+        if (this.sidebar == null) return;
+
+        if (this.sidebar.palettes != null) {
+            for (var paletteId in this.sidebar.palettes) {
+                this.sidebar.showPalette(paletteId, false);
+            }
+        }
+
+        if (diagramType === "process diagram") {
+            this.sidebar.addProcessModelPalette(true);
+        } else if (diagramType === "fact diagram") {
+            this.sidebar.addFactModelPalette(true);
+        } else {
+        }
+    };
+
     /**
      *
      */
@@ -6202,7 +6219,14 @@
 
                 win.document.close();
             }
+            f;
         }
+    };
+
+    //rabadas
+    EditorUi.prototype.showDiagramTypeDialog = function (callback) {
+        var dlg = new DiagramTypeDialog(this, callback);
+        this.showDialog(dlg.container, 300, 150, true, true);
     };
 
     var editoUiAddChromelessToolbarItems =

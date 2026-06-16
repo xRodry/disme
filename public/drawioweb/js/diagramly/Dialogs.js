@@ -341,6 +341,30 @@ var StorageDialog = function (editorUi, fn, rowLimit) {
 
     this.container = div;
 };
+//criar novo diagrama
+var DiagramTypeDialog = function (editorUi, callback) {
+    var div = document.createElement("div");
+
+    div.innerHTML = `
+        <h3>${mxResources.get("select_diagram_type")}</h3>
+        <select id="diagramTypeSelect" style="width:100%; margin-top:10px;">
+            <option value="fact">${mxResources.get("fact_diagram")}</option>
+            <option value="process">${mxResources.get(
+                "process_diagram"
+            )}</option>
+        </select>
+        <br/><br/>
+        <button id="okBtn" class="geBtn gePrimaryBtn">OK</button>
+    `;
+
+    div.querySelector("#okBtn").onclick = function () {
+        var type = div.querySelector("#diagramTypeSelect").value;
+        editorUi.hideDialog();
+        callback(type);
+    };
+
+    this.container = div;
+};
 
 /**
  * Constructs a dialog for creating new files from templates.

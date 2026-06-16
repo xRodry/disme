@@ -1406,6 +1406,11 @@ processmodel_external_task=External task
 select_process_type=Select process type
 create_process_type=➕ Create new process type
 color=Color
+select_diagram_type=Select diagram type
+fact_diagram=Fact Diagram
+process_diagram=Process Diagram
+saveAsDraft=Save as Draft
+saveDatabase=Save to Database
 //isto é para teste o que esta abaixo
 validate=Validate
 valid=All values are correct
