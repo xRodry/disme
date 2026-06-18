@@ -157,73 +157,30 @@
                 var title = ui.defaultFilename || "Diagrama sem nome.drawio";
                 var xml = ui.emptyDiagramXml;
 
-                if (typeof ui.createFile === "function") {
-                    if (ui.getCurrentFile() != null) {
-                        ui.getCurrentFile().setModified(false);
-                    }
-                    ui.setCurrentFile(null);
-
-                    var onFileCreated = function () {
-                        var currentFile = ui.getCurrentFile();
-
-                        if (currentFile != null) {
-                            currentFile.diagramTypeFlag = type;
-                        }
-
-                        if (ui.sidebar != null) {
-                            if (ui.sidebar.palettes != null) {
-                                for (var paletteId in ui.sidebar.palettes) {
-                                    ui.sidebar.showPalette(paletteId, false);
-                                }
-                            }
-
-                            if (type === "process diagram") {
-                                ui.sidebar.addProcessModelPalette(true);
-                            } else if (type === "fact diagram") {
-                                ui.sidebar.addFactModelPalette(true);
-                            }
-                        }
-                    };
-
-                    ui.createFile(
-                        title,
-                        xml,
-                        null,
-                        App.MODE_DB,
-                        onFileCreated,
-                        true,
-                        null,
-                        false
-                    );
-                } else if (typeof LocalFile !== "undefined") {
-                    var isTemp = ui.mode == null ? true : false;
-                    var newFile = new LocalFile(ui, xml, title, isTemp);
-
-                    newFile.diagramTypeFlag = type;
-
-                    if (typeof ui.fileCreated === "function") {
-                        ui.fileCreated(newFile);
-                    } else if (typeof ui.fileLoaded === "function") {
-                        ui.fileLoaded(newFile);
-                    }
-
-                    if (ui.sidebar != null) {
-                        if (ui.sidebar.palettes != null) {
-                            for (var paletteId in ui.sidebar.palettes) {
-                                ui.sidebar.showPalette(paletteId, false);
-                            }
-                        }
-                        if (type === "process diagram") {
-                            ui.sidebar.addProcessModelPalette(true);
-                        } else if (type === "fact diagram") {
-                            ui.sidebar.addFactModelPalette(true);
-                        }
-                    }
-                } else {
-                    console.error(
-                        "Não foi possível encontrar o gestor de ficheiros nativo do diagrams.net."
-                    );
+                if (ui.getCurrentFile() != null) {
+                    ui.getCurrentFile().setModified(false);
                 }
+
+                ui.createFile(
+                    title,
+                    xml,
+                    null,
+                    null,
+                    function () {
+                        var file = ui.getCurrentFile();
+
+                        if (file != null) {
+                            file.diagramTypeFlag = type;
+                        }
+
+                        setTimeout(function () {
+                            ui.updatePalettesByFlag(type);
+                        }, 0);
+                    },
+                    true,
+                    null,
+                    false
+                );
             });
         });
 

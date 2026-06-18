@@ -6163,20 +6163,22 @@
         dlg.init();
     };
 
-    EditorUi.prototype.updatePalettesByFlag = function (diagramType) {
-        if (this.sidebar == null) return;
+    EditorUi.prototype.updatePalettesByFlag = function (diagramType)
+    {
+        if (!this.sidebar || !this.sidebar.palettes) return;
 
-        if (this.sidebar.palettes != null) {
-            for (var paletteId in this.sidebar.palettes) {
-                this.sidebar.showPalette(paletteId, false);
-            }
+        for (var paletteId in this.sidebar.palettes)
+        {
+            this.sidebar.showPalette(paletteId, false);
         }
 
-        if (diagramType === "process diagram") {
-            this.sidebar.addProcessModelPalette(true);
-        } else if (diagramType === "fact diagram") {
-            this.sidebar.addFactModelPalette(true);
-        } else {
+        if (diagramType === "process")
+        {
+            this.sidebar.showPalette("processmodel", true);
+        }
+        else if (diagramType === "fact")
+        {
+            this.sidebar.showPalette("factModel", true);
         }
     };
 
