@@ -18,6 +18,10 @@ Route::get('/open',function() {return response() ->file(public_path('/drawioweb/
 });
 Route::apiResource('editorDiagram', 'EditorDiagramController');
 Route::post('/editorDiagramSave', 'EditorDiagramController@storeOrUpdate');
+Route::post('/processDiagram/save', 'ProcessDiagramController@storeOrUpdate');
+Route::post('/processDiagram/bulk-save', 'ProcessDiagramController@bulkSave');
+Route::post('/factDiagram/save', 'FactDiagramController@storeOrUpdate');
+Route::post('/factDiagram/bulk-save', 'FactDiagramController@bulkSave');
 Route::get('/editor/roles', function (Request $request) {
 
     $lang = $request->get('lang', 'pt');

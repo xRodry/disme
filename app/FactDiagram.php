@@ -18,6 +18,7 @@ class FactDiagram extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'conceptual_domain_id',
         'name',
         'description',
         'XML',

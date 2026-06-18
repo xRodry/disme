@@ -25,5 +25,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
             '/editorDiagramSave',
+            '/factDiagram/save',
+            '/processDiagram/save'
     ];
 }

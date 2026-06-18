@@ -5634,20 +5634,60 @@ App.prototype.createFile = function (
             } else if (mode == App.MODE_DB) {
                 console.log("Creating DB file (correct flow)");
 
-                var existingId =
-                    this.currentFile && this.currentFile.fileId
-                        ? this.currentFile.fileId
-                        : null;
+                var existingId = this.currentFile?.dbId || null;
+
+                var type = null;
+
+                if (this.currentFile && this.currentFile.diagramTypeFlag) {
+                    type = this.currentFile.diagramTypeFlag;
+                }
+
+                if (!type && this.diagramType) {
+                    type = this.diagramType;
+                }
+
+                if (!type) {
+                    console.warn("Tipo não definido, fallback para fact");
+                    type = "fact";
+                }
+
+                type = type.toLowerCase();
+
+                console.log("FINAL TYPE:", type);
+
+                var url = "/editorDiagramSave";
+
+                if (type.includes("fact")) {
+                    url = "/factDiagram/save";
+                } else if (type.includes("process")) {
+                    url = "/processDiagram/save";
+                }
+
+                console.log("Saving to:", url);
+
+                var data = this.getFileData();
 
                 var payload = {
                     name: title,
                     description: "Draw.io diagram",
                     XML: data,
-                    id: existingId, // 🔥 sempre novo aqui
+                    id: existingId,
                 };
 
+                if (type.includes("fact")) {
+                    payload.conceptual_domain_id =
+                        this.currentFile?.conceptualDomainId || 1;
+                }
+
+                if (type.includes("process")) {
+                    payload.process_type_id =
+                        this.currentFile?.processTypeId || 1;
+                }
+
+                console.log("Payload:", payload);
+
                 var xhr = new mxXmlRequest(
-                    "/editorDiagramSave",
+                    url,
                     JSON.stringify(payload),
                     "POST",
                     true
@@ -5670,18 +5710,35 @@ App.prototype.createFile = function (
                                 console.warn("Non-JSON response:", text);
                             }
 
-                            var file = new LocalFile(this, data, title, false);
-                            file.mode = App.MODE_DB;
+                            if (!this.currentFile) {
+                                this.currentFile = new LocalFile(
+                                    this,
+                                    data,
+                                    title,
+                                    false
+                                );
+                            }
 
+                            var file = this.currentFile;
+
+                            file.mode = App.MODE_DB;
                             file.dbId = resp && resp.id ? resp.id : existingId;
 
-                            file.descriptor = null;
-                            file.fileHandle = null;
-                            file.shadowData = null;
+                            file.diagramTypeFlag = type;
+
+                            if (type.includes("fact")) {
+                                file.conceptualDomainId =
+                                    payload.conceptual_domain_id;
+                            }
+
+                            if (type.includes("process")) {
+                                file.processTypeId = payload.process_type_id;
+                            }
+
                             file.modified = false;
                             file.autosave = false;
 
-                            this.currentFile = file;
+                            console.log("Saved OK with ID:", file.dbId);
 
                             fileCreated(file);
                         } catch (e) {

@@ -38,28 +38,46 @@ class FactDiagramController extends Controller
     public function storeOrUpdate(Request $request)
     {
         DB::beginTransaction();
+
         try {
-            FactDiagram::updateOrCreate(
-                // Critérios para saber se atualiza ou cria
-                ['name' => $request->input('name')],
-                // Dados para atualizar ou criar
+            // 🔥 Ler JSON corretamente
+            $data = json_decode($request->getContent(), true);
+
+            if (!$data) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Invalid JSON',
+                    'raw' => $request->getContent()
+                ], 400);
+            }
+
+            // 🔥 Criar ou atualizar pelo ID (CORRETO)
+            $diagram = FactDiagram::updateOrCreate(
+                ['id' => $data['id'] ?? null],
                 [
-                    'name' => $request->input('name'),
-                    'description' => $request->input('description'),
-                    'XML' => $request->input('XML'),
+                    'conceptual_domain_id' => $data['conceptual_domain_id'] ?? null,
+                    'name' => $data['name'],
+                    'description' => $data['description'] ?? '',
+                    'XML' => $data['XML'],
                 ]
             );
 
             DB::commit();
-            $success = true;
-            // all good
+
+            return response()->json([
+                'success' => true,
+                'id' => $diagram->id
+            ]);
         } catch (\Exception $e) {
-            $success = false;
             DB::rollback();
-            Log::debug($e);
-            // something went wrong
+
+            Log::error($e);
+
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
         }
-        return (string)$success;
     }
 
     public function bulkSave(Request $request)
