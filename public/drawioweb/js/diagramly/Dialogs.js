@@ -5182,6 +5182,10 @@ var SaveDialog = function (
     base64Encoded,
     defaultMode
 ) {
+    var currentFile = editorUi.getCurrentFile();
+    var lockToDatabase =
+        editorUi.lockSaveDialogToDatabase === true ||
+        (currentFile != null && currentFile.getMode() == App.MODE_DB);
     var div = document.createElement("div");
     div.style.display = "flex";
     div.style.flexWrap = "wrap";
@@ -5735,13 +5739,34 @@ var SaveDialog = function (
 
     mxEvent.addListener(storageSelect, "change", storageChanged);
     addStorageEntries();
+
+    if (lockToDatabase && entries[App.MODE_DB] != null) {
+        storageSelect.value = App.MODE_DB;
+    }
+
     storageChanged();
 
     right.appendChild(storageSelect);
 
     // Selects last entry
-    if (SaveDialog.lastValue != null && entries[SaveDialog.lastValue] != null) {
+    if (
+        !lockToDatabase &&
+        SaveDialog.lastValue != null &&
+        entries[SaveDialog.lastValue] != null
+    ) {
         storageSelect.value = SaveDialog.lastValue;
+    }
+
+    if (lockToDatabase) {
+        storageSelect.value = App.MODE_DB;
+        storageSelect.setAttribute("disabled", "disabled");
+
+        if (typeSelect != null) {
+            typeSelect.value = "0";
+            typeSelect.setAttribute("disabled", "disabled");
+        }
+
+        storageChanged();
     }
 
     table.appendChild(left);

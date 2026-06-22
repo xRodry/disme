@@ -6030,10 +6030,18 @@
                             }
 
                             if (file.dbId == null) {
-                                file.saveAs(
+                                this.pendingDiagramType =
+                                    file.diagramTypeFlag || this.diagramType;
+
+                                this.createFile(
                                     newTitle,
-                                    () => console.log("✅ Created in DB"),
-                                    (err) => this.handleError(err)
+                                    data,
+                                    null,
+                                    App.MODE_DB,
+                                    function () {
+                                        console.log("✅ Created in DB");
+                                    },
+                                    true
                                 );
                             } else {
                                 file.save(

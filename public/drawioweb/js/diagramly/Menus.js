@@ -151,6 +151,8 @@
                 console.log("Tipo escolhido:", type);
 
                 ui.diagramType = type;
+                ui.pendingDiagramType = type;
+                ui.lockSaveDialogToDatabase = true;
                 ui.hideDialog();
                 ui.editor.setStatus("");
 
@@ -161,25 +163,21 @@
                     ui.getCurrentFile().setModified(false);
                 }
 
-                ui.createFile(
-                    title,
-                    xml,
+                var file = new LocalFile(ui, xml, title, false);
+                file.mode = App.MODE_DB;
+                file.dbId = null;
+                file.diagramTypeFlag = type;
+
+                ui.pendingDiagramType = null;
+                ui.fileCreated(
+                    file,
                     null,
-                    null,
+                    true,
                     function () {
-                        var file = ui.getCurrentFile();
-
-                        if (file != null) {
-                            file.diagramTypeFlag = type;
-                        }
-
                         setTimeout(function () {
                             ui.updatePalettesByFlag(type);
                         }, 0);
-                    },
-                    true,
-                    null,
-                    false
+                    }
                 );
             });
         });

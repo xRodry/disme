@@ -5634,11 +5634,21 @@ App.prototype.createFile = function (
             } else if (mode == App.MODE_DB) {
                 console.log("Creating DB file (correct flow)");
 
-                var existingId = this.currentFile?.dbId || null;
+                var pendingType = this.pendingDiagramType || null;
+                var isNewTypedDiagram = pendingType != null;
+                this.pendingDiagramType = null;
 
-                var type = null;
+                var existingId = isNewTypedDiagram
+                    ? null
+                    : this.currentFile?.dbId || null;
 
-                if (this.currentFile && this.currentFile.diagramTypeFlag) {
+                var type = pendingType;
+
+                if (
+                    !type &&
+                    this.currentFile &&
+                    this.currentFile.diagramTypeFlag
+                ) {
                     type = this.currentFile.diagramTypeFlag;
                 }
 
@@ -5665,12 +5675,14 @@ App.prototype.createFile = function (
 
                 console.log("Saving to:", url);
 
-                var data = this.getFileData();
+                var fileData = isNewTypedDiagram
+                    ? data
+                    : this.getFileData();
 
                 var payload = {
                     name: title,
                     description: "Draw.io diagram",
-                    XML: data,
+                    XML: fileData,
                     id: existingId,
                 };
 
@@ -5710,16 +5722,16 @@ App.prototype.createFile = function (
                                 console.warn("Non-JSON response:", text);
                             }
 
-                            if (!this.currentFile) {
-                                this.currentFile = new LocalFile(
+                            var file = this.currentFile;
+
+                            if (isNewTypedDiagram || !file) {
+                                file = new LocalFile(
                                     this,
-                                    data,
+                                    fileData,
                                     title,
                                     false
                                 );
                             }
-
-                            var file = this.currentFile;
 
                             file.mode = App.MODE_DB;
                             file.dbId = resp && resp.id ? resp.id : existingId;
@@ -7401,7 +7413,7 @@ App.prototype.save = function (name, done) {
         if (!file || !file.dbId) {
             console.log("🆕 FIRST SAVE → abrir dialog");
 
-            this.editorUi.saveLocalFile(
+            this.saveLocalFile(
                 data,
                 title,
                 "text/xml",
