@@ -14,15 +14,39 @@ class EditorDiagramController extends Controller
 
     public function index()
     {
-        return response()->json(
-            EditorDiagram::whereNull('deleted_at')->get(),
-            200
-        );
+        $editors = \App\EditorDiagram::whereNull('deleted_at')->get()->map(function($d) {
+            $d->type = 'editor';
+            return $d;
+        });
+
+        $facts = \App\FactDiagram::whereNull('deleted_at')->get()->map(function($d) {
+            $d->type = 'fact';
+            return $d;
+        });
+
+        $processes = \App\ProcessDiagram::whereNull('deleted_at')->get()->map(function($d) {
+            $d->type = 'process';
+            return $d;
+        });
+
+        $merged = $editors->concat($facts)->concat($processes);
+
+        return response()->json($merged, 200);
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $diagram = EditorDiagram::findOrFail($id);
+        $type = $request->get('type', 'editor');
+
+        if ($type === 'fact') {
+            $diagram = \App\FactDiagram::findOrFail($id);
+        } else if ($type === 'process') {
+            $diagram = \App\ProcessDiagram::findOrFail($id);
+        } else {
+            $diagram = \App\EditorDiagram::findOrFail($id);
+        }
+
+        $diagram->type = $type;
 
         return response()->json($diagram, 200);
     }

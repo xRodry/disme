@@ -4603,10 +4603,10 @@ App.prototype.pickDbFile = function (callback) {
             select.style.padding = "6px";
             select.style.marginBottom = "20px";
 
-            list.forEach(function (diagram) {
+            list.forEach(function (diagram, index) {
                 var opt = document.createElement("option");
-                opt.value = diagram.id;
-                opt.innerText = diagram.name;
+                opt.value = index;
+                opt.innerText = diagram.name + " (" + (diagram.type || "editor") + ")";
                 select.appendChild(opt);
             });
 
@@ -4624,8 +4624,8 @@ App.prototype.pickDbFile = function (callback) {
             var openBtn = mxUtils.button(
                 "Open",
                 mxUtils.bind(this, function () {
-                    var id = select.value;
-                    var entry = list.find((e) => String(e.id) === String(id));
+                    var index = select.value;
+                    var entry = list[index];
                     this.hideDialog();
                     callback(entry);
                 })
@@ -4644,7 +4644,7 @@ App.prototype.pickDbFile = function (callback) {
 };
 
 App.prototype.openDbFile = function (entry) {
-    var xhr = new mxXmlRequest("/editorDiagram/" + entry.id, null, "GET", true);
+    var xhr = new mxXmlRequest("/editorDiagram/" + entry.id + "?type=" + (entry.type || "editor"), null, "GET", true);
 
     xhr.send(
         mxUtils.bind(this, function () {
@@ -4659,6 +4659,13 @@ App.prototype.openDbFile = function (entry) {
             var file = new LocalFile(this, xml, diagram.name, false);
             file.mode = App.MODE_DB;
             file.dbId = diagram.id;
+            file.diagramTypeFlag = diagram.type || "editor";
+            if (diagram.type === "fact") {
+                file.conceptualDomainId = diagram.conceptual_domain_id || 1;
+            }
+            if (diagram.type === "process") {
+                file.processTypeId = diagram.process_type_id || 1;
+            }
 
             this.setFileData(xml);
             this.fileLoaded(file);
@@ -7411,16 +7418,19 @@ App.prototype.save = function (name, done) {
 
         // 🆕 primeiro save (sem ID)
         if (!file || !file.dbId) {
-            console.log("🆕 FIRST SAVE → abrir dialog");
+            console.log("🆕 FIRST SAVE -> save to database");
 
-            this.saveLocalFile(
-                data,
+            this.createFile(
                 title,
-                "text/xml",
-                false,
+                data,
                 null,
-                false,
-                false
+                App.MODE_DB,
+                success,
+                true,
+                null,
+                null,
+                null,
+                null
             );
         } else {
             console.log("✅ UPDATE DIRETO");
@@ -7487,14 +7497,43 @@ App.prototype.updateDatabaseFile = function (file, title, success, error) {
             id: file.dbId,
         });
 
+        var type = file.diagramTypeFlag || "";
+        if (!type && this.diagramType) {
+            type = this.diagramType;
+        }
+        if (!type) {
+            type = "editor";
+        }
+        type = type.toLowerCase();
+
+        var url = "/editorDiagramSave";
+
+        if (type.includes("fact")) {
+            url = "/factDiagram/save";
+        } else if (type.includes("process")) {
+            url = "/processDiagram/save";
+        }
+
+        console.log("Saving update to:", url);
+
+        var payload = {
+            id: file.dbId,
+            name: title,
+            description: "Draw.io diagram",
+            XML: data,
+        };
+
+        if (type.includes("fact")) {
+            payload.conceptual_domain_id = file.conceptualDomainId || 1;
+        }
+
+        if (type.includes("process")) {
+            payload.process_type_id = file.processTypeId || 1;
+        }
+
         var xhr = new mxXmlRequest(
-            "/editorDiagramSave",
-            JSON.stringify({
-                id: file.dbId,
-                name: title,
-                description: "Draw.io diagram",
-                XML: data,
-            }),
+            url,
+            JSON.stringify(payload),
             "POST",
             true
         );

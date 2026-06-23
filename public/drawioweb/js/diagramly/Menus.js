@@ -5933,6 +5933,7 @@
         this.put(
             "openFrom",
             new Menu(function (menu, parent) {
+                /*
                 if (editorUi.drive != null) {
                     menu.addItem(
                         mxResources.get("googleDrive") + "...",
@@ -6009,6 +6010,7 @@
                 }
 
                 menu.addSeparator(parent);
+                */
 
                 if (editorUi.isModeReady(App.MODE_DB)) {
                     menu.addItem(
@@ -6030,6 +6032,7 @@
                     );
                 }
 
+                /*
                 if (editorUi.isModeReady(App.MODE_GITHUB)) {
                     menu.addItem(
                         mxResources.get("github") + "...",
@@ -6147,6 +6150,7 @@
                         parent
                     );
                 }
+                */
             })
         );
 
