@@ -51,12 +51,27 @@ class FactDiagramController extends Controller
                 ], 400);
             }
 
+            $id = $data['id'] ?? null;
+            $name = $data['name'];
+
+            $existsQuery = FactDiagram::where('name', $name);
+            if ($id) {
+                $existsQuery->where('id', '!=', $id);
+            }
+
+            if ($existsQuery->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'A diagram with this name already exists.'
+                ], 409);
+            }
+
             // 🔥 Criar ou atualizar pelo ID (CORRETO)
             $diagram = FactDiagram::updateOrCreate(
-                ['id' => $data['id'] ?? null],
+                ['id' => $id],
                 [
                     'conceptual_domain_id' => $data['conceptual_domain_id'] ?? null,
-                    'name' => $data['name'],
+                    'name' => $name,
                     'description' => $data['description'] ?? '',
                     'XML' => $data['XML'],
                 ]

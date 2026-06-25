@@ -52,11 +52,26 @@ class ProcessDiagramController extends Controller
                 ], 400);
             }
 
+            $id = $data['id'] ?? null;
+            $name = $data['name'];
+
+            $existsQuery = ProcessDiagram::where('name', $name);
+            if ($id) {
+                $existsQuery->where('id', '!=', $id);
+            }
+
+            if ($existsQuery->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'A diagram with this name already exists.'
+                ], 409);
+            }
+
             $diagram = ProcessDiagram::updateOrCreate(
-                ['id' => $data['id'] ?? null],
+                ['id' => $id],
                 [
                     'process_type_id' => $data['process_type_id'] ?? null,
-                    'name' => $data['name'],
+                    'name' => $name,
                     'description' => $data['description'] ?? '',
                     'XML' => $data['XML'],
                 ]

@@ -6376,7 +6376,10 @@ EditorUi.prototype.saveFile = function (forceDialog) {
                 mxUtils.confirm(mxResources.get("invalidName"));
 
                 return false;
-            })
+            }),
+            null, // content
+            null, // helpLink
+            false // closeOnBtn
         );
         this.showDialog(dlg.container, 340, 96, true, true);
         dlg.init();

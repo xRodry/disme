@@ -72,6 +72,21 @@ class EditorDiagramController extends Controller
                 'id'   => 'nullable|integer|exists:editor_diagram,id', // Add validation for ID
             ]);
 
+            $id = $request->input('id');
+            $name = $request->input('name');
+
+            $existsQuery = EditorDiagram::where('name', $name);
+            if ($id) {
+                $existsQuery->where('id', '!=', $id);
+            }
+
+            if ($existsQuery->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'A diagram with this name already exists.'
+                ], 409);
+            }
+
             // Use ID for updates if provided, otherwise create new
             if ($request->has('id') && $request->input('id')) {
                 // Update existing diagram

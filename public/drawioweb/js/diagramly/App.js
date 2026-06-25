@@ -5728,6 +5728,19 @@ App.prototype.createFile = function (
                             } catch (_) {
                                 console.warn("Non-JSON response:", text);
                             }
+                            
+                            if (xhr.getStatus() === 409 || (resp && resp.success === false)) {
+                                complete();
+                                if (xhr.getStatus() === 409) {
+                                    var title = mxResources.get('duplicateDiagramTitle') || 'Duplicate Diagram';
+                                    var message = mxResources.get('duplicateDiagramMessage') || 'A diagram with this name already exists.';
+                                    this.showError(title, message, mxResources.get('ok'));
+                                } else {
+                                    var errMsg = (resp && resp.error) ? resp.error : "Failed to save diagram";
+                                    this.showError(mxResources.get('error') || 'Error', errMsg, mxResources.get('ok'));
+                                }
+                                return;
+                            }
 
                             var file = this.currentFile;
 
@@ -5761,6 +5774,7 @@ App.prototype.createFile = function (
 
                             if (replace) {
                                 complete();
+                                this.hideDialog();
                                 var wasNewFile = isNewTypedDiagram || !this.currentFile;
                                 this.setCurrentFile(file);
                                 file.setModified(false);
@@ -6178,58 +6192,78 @@ App.prototype.loadFile = function (id, sameWindow, file, success, force) {
 
                 if (success != null) {
                     success();
-                } else if (id.charAt(0) == "D") {
-                    // Database files
-                    var dbId = id.substring(1);
+                }
+            } else if (id.charAt(0) == "D") {
+                // Database files
+                var dbStr = id.substring(1);
+                var parts = dbStr.split("-");
+                var typeParam = "editor";
+                var actualDbId = dbStr;
+                
+                if (parts.length > 1) {
+                    typeParam = parts[0];
+                    actualDbId = parts[1];
+                }
 
-                    if (
-                        this.spinner.spin(
-                            document.body,
-                            mxResources.get("loading")
-                        )
-                    ) {
-                        var xhr = new mxXmlRequest(
-                            "/editorDiagramGet/" + dbId,
-                            "",
-                            "GET",
-                            true
-                        );
+                if (
+                    this.spinner.spin(
+                        document.body,
+                        mxResources.get("loading")
+                    )
+                ) {
+                    var xhr = new mxXmlRequest(
+                        "/editorDiagram/" + actualDbId + "?type=" + typeParam,
+                        "",
+                        "GET",
+                        true
+                    );
 
-                        xhr.send(
-                            mxUtils.bind(this, function () {
-                                this.spinner.stop();
-                                try {
-                                    var response = JSON.parse(xhr.getText());
-                                    if (response && response.data) {
-                                        // REUSE LocalFile - just add the dbId and mode
-                                        var dbFile = new LocalFile(
-                                            this,
-                                            response.data,
-                                            response.name
-                                        );
-                                        dbFile.mode = App.MODE_DB;
-                                        dbFile.dbId = dbId; // This is what your save logic checks
-                                        this.fileLoaded(dbFile);
-
-                                        if (success != null) {
-                                            success();
-                                        }
-                                    } else {
-                                        this.handleError({
-                                            message:
-                                                "File not found in database",
-                                        });
+                    xhr.send(
+                        mxUtils.bind(this, function () {
+                            this.spinner.stop();
+                            try {
+                                var response = JSON.parse(xhr.getText());
+                                // The backend returns the diagram model, so the XML is in response.XML
+                                if (response && response.XML) {
+                                    var dbFile = new LocalFile(
+                                        this,
+                                        response.XML,
+                                        response.name
+                                    );
+                                    dbFile.mode = App.MODE_DB;
+                                    dbFile.dbId = actualDbId;
+                                    
+                                    dbFile.getHash = function() {
+                                        return "D" + typeParam + "-" + actualDbId;
+                                    };
+                                    
+                                    dbFile.diagramTypeFlag = response.type || typeParam;
+                                    if (dbFile.diagramTypeFlag === "fact") {
+                                        dbFile.conceptualDomainId = response.conceptual_domain_id || 1;
                                     }
-                                } catch (e) {
-                                    this.handleError(e);
+                                    if (dbFile.diagramTypeFlag === "process") {
+                                        dbFile.processTypeId = response.process_type_id || 1;
+                                    }
+
+                                    this.fileLoaded(dbFile);
+
+                                    if (success != null) {
+                                        success();
+                                    }
+                                } else {
+                                    this.handleError({
+                                        message: "File not found in database",
+                                    });
                                 }
-                            }),
-                            mxUtils.bind(this, function (err) {
-                                this.spinner.stop();
-                                this.handleError(err);
-                            })
-                        );
-                    }
+                            } catch (e) {
+                                this.handleError(e);
+                            }
+                        }),
+                        mxUtils.bind(this, function (err) {
+                            this.spinner.stop();
+                            this.handleError(err);
+                        })
+                    );
                 }
             } else if (id.charAt(0) == "E") {
                 // Embed file
@@ -7580,21 +7614,39 @@ App.prototype.updateDatabaseFile = function (file, title, success, error) {
 
                     console.log("✅ Update response:", resp);
 
+                    if (xhr.getStatus() === 409 || (resp && resp.success === false)) {
+                        this.spinner.stop();
+                        var errMsg = (resp && resp.error) ? resp.error : "Failed to save diagram";
+                        if (xhr.getStatus() === 409) {
+                            var title = mxResources.get('duplicateDiagramTitle') || 'Duplicate Diagram';
+                            var message = mxResources.get('duplicateDiagramMessage') || 'A diagram with this name already exists.';
+                            this.showError(title, message, mxResources.get('ok'));
+                        } else {
+                            this.showError(mxResources.get('error') || 'Error', errMsg, mxResources.get('ok'));
+                        }
+                        if (error) error(errMsg);
+                        return;
+                    }
+
                     if (
                         resp &&
                         (resp.success === undefined || resp.success === true)
                     ) {
+                        this.hideDialog();
                         file.setModified(false);
-
                         file.dbId = resp.id || file.dbId;
+                        
+                        file.getHash = function() {
+                            return "D" + type + "-" + file.dbId;
+                        };
+                        
+                        file.diagramTypeFlag = type;
 
                         if (title && title !== file.getTitle()) {
                             file.rename(title);
                         }
 
                         if (success) success();
-                    } else {
-                        if (error) error(resp);
                     }
                 } catch (e) {
                     if (error) error(e);

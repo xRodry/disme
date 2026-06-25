@@ -1461,3 +1461,5 @@ error_comp_waited_state=Composição: o estado esperado é obrigatório
 error_comp_causing_action=Composição: a ação causadora é obrigatória
 error_connector_source=A origem do conector de factos deve ser uma Entidade ou Propriedade
 error_connector_target=O destino do conector de factos deve ser uma Entidade ou Propriedade
+duplicateDiagramTitle=Diagrama Duplicado
+duplicateDiagramMessage=Já existe um diagrama com este nome.

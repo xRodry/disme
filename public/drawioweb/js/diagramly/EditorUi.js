@@ -3530,6 +3530,10 @@
                     success();
                 }
 
+                if (typeof this.updatePalettesByFlag === "function") {
+                    this.updatePalettesByFlag(file.diagramTypeFlag || null);
+                }
+
                 this.editor.fireEvent(new mxEventObject("fileLoaded"));
                 result = true;
 

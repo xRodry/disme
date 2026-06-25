@@ -1462,3 +1462,5 @@ error_comp_waited_state=Composition: waited state is required
 error_comp_causing_action=Composition: causing action is required
 error_connector_source=Fact connector source must be an Entity or Property
 error_connector_target=Fact connector target must be an Entity or Property
+duplicateDiagramTitle=Duplicate Diagram
+duplicateDiagramMessage=A diagram with this name already exists.

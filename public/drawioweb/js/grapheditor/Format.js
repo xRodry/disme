@@ -2797,10 +2797,6 @@ function renderTransactionForm(container, editorUi, cell) {
         editorUi
     );
 
-    //isto é para teste, para remover depois
-    container.appendChild(
-        createValidateButton(cell, validateTransaction, mapTransaction)
-    );
 
     // MONTAGEM
 
@@ -2927,6 +2923,15 @@ function renderProcessTypeForm(container, editorUi, cell) {
     // 🔹 COR
     // =====================
     const cor = FormUtils.createInput(cell, "pt_color", "", editorUi);
+    
+    const styleObj = editorUi.editor.graph.getCellStyle(cell);
+    const cellColor = styleObj.fillColor || "";
+    cor.value = cellColor;
+    cor.disabled = true;
+
+    if (getStyleValue(cell, "pt_color") !== cellColor) {
+        FormUtils.updateCell(editorUi, cell, "pt_color", cellColor);
+    }
 
     // =====================
     // 🔹 MONTAGEM

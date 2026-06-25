@@ -8147,7 +8147,7 @@
                                 parent
                             );
 
-                            if (
+                            /* if (
                                 !mxClient.IS_CHROMEAPP &&
                                 !EditorUi.isElectronApp &&
                                 editorUi.getServiceName() == "draw.io" &&
@@ -8155,7 +8155,7 @@
                                 file != null
                             ) {
                                 this.addMenuItems(menu, ["share", "-"], parent);
-                            }
+                            } */
 
                             if (file != null && file.isRenamable()) {
                                 this.addMenuItems(menu, ["rename"], parent);
@@ -8193,14 +8193,14 @@
                         }
 
                         menu.addSeparator(parent);
-                        this.addSubmenu("importFrom", menu, parent);
+                        // this.addSubmenu("importFrom", menu, parent);
                         this.addSubmenu("exportAs", menu, parent);
-                        menu.addSeparator(parent);
-                        this.addSubmenu("embed", menu, parent);
-                        this.addSubmenu("publish", menu, parent);
-                        menu.addSeparator(parent);
-                        this.addSubmenu("newLibrary", menu, parent);
-                        this.addSubmenu("openLibraryFrom", menu, parent);
+                        // menu.addSeparator(parent);
+                        // this.addSubmenu("embed", menu, parent);
+                        // this.addSubmenu("publish", menu, parent);
+                        // menu.addSeparator(parent);
+                        // this.addSubmenu("newLibrary", menu, parent);
+                        // this.addSubmenu("openLibraryFrom", menu, parent);
 
                         if (editorUi.isRevisionHistorySupported()) {
                             this.addMenuItems(
@@ -8226,16 +8226,16 @@
                                     file.sync.isConnected()) ||
                                 !/(\.html)$/i.test(filename)
                             ) {
-                                this.addMenuItems(menu, ["-", "properties"]);
+                                // this.addMenuItems(menu, ["-", "properties"]);
                             }
                         }
 
-                        this.addMenuItems(menu, ["-", "pageSetup"], parent);
+                        // this.addMenuItems(menu, ["-", "pageSetup"], parent);
 
                         // Cannot use print in standalone mode on iOS as we cannot open new windows
-                        if (!mxClient.IS_IOS || !navigator.standalone) {
+                        /* if (!mxClient.IS_IOS || !navigator.standalone) {
                             this.addMenuItems(menu, ["print"], parent);
-                        }
+                        } */
 
                         this.addMenuItems(menu, ["-", "close"]);
                     }
