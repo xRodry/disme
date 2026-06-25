@@ -678,9 +678,9 @@ rotate=Rodar
 rotateTooltip=Carregue e arraste para rodar, carregue para virar 90 graus
 rotation=Rotação
 rounded=Arredondado
-save=Guardar
+save=Guardar como rascunho
 saveAndExit=Guardar e sair
-saveAs=Guardar como
+saveAs=Guardar na base de dados
 saveAsXmlFile=Guardar como ficheiro XML?
 saved=Guardado
 saveDiagramFirst=Please save the diagram first
@@ -1411,3 +1411,53 @@ fact_diagram=Diagrama de Factos
 process_diagram=Diagrama de Processo
 saveAsDraft=Guardar como rascunho
 saveDatabase=Guardar na base de dados
+
+// Validação - Janela
+validation_title=Erros de Validação
+validation_errors=erro(s) de validação encontrado(s)
+validation_success=Validação concluída! Nenhum erro encontrado.
+validate=Validar
+valid=Todos os valores estão corretos
+errors=Existem erros
+
+// Validação - Nomes dos elementos
+val_transaction=Transação
+val_process_type=Tipo de Processo
+val_entity=Entidade
+val_property=Propriedade
+val_waiting_link=Ligação de Espera
+val_causal_link=Ligação Causal
+val_composition_link=Ligação de Composição
+val_fact_connector=Conector de Factos
+val_connection=Conexão
+val_element=Elemento
+val_unnamed=sem nome
+
+// Validação - Mensagens de erro (nós)
+error_transaction_name=O nome da transação é obrigatório
+error_transaction_type=O tipo da transação é obrigatório
+error_executor_role=A função executora é obrigatória
+error_process_type_name=O nome do tipo de processo é obrigatório
+error_entity_name=O nome da entidade é obrigatório
+error_entity_transaction_type=O tipo de transação da entidade é obrigatório
+error_property_name=O nome da propriedade é obrigatório
+error_property_entity_type=O tipo de entidade da propriedade é obrigatório
+error_property_value_type=O tipo de valor da propriedade é obrigatório
+
+// Validação - Mensagens de erro (arestas)
+error_orphan_edge=A conexão deve ter uma origem e um destino
+error_waiting_source=A origem da ligação de espera deve ser uma Transação
+error_waiting_target=O destino da ligação de espera deve ser uma Transação
+error_waiting_state=O estado de espera é obrigatório
+error_waited_state=O estado esperado é obrigatório
+error_causal_source=A origem da ligação causal deve ser uma Transação
+error_causal_target=O destino da ligação causal deve ser uma Transação
+error_caused_state=O estado causado é obrigatório
+error_causing_action=A ação causadora é obrigatória
+error_composition_source=A origem da ligação de composição deve ser uma Transação
+error_composition_target=O destino da ligação de composição deve ser uma Transação
+error_comp_waiting_state=Composição: o estado de espera é obrigatório
+error_comp_waited_state=Composição: o estado esperado é obrigatório
+error_comp_causing_action=Composição: a ação causadora é obrigatória
+error_connector_source=A origem do conector de factos deve ser uma Entidade ou Propriedade
+error_connector_target=O destino do conector de factos deve ser uma Entidade ou Propriedade

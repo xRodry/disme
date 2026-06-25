@@ -124,7 +124,7 @@ Actions.prototype.init = function () {
     this.addAction(
         "save",
         function () {
-            ui.saveFile(App.MODE_DB);
+            ui.saveFile(true, null, true);
         },
         null,
         null,
@@ -133,7 +133,7 @@ Actions.prototype.init = function () {
     this.addAction(
         "saveAs...",
         function () {
-            ui.saveFile(App.MODE_DB);
+            ui.saveFile(true, null, false);
         },
         null,
         null,

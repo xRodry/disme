@@ -1416,6 +1416,49 @@ validate=Validate
 valid=All values are correct
 errors=There are errors
 
+// Validation - Window
+validation_title=Validation Errors
+validation_errors=validation error(s) found
+validation_success=Validation passed! No errors found.
+
+// Validation - Element names
+val_transaction=Transaction
+val_process_type=Process Type
+val_entity=Entity
+val_property=Property
+val_waiting_link=Waiting Link
+val_causal_link=Causal Link
+val_composition_link=Composition Link
+val_fact_connector=Fact Connector
+val_connection=Connection
+val_element=Element
+val_unnamed=unnamed
+
+// Validation - Error messages (nodes)
 error_transaction_name=Transaction name is required
 error_transaction_type=Transaction type is required
 error_executor_role=Executor role is required
+error_process_type_name=Process type name is required
+error_entity_name=Entity name is required
+error_entity_transaction_type=Entity transaction type is required
+error_property_name=Property name is required
+error_property_entity_type=Property entity type is required
+error_property_value_type=Property value type is required
+
+// Validation - Error messages (edges)
+error_orphan_edge=Connection must have both a source and a target
+error_waiting_source=Waiting link source must be a Transaction
+error_waiting_target=Waiting link target must be a Transaction
+error_waiting_state=Waiting state is required
+error_waited_state=Waited state is required
+error_causal_source=Causal link source must be a Transaction
+error_causal_target=Causal link target must be a Transaction
+error_caused_state=Caused state is required
+error_causing_action=Causing action is required
+error_composition_source=Composition link source must be a Transaction
+error_composition_target=Composition link target must be a Transaction
+error_comp_waiting_state=Composition: waiting state is required
+error_comp_waited_state=Composition: waited state is required
+error_comp_causing_action=Composition: causing action is required
+error_connector_source=Fact connector source must be an Entity or Property
+error_connector_target=Fact connector target must be an Entity or Property

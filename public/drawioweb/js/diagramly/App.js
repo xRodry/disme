@@ -5093,7 +5093,7 @@ App.prototype.saveLibrary = function (
 /**
  * Adds the label menu items to the given menu and parent.
  */
-App.prototype.saveFile = function (forceDialog, success) {
+App.prototype.saveFile = function (forceDialog, success, isDraft) {
     var file = this.getCurrentFile();
     var prev = this.mode;
 
@@ -5126,7 +5126,7 @@ App.prototype.saveFile = function (forceDialog, success) {
             file.getMode() == App.MODE_DB &&
             file.dbId
         ) {
-            this.save(file.getTitle());
+            this.save(file.getTitle(), done, isDraft);
             return;
         }
         if (
@@ -5135,7 +5135,7 @@ App.prototype.saveFile = function (forceDialog, success) {
             file.invalidFileHandle == null &&
             this.mode != null
         ) {
-            this.save(file.getTitle(), done);
+            this.save(file.getTitle(), done, isDraft);
         } else if (
             file != null &&
             file.constructor == LocalFile &&
@@ -5148,7 +5148,7 @@ App.prototype.saveFile = function (forceDialog, success) {
                     file.title = desc.name;
                     file.desc = desc;
                     file.editable = null;
-                    this.save(desc.name, done);
+                    this.save(desc.name, done, isDraft);
                 }),
                 null,
                 this.createFileSystemOptions(file.getTitle())
@@ -5213,7 +5213,7 @@ App.prototype.saveFile = function (forceDialog, success) {
                                                 file.desc = desc;
 
                                                 this.setMode(App.MODE_DEVICE);
-                                                this.save(desc.name, done);
+                                                this.save(desc.name, done, isDraft);
                                             }
                                         ),
                                         mxUtils.bind(this, function (e) {
@@ -5225,7 +5225,7 @@ App.prototype.saveFile = function (forceDialog, success) {
                                     );
                                 } else {
                                     this.setMode(App.MODE_DEVICE);
-                                    this.save(name, done);
+                                    this.save(name, done, isDraft);
                                 }
                             } else if (mode == "download") {
                                 var tmp = new LocalFile(this, null, name);
@@ -5264,7 +5264,7 @@ App.prototype.saveFile = function (forceDialog, success) {
                                             null,
                                             mode,
                                             done,
-                                            this.mode == null,
+                                            mode == App.MODE_DB ? true : (this.mode == null),
                                             folderId,
                                             null,
                                             null,
@@ -5285,7 +5285,7 @@ App.prototype.saveFile = function (forceDialog, success) {
                                     this.pickFolder(mode, createFile);
                                 }
                             } else if (mode != null) {
-                                this.save(name, done);
+                                this.save(name, done, isDraft);
                             }
                         }
                     }
@@ -5759,7 +5759,32 @@ App.prototype.createFile = function (
 
                             console.log("Saved OK with ID:", file.dbId);
 
-                            fileCreated(file);
+                            if (replace) {
+                                complete();
+                                var wasNewFile = isNewTypedDiagram || !this.currentFile;
+                                this.setCurrentFile(file);
+                                file.setModified(false);
+                                
+                                if (typeof file.addAllSavedStatus === "function") {
+                                    file.addAllSavedStatus();
+                                }
+                                
+                                if (wasNewFile) {
+                                    file.addListener("descriptorChanged", this.descriptorChangedListener);
+                                    file.addListener("contentChanged", this.descriptorChangedListener);
+                                    this.setMode(file.mode);
+                                }
+                                
+                                var hash = "D" + file.dbId;
+                                if (window.location.hash !== "#" + hash) {
+                                    window.history.replaceState(null, null, "#" + hash);
+                                }
+                                
+                                if (done) done();
+                                if (success) success();
+                            } else {
+                                fileCreated(file);
+                            }
                         } catch (e) {
                             complete();
                             this.handleError(e);
@@ -7344,7 +7369,7 @@ App.prototype.showNotification = function (notifs, lsReadFlag) {
  * @param {number} dx X-coordinate of the translation.
  * @param {number} dy Y-coordinate of the translation.
  */
-App.prototype.save = function (name, done) {
+App.prototype.save = function (name, done, isDraft) {
     var file = this.getCurrentFile();
     var title =
         name != null ? name : file && file.getTitle ? file.getTitle() : null;
@@ -7375,7 +7400,7 @@ App.prototype.save = function (name, done) {
             Editor.addRetryToError(
                 err,
                 mxUtils.bind(this, function () {
-                    this.save(name, done);
+                    this.save(name, done, isDraft);
                 })
             );
 
@@ -7413,28 +7438,31 @@ App.prototype.save = function (name, done) {
     }
 
     if (isDb) {
-        console.log("💾 SAVE DB FLOW");
-        console.log("DB ID:", file?.dbId);
+        if (!isDraft) {
+            console.log("🔍 VALIDATE DB DIAGRAM");
 
-        // 🆕 primeiro save (sem ID)
-        if (!file || !file.dbId) {
-            console.log("🆕 FIRST SAVE -> save to database");
+            // 🔍 Run diagram validation (save disabled for now)
+            var validationErrors = validateDiagram(this.editor.graph);
+            if (validationErrors.length > 0) {
+                console.log("❌ Validation failed:", validationErrors.length, "error(s)");
+                showValidationErrors(validationErrors, this);
+            } else {
+                console.log("✅ Validation passed — no errors found");
+                alert("✅ " + mxResources.get("validation_success"));
+            }
+            return;
+        }
 
+        // For Save as Draft flow (isDraft === true):
+        // Save to database directly without validation
+        if (isSaveAs) {
+            console.log("🆕 FIRST SAVE -> save to database (draft)");
             this.createFile(
-                title,
-                data,
-                null,
-                App.MODE_DB,
-                success,
-                true,
-                null,
-                null,
-                null,
-                null
+                title, data, null, App.MODE_DB,
+                success, true, null, null, null, null
             );
         } else {
-            console.log("✅ UPDATE DIRETO");
-
+            console.log("✅ UPDATE DIRETO (draft)");
             this.updateDatabaseFile(file, title, success, error);
         }
 
