@@ -491,14 +491,14 @@ Format.prototype.immediateRefresh = function () {
 
             addClickHandler(label, diagramPanel, idx++);
 
-            var stylePanel = div.cloneNode(false);
+            /*var stylePanel = div.cloneNode(false);
             stylePanel.style.display = "none";
             mxUtils.write(label2, mxResources.get("style"));
             div.appendChild(label2);
             this.panels.push(new DiagramStylePanel(this, ui, stylePanel));
             this.container.appendChild(stylePanel);
 
-            addClickHandler(label2, stylePanel, idx++);
+            addClickHandler(label2, stylePanel, idx++);*/
         }
 
         // Adds button to hide the format panel since
@@ -559,11 +559,11 @@ Format.prototype.immediateRefresh = function () {
         if (containsLabel) {
             label2.style.borderLeftWidth = "0px";
         } else if (ss.cells.length > 0) {
-            label.style.borderLeftWidth = "0px";
+            /*label.style.borderLeftWidth = "0px";
             mxUtils.write(label, mxResources.get("style"));
             div.appendChild(label);
 
-            /*var stylePanel = div.cloneNode(false);
+            var stylePanel = div.cloneNode(false);
             stylePanel.style.display = "none";
             this.panels.push(new StyleFormatPanel(this, ui, stylePanel));
             this.container.appendChild(stylePanel);
@@ -573,6 +573,9 @@ Format.prototype.immediateRefresh = function () {
 
         // Text
         mxUtils.write(label2, mxResources.get("text"));
+        if (!containsLabel && ss.cells.length > 0) {
+            label2.style.borderLeftWidth = "0px";
+        }
         div.appendChild(label2);
 
         var textPanel = div.cloneNode(false);
@@ -590,7 +593,7 @@ Format.prototype.immediateRefresh = function () {
         this.container.appendChild(arrangePanel);
 
         if (ss.cells.length > 0) {
-            addClickHandler(label2, textPanel, idx + 1);
+            addClickHandler(label2, textPanel, idx++);
         } else {
             label2.style.display = "none";
         }
@@ -609,6 +612,35 @@ Format.prototype.immediateRefresh = function () {
         this.container.appendChild(processPanel);
 
         addClickHandler(label4, processPanel, idx++);
+
+        // Errors tab
+        var label5 = label.cloneNode(false);
+        label5.style.backgroundColor = Format.inactiveTabBackgroundColor;
+        label5.style.position = "relative";
+        
+        var errors = ui.validationErrors || [];
+        var tabText = mxResources.get("errors") || "Errors";
+        if (errors.length > 0) {
+            tabText += " <span style='position:absolute;top:2px;right:2px;background:#d32f2f;color:white;border-radius:10px;padding:1px 4px;font-size:9px;line-height:1;'>" + errors.length + "</span>";
+        }
+        label5.innerHTML = tabText;
+        div.appendChild(label5);
+
+        var errorsPanel = div.cloneNode(false);
+        errorsPanel.style.display = "none";
+
+        this.panels.push(new ErrorsFormatPanel(this, ui, errorsPanel));
+        this.container.appendChild(errorsPanel);
+
+        addClickHandler(label5, errorsPanel, idx++);
+
+        if (ui.showErrorsTab) {
+            ui.showErrorsTab = false;
+            // Use setTimeout to ensure the click happens after all initialization
+            window.setTimeout(function() {
+                label5.click();
+            }, 0);
+        }
     }
 };
 
@@ -2536,29 +2568,45 @@ function initTomSelectGeneric(selectEl, config) {
                     this.clear();
                     return;
                 }
+                
+                const lang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'pt';
+                
+                fetch(`/editor/roles?lang=${lang}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: name })
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(err => { throw err; });
+                    }
+                    return res.json();
+                })
+                .then(newItem => {
+                    config.cache.push(newItem);
+                    this.addOption({
+                        value: newItem.id,
+                        text: newItem.name,
+                    });
+                    this.setValue(newItem.id);
 
-                const newItem = {
-                    id: "custom_" + Date.now(),
-                    name: name,
-                };
-
-                config.cache.push(newItem);
-
-                this.addOption({
-                    value: newItem.id,
-                    text: newItem.name,
+                    setTimeout(() => {
+                        FormUtils.updateCell(
+                            config.editorUi,
+                            config.cell,
+                            config.styleKey,
+                            newItem.id
+                        );
+                    }, 0);
+                })
+                .catch(err => {
+                    this.clear();
+                    var msgKey = err.error || 'errorCreatingRole';
+                    var errorMsg = mxResources.get(msgKey) || mxResources.get('errorCreatingRole') || 'Error creating role';
+                    config.editorUi.showError(mxResources.get('error') || 'Error', errorMsg, mxResources.get('ok') || 'OK');
                 });
-
-                this.setValue(newItem.id);
-
-                setTimeout(() => {
-                    FormUtils.updateCell(
-                        config.editorUi,
-                        config.cell,
-                        config.styleKey,
-                        newItem.id
-                    );
-                }, 0);
 
                 return;
             }
@@ -11332,4 +11380,130 @@ DiagramFormatPanel.prototype.destroy = function () {
         this.editorUi.removeListener(this.gridEnabledListener);
         this.gridEnabledListener = null;
     }
+};
+
+/**
+ * Errors Format Panel
+ */
+ErrorsFormatPanel = function (format, editorUi, container) {
+    BaseFormatPanel.call(this, format, editorUi, container);
+    this.init();
+};
+
+mxUtils.extend(ErrorsFormatPanel, BaseFormatPanel);
+
+ErrorsFormatPanel.prototype.init = function () {
+    var ui = this.editorUi;
+    var graph = ui.editor.graph;
+    var errors = ui.validationErrors || [];
+
+    var container = document.createElement("div");
+    container.style.padding = "10px";
+    container.style.fontFamily = "Arial, Helvetica, sans-serif";
+    container.style.fontSize = "13px";
+    container.style.boxSizing = "border-box";
+    container.style.overflowX = "hidden";
+    container.style.width = "100%";
+
+    if (errors.length === 0) {
+        var noErrors = document.createElement("div");
+        noErrors.style.color = "#4CAF50";
+        noErrors.style.padding = "10px 0";
+        noErrors.innerHTML = "✅ " + (mxResources.get("errorsNoItems") || "No validation errors found.");
+        container.appendChild(noErrors);
+    } else {
+        var header = document.createElement("div");
+        header.style.fontWeight = "bold";
+        header.style.marginBottom = "10px";
+        header.style.color = "#d32f2f";
+        header.innerHTML = "⚠️ " + errors.length + " " + (mxResources.get("errorsTitle") || "Validation Errors");
+        container.appendChild(header);
+
+        var list = document.createElement("div");
+        list.style.display = "flex";
+        list.style.flexDirection = "column";
+        list.style.gap = "4px";
+
+        for (var i = 0; i < errors.length; i++) {
+            (function (err) {
+                var item = document.createElement("div");
+                item.style.padding = "8px 10px";
+                item.style.borderRadius = "6px";
+                item.style.border = "1px solid #e0e0e0";
+                item.style.background = "#fff8f8";
+                item.style.cursor = "pointer";
+                item.style.transition = "all 0.15s ease";
+                item.style.display = "flex";
+                item.style.alignItems = "center";
+                item.style.gap = "8px";
+
+                var icon = document.createElement("span");
+                icon.innerHTML = "❌";
+                icon.style.fontSize = "14px";
+                icon.style.flexShrink = "0";
+
+                var text = document.createElement("span");
+                text.style.wordBreak = "break-word";
+                text.style.overflowWrap = "break-word";
+                text.style.whiteSpace = "normal";
+                text.style.flex = "1";
+                text.style.minWidth = "0"; // Crucial for flex children to allow text wrapping
+
+                var cellLabel = "";
+                if (typeof getCellDisplayName === 'function') {
+                    cellLabel = getCellDisplayName(graph, err.cell);
+                } else {
+                    cellLabel = err.cell.value || (err.cell.style || "Cell");
+                    if (mxUtils.isNode(cellLabel)) cellLabel = cellLabel.getAttribute('label') || cellLabel.nodeName;
+                }
+                text.innerHTML = "<strong style='display:block;margin-bottom:2px;'>" + cellLabel + "</strong>" + err.message;
+
+                item.appendChild(icon);
+                item.appendChild(text);
+
+                item.onmouseenter = function () {
+                    item.style.background = "#ffebee";
+                    item.style.borderColor = "#ef9a9a";
+                };
+                item.onmouseleave = function () {
+                    item.style.background = "#fff8f8";
+                    item.style.borderColor = "#e0e0e0";
+                };
+
+                item.onclick = function () {
+                    if (window._validationHighlight) {
+                        try {
+                            window._validationHighlight.destroy();
+                        } catch (e) {}
+                    }
+
+                    // Keep the user on the Errors tab after selection changes
+                    ui.showErrorsTab = true;
+
+                    graph.setSelectionCell(err.cell);
+                    graph.scrollCellToVisible(err.cell);
+
+                    var hl = new mxCellHighlight(graph, "#d32f2f", 4);
+                    var state = graph.view.getState(err.cell);
+                    if (state) {
+                        hl.highlight(state);
+                    }
+                    window._validationHighlight = hl;
+
+                    var items = list.querySelectorAll("div");
+                    for (var k = 0; k < items.length; k++) {
+                        items[k].style.background = "#fff8f8";
+                        items[k].style.borderColor = "#e0e0e0";
+                    }
+                    item.style.background = "#ffcdd2";
+                    item.style.borderColor = "#e57373";
+                };
+
+                list.appendChild(item);
+            })(errors[i]);
+        }
+        container.appendChild(list);
+    }
+
+    this.container.appendChild(container);
 };

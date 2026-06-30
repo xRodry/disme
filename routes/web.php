@@ -20,8 +20,10 @@ Route::apiResource('editorDiagram', 'EditorDiagramController');
 Route::post('/editorDiagramSave', 'EditorDiagramController@storeOrUpdate');
 Route::post('/processDiagram/save', 'ProcessDiagramController@storeOrUpdate');
 Route::post('/processDiagram/bulk-save', 'ProcessDiagramController@bulkSave');
+Route::get('/processDiagram', 'ProcessDiagramController@index');
 Route::post('/factDiagram/save', 'FactDiagramController@storeOrUpdate');
 Route::post('/factDiagram/bulk-save', 'FactDiagramController@bulkSave');
+Route::get('/factDiagram', 'FactDiagramController@index');
 Route::get('/editor/roles', function (Request $request) {
 
     $lang = $request->get('lang', 'pt');
@@ -40,6 +42,76 @@ Route::get('/editor/roles', function (Request $request) {
             ->select('role.id', 'role_name.name')
             ->get()
     );
+});
+Route::post('/editor/roles', function (Request $request) {
+    $name = trim($request->input('name'));
+    if (!$name) {
+        return response()->json(['error' => 'Name is required'], 422);
+    }
+    
+    $lang = $request->get('lang', 'pt');
+    $langMap = ['pt' => 1, 'en' => 2];
+    $langId = $langMap[$lang] ?? 1;
+
+    // Check if role name already exists
+    $existing = \DB::table('role_name')
+        ->where('name', $name)
+        ->where('language_id', $langId)
+        ->first();
+        
+    if ($existing) {
+        return response()->json(['error' => 'roleAlreadyExists'], 409);
+    }
+
+    \DB::beginTransaction();
+    try {
+        $userId = $request->user() ? $request->user()->id : 1;
+        
+        $roleId = \DB::table('role')->insertGetId([
+            'updated_by' => $userId,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
+        ]);
+        
+        \DB::table('role_name')->insert([
+            'role_id' => $roleId,
+            'language_id' => $langId,
+            'name' => $name,
+            'updated_by' => $userId,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
+        ]);
+        
+        // Associate role with the current user
+        \DB::table('role_has_user')->insert([
+            'role_id' => $roleId,
+            'user_id' => $userId,
+            'updated_by' => $userId,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
+        ]);
+
+        // Default role/transaction association
+        \DB::table('role_initiates_transaction')->insert([
+            'role_id' => $roleId,
+            'transaction_type_id' => 1,
+            'own_user_access_only' => 0,
+            'updated_by' => $userId,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
+        ]);
+        
+        \DB::commit();
+        
+        return response()->json([
+            'id' => $roleId,
+            'name' => $name
+        ], 201);
+    } catch (\Exception $e) {
+        \DB::rollback();
+        \Log::error('Error creating role: ' . $e->getMessage());
+        return response()->json(['error' => 'errorCreatingRole'], 500);
+    }
 });
 Route::get('/editor/transaction-types', function (Request $request) {
 

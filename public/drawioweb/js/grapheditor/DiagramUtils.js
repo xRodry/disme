@@ -190,156 +190,16 @@ function validateDiagram(graph) {
 }
 
 /**
- * Displays validation errors in a floating, draggable mxWindow.
- * Each error is clickable → selects, scrolls to, and highlights the cell.
+ * Displays validation errors by updating the editor UI and refreshing the format panel.
  */
 function showValidationErrors(errors, editorUi) {
-    var graph = editorUi.editor.graph;
+    // Store the errors in editorUi so the ErrorsFormatPanel can read them
+    editorUi.validationErrors = errors;
 
-    // Clean up any previous validation window
-    if (window._validationWindow) {
-        try {
-            window._validationWindow.destroy();
-        } catch (e) { /* ignore */ }
-        window._validationWindow = null;
+    // Refresh the format panel to show the Errors tab
+    if (editorUi.format != null) {
+        editorUi.format.refresh();
     }
-
-    // Clean up any previous highlight
-    if (window._validationHighlight) {
-        try {
-            window._validationHighlight.destroy();
-        } catch (e) { /* ignore */ }
-        window._validationHighlight = null;
-    }
-
-    // Build the content div
-    var content = document.createElement("div");
-    content.style.padding = "10px";
-    content.style.fontFamily = "Arial, Helvetica, sans-serif";
-    content.style.fontSize = "13px";
-    content.style.overflowY = "auto";
-    content.style.maxHeight = "400px";
-
-    // Header with error count
-    var header = document.createElement("div");
-    header.style.fontWeight = "bold";
-    header.style.marginBottom = "10px";
-    header.style.color = "#d32f2f";
-    header.style.fontSize = "14px";
-    header.innerHTML = "⚠️ " + errors.length + " " + mxResources.get("validation_errors");
-    content.appendChild(header);
-
-    // Error list
-    var list = document.createElement("div");
-    list.style.display = "flex";
-    list.style.flexDirection = "column";
-    list.style.gap = "4px";
-
-    for (var i = 0; i < errors.length; i++) {
-        (function (err, index) {
-            var item = document.createElement("div");
-            item.style.padding = "8px 10px";
-            item.style.borderRadius = "6px";
-            item.style.border = "1px solid #e0e0e0";
-            item.style.background = "#fff8f8";
-            item.style.cursor = "pointer";
-            item.style.transition = "all 0.15s ease";
-            item.style.display = "flex";
-            item.style.alignItems = "center";
-            item.style.gap = "8px";
-
-            // Error icon
-            var icon = document.createElement("span");
-            icon.innerHTML = "❌";
-            icon.style.fontSize = "14px";
-            icon.style.flexShrink = "0";
-
-            // Error text
-            var text = document.createElement("span");
-            var cellLabel = getCellDisplayName(graph, err.cell);
-            text.innerHTML = "<strong>" + cellLabel + "</strong>: " + err.message;
-            text.style.flex = "1";
-
-            item.appendChild(icon);
-            item.appendChild(text);
-
-            // Hover effect
-            item.onmouseenter = function () {
-                item.style.background = "#ffebee";
-                item.style.borderColor = "#ef9a9a";
-            };
-            item.onmouseleave = function () {
-                item.style.background = "#fff8f8";
-                item.style.borderColor = "#e0e0e0";
-            };
-
-            // Click → select, scroll, highlight
-            item.onclick = function () {
-                // Remove previous highlight
-                if (window._validationHighlight) {
-                    try {
-                        window._validationHighlight.destroy();
-                    } catch (e) { /* ignore */ }
-                }
-
-                // Select the cell
-                graph.setSelectionCell(err.cell);
-                graph.scrollCellToVisible(err.cell);
-
-                // Highlight with red border
-                var hl = new mxCellHighlight(graph, "#d32f2f", 4);
-                var state = graph.view.getState(err.cell);
-                if (state) {
-                    hl.highlight(state);
-                }
-                window._validationHighlight = hl;
-
-                // Mark active item
-                var items = list.querySelectorAll("div");
-                for (var k = 0; k < items.length; k++) {
-                    items[k].style.background = "#fff8f8";
-                    items[k].style.borderColor = "#e0e0e0";
-                }
-                item.style.background = "#ffcdd2";
-                item.style.borderColor = "#e57373";
-            };
-
-            list.appendChild(item);
-        })(errors[i], i);
-    }
-
-    content.appendChild(list);
-
-    // Create the mxWindow
-    var x = Math.max(10, (document.body.clientWidth || 800) - 420);
-    var y = 60;
-    var w = 380;
-    var h = Math.min(450, 80 + errors.length * 50);
-
-    var wnd = new mxWindow(
-        mxResources.get("validation_title"),
-        content,
-        x, y, w, h,
-        true,  // movable
-        true   // resizable
-    );
-
-    wnd.setMaximizable(false);
-    wnd.setClosable(true);
-    wnd.setVisible(true);
-
-    // On close, clean up highlight
-    wnd.addListener(mxEvent.DESTROY, function () {
-        if (window._validationHighlight) {
-            try {
-                window._validationHighlight.destroy();
-            } catch (e) { /* ignore */ }
-            window._validationHighlight = null;
-        }
-        window._validationWindow = null;
-    });
-
-    window._validationWindow = wnd;
 }
 
 /**

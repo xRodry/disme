@@ -23,9 +23,12 @@ class FactDiagramController extends Controller
 
     public function index()
     {
-        $factDiagrams =  FactDiagram::whereNull('deleted_at')->get();
+        $factDiagrams = FactDiagram::whereNull('deleted_at')->get()->map(function($d) {
+            $d->type = 'fact';
+            return $d;
+        });
 
-        return FactDiagramResource::collection($factDiagrams);
+        return response()->json($factDiagrams, 200);
     }
 
     public function show($factDiagramId)

@@ -5931,7 +5931,7 @@
         );
 
         this.put(
-            "openFrom",
+            "open",
             new Menu(function (menu, parent) {
                 /*
                 if (editorUi.drive != null) {
@@ -6014,16 +6014,32 @@
 
                 if (editorUi.isModeReady(App.MODE_DB)) {
                     menu.addItem(
-                        "Database" + "...",
+                        (mxResources.get('factDiagram') || 'Fact Diagram') + "...",
                         null,
                         function () {
-                            editorUi.pickFile(App.MODE_DB);
+                            editorUi.pickFile(App.MODE_DB, 'fact');
+                        },
+                        parent
+                    );
+                    menu.addItem(
+                        (mxResources.get('processDiagram') || 'Process Diagram') + "...",
+                        null,
+                        function () {
+                            editorUi.pickFile(App.MODE_DB, 'process');
                         },
                         parent
                     );
                 } else if (editorUi.isModeEnabled(App.MODE_DB)) {
                     menu.addItem(
-                        "Database (" + mxResources.get("loading") + "...)",
+                        (mxResources.get('factDiagram') || 'Fact Diagram') + " (" + mxResources.get("loading") + "...)",
+                        null,
+                        function () {},
+                        parent,
+                        null,
+                        false
+                    );
+                    menu.addItem(
+                        (mxResources.get('processDiagram') || 'Process Diagram') + " (" + mxResources.get("loading") + "...)",
                         null,
                         function () {},
                         parent,
@@ -7898,7 +7914,7 @@
                     } else if (minTheme) {
                         var file = editorUi.getCurrentFile();
                         editorUi.menus.addMenuItems(menu, ["new"], parent);
-                        editorUi.menus.addSubmenu("openFrom", menu, parent);
+                        editorUi.menus.addSubmenu("open", menu, parent);
 
                         if (isLocalStorage) {
                             this.addSubmenu("openRecent", menu, parent);
@@ -8095,7 +8111,7 @@
                             this.addMenuItems(menu, ["new"], parent);
                         }
 
-                        this.addSubmenu("openFrom", menu, parent);
+                        this.addSubmenu("open", menu, parent);
 
                         if (isLocalStorage) {
                             this.addSubmenu("openRecent", menu, parent);

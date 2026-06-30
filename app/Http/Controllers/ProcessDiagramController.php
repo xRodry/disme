@@ -25,9 +25,12 @@ class ProcessDiagramController extends Controller
 
     public function index()
     {
-        $processDiagrams =  ProcessDiagram::whereNull('deleted_at')->get();
+        $processDiagrams = ProcessDiagram::whereNull('deleted_at')->get()->map(function($d) {
+            $d->type = 'process';
+            return $d;
+        });
 
-        return ProcessDiagramResource::collection($processDiagrams);
+        return response()->json($processDiagrams, 200);
     }
 
     public function show($processDiagramId)

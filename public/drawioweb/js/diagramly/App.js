@@ -4420,7 +4420,7 @@ App.prototype.showSaveFilePicker = function (success, error, opts) {
  * @param {number} dx X-coordinate of the translation.
  * @param {number} dy Y-coordinate of the translation.
  */
-App.prototype.pickFile = function (mode) {
+App.prototype.pickFile = function (mode, diagramType) {
     try {
         mode = mode != null ? mode : this.mode;
 
@@ -4436,6 +4436,7 @@ App.prototype.pickFile = function (mode) {
             }
         } else if (mode == App.MODE_DB) {
             this.pickDbFile(
+                diagramType,
                 mxUtils.bind(this, function (entry) {
                     this.openDbFile(entry);
                 })
@@ -4582,8 +4583,20 @@ App.prototype.pickFile = function (mode) {
     }
 };
 
-App.prototype.pickDbFile = function (callback) {
-    var xhr = new mxXmlRequest("/editorDiagram", null, "GET", true);
+App.prototype.pickDbFile = function (diagramType, callback) {
+    if (typeof diagramType === 'function') {
+        callback = diagramType;
+        diagramType = null;
+    }
+
+    var url = "/editorDiagram";
+    if (diagramType === 'fact') {
+        url = "/factDiagram";
+    } else if (diagramType === 'process') {
+        url = "/processDiagram";
+    }
+
+    var xhr = new mxXmlRequest(url, null, "GET", true);
 
     xhr.send(
         mxUtils.bind(this, function () {
@@ -7479,10 +7492,17 @@ App.prototype.save = function (name, done, isDraft) {
             var validationErrors = validateDiagram(this.editor.graph);
             if (validationErrors.length > 0) {
                 console.log("❌ Validation failed:", validationErrors.length, "error(s)");
-                showValidationErrors(validationErrors, this);
+                this.validationErrors = validationErrors;
+                this.showErrorsTab = true;
+                if (this.format != null) {
+                    this.format.refresh();
+                }
             } else {
                 console.log("✅ Validation passed — no errors found");
-                alert("✅ " + mxResources.get("validation_success"));
+                this.validationErrors = [];
+                if (this.format != null) {
+                    this.format.refresh();
+                }
             }
             return;
         }
