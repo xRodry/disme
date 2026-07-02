@@ -5785,32 +5785,40 @@ App.prototype.createFile = function (
 
                             console.log("Saved OK with ID:", file.dbId);
 
-                            if (replace) {
-                                complete();
-                                this.hideDialog();
-                                var wasNewFile = isNewTypedDiagram || !this.currentFile;
-                                this.setCurrentFile(file);
-                                file.setModified(false);
-                                
-                                if (typeof file.addAllSavedStatus === "function") {
-                                    file.addAllSavedStatus();
+                            var finishSave = mxUtils.bind(this, function() {
+                                if (replace) {
+                                    complete();
+                                    this.hideDialog();
+                                    var wasNewFile = isNewTypedDiagram || !this.currentFile;
+                                    this.setCurrentFile(file);
+                                    file.setModified(false);
+                                    
+                                    if (typeof file.addAllSavedStatus === "function") {
+                                        file.addAllSavedStatus();
+                                    }
+                                    
+                                    if (wasNewFile) {
+                                        file.addListener("descriptorChanged", this.descriptorChangedListener);
+                                        file.addListener("contentChanged", this.descriptorChangedListener);
+                                        this.setMode(file.mode);
+                                    }
+                                    
+                                    var hash = "D" + file.dbId;
+                                    if (window.location.hash !== "#" + hash) {
+                                        window.history.replaceState(null, null, "#" + hash);
+                                    }
+                                    
+                                    if (done) done();
+                                    if (success) success();
+                                } else {
+                                    fileCreated(file);
                                 }
-                                
-                                if (wasNewFile) {
-                                    file.addListener("descriptorChanged", this.descriptorChangedListener);
-                                    file.addListener("contentChanged", this.descriptorChangedListener);
-                                    this.setMode(file.mode);
-                                }
-                                
-                                var hash = "D" + file.dbId;
-                                if (window.location.hash !== "#" + hash) {
-                                    window.history.replaceState(null, null, "#" + hash);
-                                }
-                                
-                                if (done) done();
-                                if (success) success();
+                            });
+
+                            if (type.includes("process")) {
+                                this.executeBulkSave(file, finishSave);
                             } else {
-                                fileCreated(file);
+                                finishSave();
                             }
                         } catch (e) {
                             complete();
@@ -7497,14 +7505,15 @@ App.prototype.save = function (name, done, isDraft) {
                 if (this.format != null) {
                     this.format.refresh();
                 }
+                return; // Stop save workflow if there are errors
             } else {
                 console.log("✅ Validation passed — no errors found");
                 this.validationErrors = [];
                 if (this.format != null) {
                     this.format.refresh();
                 }
+                // Continue to save workflow below
             }
-            return;
         }
 
         // For Save as Draft flow (isDraft === true):
@@ -7568,6 +7577,65 @@ App.prototype.save = function (name, done, isDraft) {
             error(err);
         }
     }
+};
+
+/**
+ * Executes the bulk save for semantic persistence of a Process Diagram.
+ */
+App.prototype.executeBulkSave = function(file, success, error) {
+    if (!file || !file.dbId) {
+        if (success) success();
+        return;
+    }
+
+    var processDiagramId = file.dbId;
+    var processTypeId = file.processTypeId || 1;
+    
+    // Call the builder function from DiagramUtils.js
+    var payload = buildBulkSavePayload(this.editor.graph, processDiagramId, processTypeId);
+    
+    var xhr = new mxXmlRequest(
+        "/processDiagram/bulk-save",
+        JSON.stringify(payload),
+        "POST",
+        true
+    );
+
+    xhr.setRequestHeaders = function(request, params) {
+        request.setRequestHeader("Content-Type", "application/json");
+        request.setRequestHeader("Accept", "application/json");
+    };
+
+    var self = this;
+    xhr.send(
+        function() {
+            try {
+                var text = xhr.getText();
+                var resp = null;
+                try {
+                    resp = JSON.parse(text);
+                } catch (_) {
+                    console.warn("Non-JSON response from bulk-save:", text);
+                }
+
+                if (xhr.getStatus() === 200 && resp && resp.success) {
+                    console.log("Bulk save successful:", resp);
+                    if (success) success();
+                } else {
+                    var errMsg = (resp && resp.error) ? resp.error : (resp && resp.message ? resp.message : "Failed to bulk save semantic data");
+                    self.showError(mxResources.get('error') || 'Error', errMsg, mxResources.get('ok'));
+                    if (error) error(errMsg);
+                }
+            } catch (e) {
+                self.showError(mxResources.get('error') || 'Error', e.message || "Failed to bulk save", mxResources.get('ok'));
+                if (error) error(e);
+            }
+        },
+        function(err) {
+            self.showError(mxResources.get('error') || 'Error', "Network error during bulk save", mxResources.get('ok'));
+            if (error) error(err);
+        }
+    );
 };
 
 App.prototype.updateDatabaseFile = function (file, title, success, error) {
@@ -7652,21 +7720,29 @@ App.prototype.updateDatabaseFile = function (file, title, success, error) {
                         resp &&
                         (resp.success === undefined || resp.success === true)
                     ) {
-                        this.hideDialog();
-                        file.setModified(false);
-                        file.dbId = resp.id || file.dbId;
-                        
-                        file.getHash = function() {
-                            return "D" + type + "-" + file.dbId;
-                        };
-                        
-                        file.diagramTypeFlag = type;
+                        var finishUpdate = mxUtils.bind(this, function() {
+                            this.hideDialog();
+                            file.setModified(false);
+                            file.dbId = resp.id || file.dbId;
+                            
+                            file.getHash = function() {
+                                return "D" + type + "-" + file.dbId;
+                            };
+                            
+                            file.diagramTypeFlag = type;
 
-                        if (title && title !== file.getTitle()) {
-                            file.rename(title);
+                            if (title && title !== file.getTitle()) {
+                                file.rename(title);
+                            }
+
+                            if (success) success();
+                        });
+
+                        if (type.includes("process")) {
+                            this.executeBulkSave(file, finishUpdate);
+                        } else {
+                            finishUpdate();
                         }
-
-                        if (success) success();
                     }
                 } catch (e) {
                     if (error) error(e);

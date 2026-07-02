@@ -406,10 +406,11 @@ Format.prototype.immediateRefresh = function () {
     var containsLabel = ss.containsLabel;
     var currentLabel = null;
     var currentPanel = null;
+    var tabsList = [];
 
     var addClickHandler = mxUtils.bind(
         this,
-        function (elt, panel, index, lastEntry) {
+        function (elt, panel, index) {
             var clickHandler = mxUtils.bind(this, function (evt) {
                 if (currentLabel != elt) {
                     if (containsLabel) {
@@ -453,7 +454,6 @@ Format.prototype.immediateRefresh = function () {
             );
 
             if (
-                (lastEntry && currentLabel == null) ||
                 index ==
                     (containsLabel
                         ? this.labelIndex
@@ -464,6 +464,8 @@ Format.prototype.immediateRefresh = function () {
                 // Invokes handler directly as a workaround for no click on DIV in KHTML.
                 clickHandler();
             }
+
+            tabsList.push(clickHandler);
         }
     );
 
@@ -598,7 +600,7 @@ Format.prototype.immediateRefresh = function () {
             label2.style.display = "none";
         }
 
-        addClickHandler(label3, arrangePanel, idx++, true);
+        addClickHandler(label3, arrangePanel, idx++);
         // Process Model tab
         var label4 = label.cloneNode(false);
         label4.style.backgroundColor = Format.inactiveTabBackgroundColor;
@@ -633,6 +635,11 @@ Format.prototype.immediateRefresh = function () {
         this.container.appendChild(errorsPanel);
 
         addClickHandler(label5, errorsPanel, idx++);
+
+        // Fallback: If no tab was selected (e.g. invalid index or newly selected cell), select the first available tab
+        if (currentLabel == null && tabsList.length > 0) {
+            tabsList[0]();
+        }
 
         if (ui.showErrorsTab) {
             ui.showErrorsTab = false;
@@ -11478,9 +11485,13 @@ ErrorsFormatPanel.prototype.init = function () {
                     }
 
                     // Keep the user on the Errors tab after selection changes
-                    ui.showErrorsTab = true;
-
-                    graph.setSelectionCell(err.cell);
+                    // Only trigger if the selection actually changes, to prevent leaving showErrorsTab = true
+                    var isSelected = graph.getSelectionCount() === 1 && graph.getSelectionCell() === err.cell;
+                    if (!isSelected) {
+                        ui.showErrorsTab = true;
+                        graph.setSelectionCell(err.cell);
+                    }
+                    
                     graph.scrollCellToVisible(err.cell);
 
                     var hl = new mxCellHighlight(graph, "#d32f2f", 4);

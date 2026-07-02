@@ -256,3 +256,25 @@ function getCellDisplayName(graph, cell) {
     // Generic vertex
     return mxResources.get("val_element");
 }
+
+/**
+ * Builds the payload for the /processDiagram/bulk-save endpoint.
+ * Currently returns an empty structure to establish the connection architecture.
+ */
+function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
+    var payload = {
+        processDiagramId: processDiagramId,
+        processTypeId: processTypeId,
+        
+        transactionTypes: [],
+        waitingLinks: [],
+        causalLinks: [],
+        actionRules: [],
+        actions: []
+    };
+
+    // In future tasks, we will iterate over graph.getModel().cells here
+    // and populate the arrays based on the cell styles.
+
+    return payload;
+}

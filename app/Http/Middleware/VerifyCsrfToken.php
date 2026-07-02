@@ -26,7 +26,10 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
             '/editorDiagramSave',
             '/factDiagram/save',
+            '/factDiagram/bulk-save',
             '/processDiagram/save',
-            '/editor/roles'
+            '/processDiagram/bulk-save',
+            '/editor/roles',
+
     ];
 }
