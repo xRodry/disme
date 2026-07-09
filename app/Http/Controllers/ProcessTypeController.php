@@ -60,17 +60,13 @@ class ProcessTypeController extends Controller
 
         DB::beginTransaction();
         try {
-            $processType = ProcessType::create([
-                'state' => $request->input('state'),
-                'color' => $request->input('color'),
-                'updated_by' => $userId
-            ]);
-            $processTypeName = ProcessTypeName::create([
-                'process_type_id' => $processType->id,
-                'language_id' => $langId,
-                'name' => $request->input('name'),
-                'updated_by' => $userId
-            ]);
+            $this->createProcessTypeRecord(
+                $request->input('name'),
+                $request->input('state'),
+                $request->input('color'),
+                $langId,
+                $userId
+            );
           DB::commit();
           $success = true;
           // all good
@@ -221,4 +217,95 @@ class ProcessTypeController extends Controller
         return QueryResource::collection($queries);
     }
 
+    public function editorIndex(Request $request)
+    {
+        $lang = $request->get('lang', 'pt');
+        $langMap = ['pt' => 1, 'en' => 2];
+        $langId = $langMap[$lang] ?? 1;
+
+        $processTypes = \DB::table('process_type')
+            ->join('process_type_name', 'process_type.id', '=', 'process_type_name.process_type_id')
+            ->whereNull('process_type.deleted_at')
+            ->whereNull('process_type_name.deleted_at')
+            ->where('process_type_name.language_id', $langId)
+            ->select('process_type.id', 'process_type_name.name')
+            ->orderBy('process_type_name.name', 'asc')
+            ->get();
+
+        return response()->json($processTypes);
+    }
+
+    private function createProcessTypeRecord($name, $state, $color, $langId, $userId)
+    {
+        if (empty($color)) {
+            $color = '#466d52';
+        }
+
+        $processType = ProcessType::create([
+            'state' => $state,
+            'color' => $color,
+            'updated_by' => $userId
+        ]);
+
+        ProcessTypeName::create([
+            'process_type_id' => $processType->id,
+            'language_id' => $langId,
+            'name' => $name,
+            'updated_by' => $userId
+        ]);
+
+        return $processType;
+    }
+
+    public function editorStore(Request $request)
+    {
+        try {
+            $name = trim($request->input('name'));
+            if (!$name) {
+                return response()->json(['error' => 'Name is required'], 422);
+            }
+
+            $lang = $request->get('lang', 'pt');
+            $langMap = ['pt' => 1, 'en' => 2];
+            $langId = $langMap[$lang] ?? 1;
+
+            // Check if name already exists
+            $existing = \DB::table('process_type_name')
+                ->where('name', $name)
+                ->where('language_id', $langId)
+                ->whereNull('deleted_at')
+                ->first();
+
+            if ($existing) {
+                return response()->json(['error' => 'nameAlreadyExists'], 409);
+            }
+
+            \DB::beginTransaction();
+
+            $userId = $request->user() ? $request->user()->id : 1;
+
+            $processType = $this->createProcessTypeRecord(
+                $name,
+                $request->input('state', 'inactive'),
+                $request->input('color'),
+                $langId,
+                $userId
+            );
+
+            \DB::commit();
+
+            return response()->json([
+                'id' => $processType->id,
+                'name' => $name
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            Log::error($e);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'trace' => app()->environment('local') ? $e->getTraceAsString() : null
+            ], 500);
+        }
+    }
 }

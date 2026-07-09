@@ -30,6 +30,7 @@ class VerifyCsrfToken extends Middleware
             '/processDiagram/save',
             '/processDiagram/bulk-save',
             '/editor/roles',
+            '/editor/process-types',
 
     ];
 }

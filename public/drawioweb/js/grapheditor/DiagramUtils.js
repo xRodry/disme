@@ -259,7 +259,10 @@ function getCellDisplayName(graph, cell) {
 
 /**
  * Builds the payload for the /processDiagram/bulk-save endpoint.
- * Currently returns an empty structure to establish the connection architecture.
+ * Traverses the diagram graph and extracts semantic data from cells.
+ *
+ * Currently extracts: Transaction Types
+ * Future tasks will add: WaitingLinks, CausalLinks, ActionRules, Actions
  */
 function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
     var payload = {
@@ -273,8 +276,60 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
         actions: []
     };
 
-    // In future tasks, we will iterate over graph.getModel().cells here
-    // and populate the arrays based on the cell styles.
+    // Determine language ID from editor language
+    var lang = (typeof getCurrentLanguage === 'function') ? getCurrentLanguage() : 'pt';
+    var langMap = { 'pt': 1, 'en': 2 };
+    var languageId = langMap[lang] || 1;
+
+    // Use a negative counter for temporary IDs so each transaction type
+    // gets a unique key in the backend's $transactionTypeIdMap
+    var tempIdCounter = -1;
+
+    // Traverse all cells (same pattern as validateDiagram)
+    var parent = graph.getDefaultParent();
+    var cells = graph.getChildCells(parent, true, true);
+
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var style = graph.getCellStyle(cell);
+
+        // --- Transaction Types (processModel == "1") ---
+        if (style.processModel == "1") {
+            var txNome = getStyleValue(cell, "tx_nome") || null;
+            var txResultado = getStyleValue(cell, "tx_resultado") || null;
+            var txEstado = getStyleValue(cell, "tx_estado") || "inactive";
+            var txFuncao = parseInt(getStyleValue(cell, "tx_funcao")) || 0;
+            var txTipo = getStyleValue(cell, "tx_tipo") || null;
+            var txFinaliza = parseInt(getStyleValue(cell, "tx_finaliza")) || 0;
+            var txInterm = parseInt(getStyleValue(cell, "tx_interm")) || 0;
+            var txAcesso = parseInt(getStyleValue(cell, "tx_acesso")) || 0;
+
+            payload.transactionTypes.push({
+                id: tempIdCounter--,
+                language_id: languageId,
+                t_name: txNome,
+                rt_name: txResultado,
+                state: txEstado,
+                process_type_id: processTypeId,
+                init_proc: 0,
+                end_proc: txFinaliza,
+                interm_task: txInterm,
+                external: txTipo === "external" ? 1 : 0,
+                type: txTipo,
+                frontier: null,
+                frontier_type: null,
+                executer_role_id: txFuncao,
+                own_user_access_only: txAcesso,
+                auto_activate: 0,
+                freq_activate: null,
+                when_activate: null
+            });
+        }
+
+        // Future tasks: extract WaitingLinks, CausalLinks, ActionRules, Actions
+    }
+
+    console.log("buildBulkSavePayload:", payload.transactionTypes.length, "transaction types extracted");
 
     return payload;
 }

@@ -102,7 +102,7 @@ class ProcessDiagramController extends Controller
     {
         // Validação básica
         $data = $request->validate([
-            'transactionTypes' => ['required', 'array'],
+            'transactionTypes' => ['present', 'array'],
             'waitingLinks' => ['array'],
             'actionRules' => ['array'],
             'actions' => ['array'],

@@ -40,8 +40,31 @@ class EditorDiagramController extends Controller
 
         if ($type === 'fact') {
             $diagram = \App\FactDiagram::findOrFail($id);
+            if ($diagram->conceptual_domain_id) {
+                $langId = $request->user() ? $request->user()->language_id : 1;
+                $conceptualDomainName = \DB::table('conceptual_domain_name')
+                    ->where('conceptual_domain_id', $diagram->conceptual_domain_id)
+                    ->where('language_id', $langId)
+                    ->whereNull('deleted_at')
+                    ->first();
+                if ($conceptualDomainName) {
+                    $diagram->conceptual_domain_name = $conceptualDomainName->name;
+                }
+            }
         } else if ($type === 'process') {
             $diagram = \App\ProcessDiagram::findOrFail($id);
+            if ($diagram->process_type_id) {
+                // Fetch the name for the current language
+                $langId = $request->user() ? $request->user()->language_id : 1;
+                $processTypeName = \DB::table('process_type_name')
+                    ->where('process_type_id', $diagram->process_type_id)
+                    ->where('language_id', $langId)
+                    ->whereNull('deleted_at')
+                    ->first();
+                if ($processTypeName) {
+                    $diagram->process_type_name = $processTypeName->name;
+                }
+            }
         } else {
             $diagram = \App\EditorDiagram::findOrFail($id);
         }

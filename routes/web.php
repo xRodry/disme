@@ -24,6 +24,12 @@ Route::get('/processDiagram', 'ProcessDiagramController@index');
 Route::post('/factDiagram/save', 'FactDiagramController@storeOrUpdate');
 Route::post('/factDiagram/bulk-save', 'FactDiagramController@bulkSave');
 Route::get('/factDiagram', 'FactDiagramController@index');
+Route::get('/editor/process-types', 'ProcessTypeController@editorIndex');
+Route::post('/editor/process-types', 'ProcessTypeController@editorStore');
+
+Route::get('/editor/conceptual-domains', 'ConceptualDomainController@editorIndex');
+Route::post('/editor/conceptual-domains', 'ConceptualDomainController@editorStore');
+
 Route::get('/editor/roles', function (Request $request) {
 
     $lang = $request->get('lang', 'pt');

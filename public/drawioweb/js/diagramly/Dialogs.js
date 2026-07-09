@@ -366,6 +366,187 @@ var DiagramTypeDialog = function (editorUi, callback) {
     this.container = div;
 };
 
+let processTypesCache = null;
+
+var GenericSelectionDialog = function(editorUi, config, callback) {
+    var div = document.createElement("div");
+
+    div.innerHTML = `
+        <h3>${config.title}</h3>
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;">
+                <input type="radio" name="selectionOption" value="existing" checked> 
+                ${config.useExistingLabel}
+            </label>
+            <select id="existingItemSelect" style="width:100%; margin-left: 20px; width: calc(100% - 20px);">
+                <option value="">${mxResources.get("loading") || "Loading..."}</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;">
+                <input type="radio" name="selectionOption" value="new"> 
+                ${config.createNewLabel}
+            </label>
+            <input type="text" id="newItemName" style="width:100%; margin-left: 20px; width: calc(100% - 20px);" placeholder="${config.inputPlaceholder}" disabled>
+        </div>
+        <br/>
+        <div style="text-align: right;">
+            <button id="cancelBtn" class="geBtn">${mxResources.get("cancel") || "Cancel"}</button>
+            <button id="okBtn" class="geBtn gePrimaryBtn">OK</button>
+        </div>
+    `;
+
+    var radioExisting = div.querySelector("input[value='existing']");
+    var radioNew = div.querySelector("input[value='new']");
+    var selectExisting = div.querySelector("#existingItemSelect");
+    var inputNew = div.querySelector("#newItemName");
+    var okBtn = div.querySelector("#okBtn");
+    var cancelBtn = div.querySelector("#cancelBtn");
+
+    function updateInputs() {
+        if (radioExisting.checked) {
+            selectExisting.disabled = false;
+            inputNew.disabled = true;
+        } else {
+            selectExisting.disabled = true;
+            inputNew.disabled = false;
+        }
+    }
+
+    radioExisting.onchange = updateInputs;
+    radioNew.onchange = updateInputs;
+
+    function loadItems() {
+        if (window[config.cacheKey]) {
+            populateSelect(window[config.cacheKey]);
+            return;
+        }
+
+        var lang = (typeof getCurrentLanguage === 'function') ? getCurrentLanguage() : (window.mxLanguage === "pt" ? "pt" : "en");
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", config.endpoint + "?lang=" + lang, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                window[config.cacheKey] = data;
+                populateSelect(data);
+            }
+        };
+        xhr.send();
+    }
+
+    function populateSelect(data) {
+        selectExisting.innerHTML = "";
+        if (data.length === 0) {
+            var opt = document.createElement("option");
+            opt.value = "";
+            opt.innerText = config.noItemsLabel;
+            selectExisting.appendChild(opt);
+            return;
+        }
+        for (var i = 0; i < data.length; i++) {
+            var opt = document.createElement("option");
+            opt.value = data[i].id;
+            opt.innerText = data[i].name;
+            opt.setAttribute("data-name", data[i].name);
+            selectExisting.appendChild(opt);
+        }
+    }
+
+    loadItems();
+
+    cancelBtn.onclick = function() {
+        editorUi.hideDialog();
+    };
+
+    okBtn.onclick = function() {
+        console.log("[CHECKPOINT 1] User confirmed GenericSelectionDialog");
+        if (radioExisting.checked) {
+            var selectedOption = selectExisting.options[selectExisting.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                editorUi.showError(mxResources.get('error') || 'Error', config.selectError, mxResources.get('ok'));
+                return;
+            }
+            console.log("[CHECKPOINT 3] editorUi.hideDialog() is called (existing)");
+            editorUi.hideDialog();
+            console.log("[CHECKPOINT 2] Callback from GenericSelectionDialog is executed (existing)");
+            callback({
+                id: parseInt(selectedOption.value, 10),
+                name: selectedOption.getAttribute("data-name"),
+                isNew: false
+            });
+        } else {
+            var name = inputNew.value.trim();
+            if (!name) {
+                editorUi.showError(mxResources.get('error') || 'Error', config.inputError, mxResources.get('ok'));
+                return;
+            }
+            
+            okBtn.disabled = true;
+            okBtn.innerText = config.loadingText || mxResources.get("loading") || "Loading...";
+
+            var lang = (typeof getCurrentLanguage === 'function') ? getCurrentLanguage() : (window.mxLanguage === "pt" ? "pt" : "en");
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", config.endpoint + "?lang=" + lang, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            
+            var csrfToken = document.querySelector('meta[name="csrf-token"]');
+            if (csrfToken) {
+                xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken.getAttribute("content"));
+            }
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    okBtn.disabled = false;
+                    okBtn.innerText = "OK";
+                    
+                    if (xhr.status === 200 || xhr.status === 201) {
+                        var data = JSON.parse(xhr.responseText);
+                        window[config.cacheKey] = null;
+                        console.log("[CHECKPOINT 3] editorUi.hideDialog() is called (new)");
+                        editorUi.hideDialog();
+                        console.log("[CHECKPOINT 2] Callback from GenericSelectionDialog is executed (new)");
+                        callback({
+                            id: parseInt(data.id, 10),
+                            name: data.name,
+                            isNew: true
+                        });
+                    } else if (xhr.status === 409) {
+                        var errMsg = mxResources.get("duplicateDiagramMessage") || "Already exists.";
+                        try {
+                            var resp = JSON.parse(xhr.responseText);
+                            if (resp.error) {
+                                if (resp.error === 'nameAlreadyExists' && config.duplicateError) {
+                                    errMsg = config.duplicateError;
+                                } else {
+                                    errMsg = mxResources.get(resp.error) || resp.error;
+                                }
+                            }
+                        } catch (e) {}
+                        editorUi.showError(mxResources.get('error') || 'Error', errMsg, mxResources.get('ok'));
+                    } else {
+                        var defaultMsg = config.createError;
+                        var errMsg = defaultMsg;
+                        try {
+                            var resp = JSON.parse(xhr.responseText);
+                            if (resp.message) {
+                                errMsg = resp.message;
+                            } else if (resp.error) {
+                                errMsg = resp.error;
+                            }
+                        } catch (e) {}
+                        editorUi.showError(mxResources.get('error') || 'Error', errMsg, mxResources.get('ok'));
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ name: name }));
+        }
+    };
+
+    this.container = div;
+};
+
+
 /**
  * Constructs a dialog for creating new files from templates.
  */
