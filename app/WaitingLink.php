@@ -18,6 +18,7 @@ class WaitingLink extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'diagram_id',
         'waited_t',
         'waited_act',
         'waiting_act',

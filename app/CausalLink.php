@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CausalLink extends Model
 {
-    //use SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'causal_link';
 
     public $timestamps = true;
 
     protected $fillable = [
+        'diagram_id',
         'causing_action',
         'caused_transaction_type_id',
         'caused_t_state_id',

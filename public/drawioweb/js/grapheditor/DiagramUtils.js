@@ -113,7 +113,7 @@ function validateCell(graph, cell) {
         if (cTarget && graph.getCellStyle(cTarget).processModel != "1") {
             errors.push({ cell: cell, message: mxResources.get("error_causal_target") });
         }
-        var causedState = getStyleValue(cell, "caused_state");
+        var causedState = getStyleValue(cell, "caused_t_state_id");
         var causingAction = getStyleValue(cell, "causing_action");
         if (!causedState) {
             errors.push({ cell: cell, message: mxResources.get("error_caused_state") });
@@ -281,9 +281,6 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
     var langMap = { 'pt': 1, 'en': 2 };
     var languageId = langMap[lang] || 1;
 
-    // Use a negative counter for temporary IDs so each transaction type
-    // gets a unique key in the backend's $transactionTypeIdMap
-    var tempIdCounter = -1;
 
     // Traverse all cells (same pattern as validateDiagram)
     var parent = graph.getDefaultParent();
@@ -303,9 +300,18 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
             var txFinaliza = parseInt(getStyleValue(cell, "tx_finaliza")) || 0;
             var txInterm = parseInt(getStyleValue(cell, "tx_interm")) || 0;
             var txAcesso = parseInt(getStyleValue(cell, "tx_acesso")) || 0;
+            
+            // Frontier extraction
+            var rawFrontier = getStyleValue(cell, "frontier");
+            var rawFrontierType = getStyleValue(cell, "frontier_type");
+            var isFrontier = (rawFrontier == "1") ? 1 : 0;
+            var extractedFrontierType = null;
+            if (isFrontier) {
+                extractedFrontierType = rawFrontierType || "internal"; // Defaulting to internal if missing but frontier=1
+            }
 
             payload.transactionTypes.push({
-                id: tempIdCounter--,
+                diagram_id: cell.getId(),
                 language_id: languageId,
                 t_name: txNome,
                 rt_name: txResultado,
@@ -316,8 +322,8 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
                 interm_task: txInterm,
                 external: txTipo === "external" ? 1 : 0,
                 type: txTipo,
-                frontier: null,
-                frontier_type: null,
+                frontier: isFrontier,
+                frontier_type: extractedFrontierType,
                 executer_role_id: txFuncao,
                 own_user_access_only: txAcesso,
                 auto_activate: 0,
@@ -326,10 +332,83 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
             });
         }
 
-        // Future tasks: extract WaitingLinks, CausalLinks, ActionRules, Actions
+        // --- Waiting Links (waitinglink == "1") ---
+        if (style.waitinglink == "1") {
+            var model = graph.getModel();
+            var wSource = model.getTerminal(cell, true);
+            var wTarget = model.getTerminal(cell, false);
+
+            if (wSource && wTarget) {
+                payload.waitingLinks.push({
+                    diagram_id: cell.getId(),
+                    waited_t: wTarget.getId(),
+                    waited_act: parseInt(getStyleValue(cell, "waited_act")) || 0,
+                    waiting_act: parseInt(getStyleValue(cell, "waiting_act")) || 0,
+                    waiting_t: wSource.getId(),
+                    min: getStyleValue(cell, "min") || "1",
+                    max: getStyleValue(cell, "max") || "1"
+                });
+            }
+        }
+
+        // --- Causal Links (causallink == "1") ---
+        if (style.causallink == "1") {
+            var model = graph.getModel();
+            var cSource = model.getTerminal(cell, true);
+            var cTarget = model.getTerminal(cell, false);
+
+            if (cSource && cTarget) {
+                payload.causalLinks.push({
+                    diagram_id: cell.getId(),
+                    causing_action: parseInt(getStyleValue(cell, "causing_action")) || 0,
+                    caused_transaction_type_id: cTarget.getId(),
+                    caused_t_state_id: parseInt(getStyleValue(cell, "caused_t_state_id")) || 0,
+                    min: getStyleValue(cell, "min") || "1",
+                    max: getStyleValue(cell, "max") || "1",
+                    cancel_proc: parseInt(getStyleValue(cell, "cancel_proc")) || 0,
+                    continue_if_same_user: parseInt(getStyleValue(cell, "continue_if_same_user")) || 0
+                });
+            }
+        }
+
+        // --- Composition Links (compositionlink == "1") ---
+        // A composition link produces both a WaitingLink AND a CausalLink
+        if (style.compositionlink == "1") {
+            var model = graph.getModel();
+            var compSource = model.getTerminal(cell, true);
+            var compTarget = model.getTerminal(cell, false);
+
+            if (compSource && compTarget) {
+                // WaitingLink part
+                payload.waitingLinks.push({
+                    diagram_id: cell.getId() + "_wl",
+                    waited_t: compTarget.getId(),
+                    waited_act: parseInt(getStyleValue(cell, "waited_act")) || 0,
+                    waiting_act: parseInt(getStyleValue(cell, "waiting_act")) || 0,
+                    waiting_t: compSource.getId(),
+                    min: getStyleValue(cell, "min") || "1",
+                    max: getStyleValue(cell, "max") || "1"
+                });
+
+                // CausalLink part
+                payload.causalLinks.push({
+                    diagram_id: cell.getId() + "_cl",
+                    causing_action: parseInt(getStyleValue(cell, "causing_action")) || 0,
+                    caused_transaction_type_id: compTarget.getId(),
+                    caused_t_state_id: parseInt(getStyleValue(cell, "caused_t_state_id")) || 0,
+                    min: getStyleValue(cell, "min") || "1",
+                    max: getStyleValue(cell, "max") || "1",
+                    cancel_proc: parseInt(getStyleValue(cell, "cancel_proc")) || 0,
+                    continue_if_same_user: parseInt(getStyleValue(cell, "continue_if_same_user")) || 0
+                });
+            }
+        }
     }
 
-    console.log("buildBulkSavePayload:", payload.transactionTypes.length, "transaction types extracted");
+    console.log("buildBulkSavePayload:",
+        payload.transactionTypes.length, "transaction types,",
+        payload.waitingLinks.length, "waiting links,",
+        payload.causalLinks.length, "causal links extracted");
 
     return payload;
 }

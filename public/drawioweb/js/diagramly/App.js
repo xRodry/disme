@@ -4674,28 +4674,28 @@ App.prototype.openDbFile = function (entry) {
             file.dbId = diagram.id;
             file.diagramTypeFlag = diagram.type || "editor";
             if (diagram.type === "fact") {
-                if (!diagram.conceptual_domain_id || !diagram.conceptual_domain_name) {
+                if (!diagram.conceptual_domain_id) {
                     this.showError(mxResources.get('error') || 'Error', mxResources.get('error_conceptual_domain_name') || 'Associated Conceptual Domain is missing or deleted.', mxResources.get('ok'));
                 } else {
                     file.conceptualDomain = {
                         id: diagram.conceptual_domain_id,
-                        name: diagram.conceptual_domain_name
+                        name: diagram.conceptual_domain_name || ''
                     };
                     if (this.setConceptualDomain) {
-                        this.setConceptualDomain(diagram.conceptual_domain_id, diagram.conceptual_domain_name);
+                        this.setConceptualDomain(diagram.conceptual_domain_id, diagram.conceptual_domain_name || '');
                     }
                 }
             }
             if (diagram.type === "process") {
-                if (!diagram.process_type_id || !diagram.process_type_name) {
+                if (!diagram.process_type_id) {
                     this.showError(mxResources.get('error') || 'Error', mxResources.get('error_process_type_name') || 'Associated Process Type is missing or deleted.', mxResources.get('ok'));
                 } else {
                     file.processType = {
                         id: diagram.process_type_id,
-                        name: diagram.process_type_name
+                        name: diagram.process_type_name || ''
                     };
                     if (this.setProcessType) {
-                        this.setProcessType(diagram.process_type_id, diagram.process_type_name);
+                        this.setProcessType(diagram.process_type_id, diagram.process_type_name || '');
                     }
                 }
             }
@@ -5980,9 +5980,6 @@ App.prototype.fileCreated = function (
     clibs,
     success
 ) {
-    console.log("[DEBUG-APP-fileCreated] ENTERED. file.constructor =", file.constructor.name, "file.mode =", file.getMode(), "file.diagramTypeFlag =", file.diagramTypeFlag);
-    console.log("[DEBUG-APP-fileCreated] libs =", libs, "replace =", replace, "done =", typeof done, "clibs =", clibs, "success =", typeof success);
-    console.log("[DEBUG-APP-fileCreated] spinner.active BEFORE spin:", this.spinner.active);
 
     var url = window.location.pathname;
 
@@ -6004,11 +6001,9 @@ App.prototype.fileCreated = function (
     // Makes sure to produce consistent output with finalized files via createFileData this needs
     // to save the file again since it needs the newly created file ID for redirecting in HTML
     var spinResult = this.spinner.spin(document.body, mxResources.get("inserting"));
-    console.log("[DEBUG-APP-fileCreated] spinner.spin() returned:", spinResult, "spinner.active:", this.spinner.active);
 
     if (spinResult) {
         var data = file.getData();
-        console.log("[DEBUG-APP-fileCreated] file.getData() length:", data ? data.length : "null");
         var dataNode =
             data.length > 0
                 ? this.editor.extractGraphModel(
@@ -6038,31 +6033,24 @@ App.prototype.fileCreated = function (
 
         var self = this;
         var complete = mxUtils.bind(this, function () {
-            console.log("[DEBUG-APP-fileCreated] complete() called - stopping spinner");
             this.spinner.stop();
         });
 
         var fn = mxUtils.bind(this, function () {
-            console.log("[DEBUG-APP-fileCreated] fn() called - about to call complete()");
             complete();
 
             var currentFile = this.getCurrentFile();
-            console.log("[DEBUG-APP-fileCreated] fn() currentFile:", currentFile, "replace:", replace);
 
             if (replace == null && currentFile != null) {
                 replace =
                     !currentFile.isModified() && currentFile.getMode() == null;
-                console.log("[DEBUG-APP-fileCreated] fn() replace overridden to:", replace);
             }
 
             var fn3 = mxUtils.bind(this, function () {
-                console.log("[DEBUG-APP-fileCreated] fn3() called - about to call fileLoaded");
                 window.openFile = null;
                 try {
                     this.fileLoaded(file, null, success);
-                    console.log("[DEBUG-APP-fileCreated] fn3() fileLoaded returned successfully");
                 } catch (e) {
-                    console.error("[DEBUG-APP-fileCreated] fn3() EXCEPTION in fileLoaded:", e.message, e.stack);
                 }
 
                 if (replace) {
@@ -6085,23 +6073,18 @@ App.prototype.fileCreated = function (
                 }
 
                 if (done != null) {
-                    console.log("[DEBUG-APP-fileCreated] fn3() calling done() callback");
                     done();
                 }
-                console.log("[DEBUG-APP-fileCreated] fn3() END");
             });
 
             var fn2 = mxUtils.bind(this, function () {
-                console.log("[DEBUG-APP-fileCreated] fn2() called. replace:", replace, "currentFile:", currentFile, "currentFile.isModified:", currentFile ? currentFile.isModified() : "N/A");
                 if (
                     replace ||
                     currentFile == null ||
                     !currentFile.isModified()
                 ) {
-                    console.log("[DEBUG-APP-fileCreated] fn2() -> calling fn3() directly");
                     fn3();
                 } else {
-                    console.log("[DEBUG-APP-fileCreated] fn2() -> showing confirm dialog (allChangesLost)");
                     this.confirm(
                         mxResources.get("allChangesLost"),
                         null,
@@ -6114,7 +6097,6 @@ App.prototype.fileCreated = function (
 
             // Opens the file in a new window
             if (replace != null && !replace) {
-                console.log("[DEBUG-APP-fileCreated] fn() -> opening in new window");
                 // Opens local file in a new window
                 if (file.constructor == LocalFile) {
                     window.openFile = new OpenFile(function () {
@@ -6130,17 +6112,14 @@ App.prototype.fileCreated = function (
 
                 window.geOpenWindow(url, null, fn2);
             } else {
-                console.log("[DEBUG-APP-fileCreated] fn() -> calling fn2() directly");
                 fn2();
             }
         });
 
         // Updates data in memory for local files
         if (file.constructor == LocalFile) {
-            console.log("[DEBUG-APP-fileCreated] file is LocalFile -> calling fn() directly");
             fn();
         } else {
-            console.log("[DEBUG-APP-fileCreated] file is NOT LocalFile -> calling file.saveFile()");
             file.saveFile(
                 file.getTitle(),
                 false,
@@ -6157,9 +6136,7 @@ App.prototype.fileCreated = function (
             );
         }
     } else {
-        console.error("[DEBUG-APP-fileCreated] spinner.spin() returned FALSE! Entire fileCreated body SKIPPED. spinner.active:", this.spinner.active);
     }
-    console.log("[DEBUG-APP-fileCreated] END");
 };
 
 /**
@@ -6326,33 +6303,34 @@ App.prototype.loadFile = function (id, sameWindow, file, success, force) {
                                     
                                     dbFile.diagramTypeFlag = response.type || typeParam;
                                     if (dbFile.diagramTypeFlag === "fact") {
-                                        if (!response.conceptual_domain_id || !response.conceptual_domain_name) {
+                                        if (!response.conceptual_domain_id) {
                                             this.showError(mxResources.get('error') || 'Error', mxResources.get('error_conceptual_domain_name') || 'Associated Conceptual Domain is missing or deleted.', mxResources.get('ok'));
                                         } else {
                                             dbFile.conceptualDomain = {
                                                 id: response.conceptual_domain_id,
-                                                name: response.conceptual_domain_name
+                                                name: response.conceptual_domain_name || ''
                                             };
-                                            if (this.setConceptualDomain) {
-                                                this.setConceptualDomain(response.conceptual_domain_id, response.conceptual_domain_name);
-                                            }
                                         }
                                     }
                                     if (dbFile.diagramTypeFlag === "process") {
-                                        if (!response.process_type_id || !response.process_type_name) {
+                                        if (!response.process_type_id) {
                                             this.showError(mxResources.get('error') || 'Error', mxResources.get('error_process_type_name') || 'Associated Process Type is missing or deleted.', mxResources.get('ok'));
                                         } else {
                                             dbFile.processType = {
                                                 id: response.process_type_id,
-                                                name: response.process_type_name
+                                                name: response.process_type_name || ''
                                             };
-                                            if (this.setProcessType) {
-                                                this.setProcessType(response.process_type_id, response.process_type_name);
-                                            }
                                         }
                                     }
 
                                     this.fileLoaded(dbFile);
+
+                                    if (dbFile.diagramTypeFlag === "fact" && dbFile.conceptualDomain && this.setConceptualDomain) {
+                                        this.setConceptualDomain(dbFile.conceptualDomain.id, dbFile.conceptualDomain.name);
+                                    }
+                                    if (dbFile.diagramTypeFlag === "process" && dbFile.processType && this.setProcessType) {
+                                        this.setProcessType(dbFile.processType.id, dbFile.processType.name);
+                                    }
 
                                     if (success != null) {
                                         success();

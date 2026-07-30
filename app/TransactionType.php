@@ -18,6 +18,7 @@ class TransactionType extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'diagram_id',
         'state',
         'process_type_id',
 		'init_proc',

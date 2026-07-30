@@ -102,13 +102,15 @@ class ProcessDiagramController extends Controller
     {
         // Validação básica
         $data = $request->validate([
+            'processDiagramId' => ['required', 'integer'],
+            'processTypeId' => ['required', 'integer'],
             'transactionTypes' => ['present', 'array'],
             'waitingLinks' => ['array'],
             'actionRules' => ['array'],
             'actions' => ['array'],
             'causalLinks' => ['array'],
 
-            'transactionTypes.*.id' => ['integer'],
+            'transactionTypes.*.diagram_id' => ['required', 'string'],
             'transactionTypes.*.language_id' => ['required', 'integer'],
             'transactionTypes.*.t_name' => ['nullable', 'string'],
             'transactionTypes.*.rt_name' => ['nullable', 'string'],
@@ -127,32 +129,19 @@ class ProcessDiagramController extends Controller
             'transactionTypes.*.freq_activate' => ['nullable', 'string'],
             'transactionTypes.*.when_activate' => ['nullable', 'string'],
 
-            'waitingLinks.*.id' => ['integer'],
-            'waitingLinks.*.waited_t' => ['required', 'integer'],
+            'waitingLinks.*.diagram_id' => ['required', 'string'],
+            'waitingLinks.*.waited_t' => ['required', 'string'],
             'waitingLinks.*.waited_act' => ['required', 'integer'],
             'waitingLinks.*.waiting_act' => ['required', 'integer'],
-            'waitingLinks.*.waiting_t' => ['required', 'integer'],
+            'waitingLinks.*.waiting_t' => ['required', 'string'],
             'waitingLinks.*.min' => ['required', 'string'],
             'waitingLinks.*.max' => ['required', 'string'],
 
-            'actionRules.*.id' => ['integer'],
-            'actionRules.*.type' => ['required', 'string'],
-            'actionRules.*.t_state_id' => ['required', 'integer'],
-            'actionRules.*.transaction_type_id' => ['required', 'integer'],
-            'actionRules.*.blockly_xml' => ['nullable', 'string'],
-            'actionRules.*.blockly_code' => ['nullable', 'string'],
-            'actionRules.*.preview' => ['required', 'string'],
 
-            'actions.*.id' => ['integer'],
-            'actions.*.action_rule_id' => ['required', 'integer'],
-            'actions.*.type' => ['required', 'string'],
-            'actions.*.prev_action_id' => ['nullable', 'integer'],
-            'actions.*.next_action_id' => ['nullable', 'integer'],
-            'actions.*.par_action_id' => ['nullable', 'integer'],
 
-            'causalLinks.*.id' => ['integer'],
-            'causalLinks.*.causing_action' => ['required', 'integer'],
-            'causalLinks.*.caused_transaction_type_id' => ['required', 'integer'],
+            'causalLinks.*.diagram_id' => ['required', 'string'],
+            'causalLinks.*.causing_action' => ['required'],
+            'causalLinks.*.caused_transaction_type_id' => ['required', 'string'],
             'causalLinks.*.caused_t_state_id' => ['required', 'integer'],
             'causalLinks.*.min' => ['required', 'string'],
             'causalLinks.*.max' => ['required', 'string'],
@@ -165,65 +154,67 @@ class ProcessDiagramController extends Controller
         try {
             $saved = ['transactionTypes' => 0, 'waitingLinks' => 0, 'actionRules' => 0, 'actions' => 0, 'causalLinks' => 0];
 
-            // mapas e listas usados durante a execução
-            $transactionTypeIdMap   = []; // map: original_id (ou 'new_X') => real DB id
-            $createdTransactionTypeIds = []; // lista de DB ids criados/ocupados nesta execução
+            // Maps: diagram_id -> DB id
+            $transactionTypeIdMap = [];
+            $createdTransactionTypeIds = [];
 
-            $createdWaitingLinkIds = []; // lista de DB ids criados/ocupados nesta execução
-
-            $actionRuleIdMap   = []; // map: original_actionRule_id (ou 'new_X') => real DB id
-            $createdActionRuleIds = []; // lista de DB ids criados/ocupados nesta execução
-
-            $actionIdMap   = []; // map: original_action_id (ou 'new_X') => real DB id
-            $createdActionIds = []; // lista de DB ids criados/ocupados nesta execução
-
-            $createdCausalLinkIds = []; // lista de DB ids criados/ocupados nesta execução
+            $processTypeId = $data['processTypeId'];
 
             // --- TRANSACTION TYPES ---
+            // 1. Read existing elements for the current Process Type
+            $existingTransactionTypes = TransactionType::where('process_type_id', $processTypeId)->get();
+            $processedDiagramIds = [];
             foreach ($data['transactionTypes'] as $item) {
-                $origId = (int)$item['id'];
+                $diagramId = $item['diagram_id'];
+                $processedDiagramIds[] = $diagramId;
 
-                // Se o origId já corresponde a um DB id criado nesta execução, queremos CRIAR um novo transaction_type (não actualizar o registo com esse id)
-                $forceCreate = in_array($origId, $createdTransactionTypeIds, true);
+                // 1. Try to find by diagram_id
+                $transactionType = TransactionType::where('process_type_id', $processTypeId)
+                    ->where('diagram_id', $diagramId)
+                    ->first();
 
-                if ($forceCreate) {
-                    // Criar novo (não tentamos usar o id do payload)
-                    $transactionType = TransactionType::create([
-                        'state' => $item['state'],
-                        'process_type_id' => $item['process_type_id'],
-                        'init_proc' => $item['init_proc'],
-                        'end_proc' => $item['end_proc'],
-                        'interm_task' => $item['interm_task'] ?? null,
-                        'external' => $item['external'] ?? null,
-                        'type' => $item['type'] ?? null,
-                        'frontier' => $item['frontier'] ?? null,
-                        'frontier_type' => $item['frontier_type'] ?? null,
-                        'executer_role_id' => $item['executer_role_id'],
-                        'own_user_access_only' => $item['own_user_access_only'],
-                        'auto_activate' => $item['auto_activate'],
-                        'freq_activate' => $item['freq_activate'] ?? null,
-                        'when_activate' => $item['when_activate'] ?? null,
-                    ]);
+                // 2. Fallback for legacy records (diagram_id is NULL)
+                if (!$transactionType && !empty($item['t_name'])) {
+                    $tName = $item['t_name'];
+                    $langId = $item['language_id'];
+
+                    $legacyMatchId = \DB::table('transaction_type_name')
+                        ->where('t_name', $tName)
+                        ->where('language_id', $langId)
+                        ->whereNull('deleted_at')
+                        ->pluck('transaction_type_id');
+
+                    if ($legacyMatchId->isNotEmpty()) {
+                        $transactionType = TransactionType::where('process_type_id', $processTypeId)
+                            ->whereNull('diagram_id')
+                            ->whereIn('id', $legacyMatchId)
+                            ->first();
+                    }
+                }
+
+                $attributes = [
+                    'diagram_id' => $diagramId,
+                    'state' => $item['state'],
+                    'init_proc' => $item['init_proc'],
+                    'end_proc' => $item['end_proc'],
+                    'interm_task' => $item['interm_task'] ?? null,
+                    'external' => $item['external'] ?? null,
+                    'type' => $item['type'] ?? null,
+                    'frontier' => $item['frontier'] ?? null,
+                    'frontier_type' => $item['frontier_type'] ?? null,
+                    'executer_role_id' => $item['executer_role_id'],
+                    'own_user_access_only' => $item['own_user_access_only'],
+                    'auto_activate' => $item['auto_activate'],
+                    'freq_activate' => $item['freq_activate'] ?? null,
+                    'when_activate' => $item['when_activate'] ?? null,
+                ];
+
+                if ($transactionType) {
+                    // 3. Update existing and backfill diagram_id
+                    $transactionType->update($attributes);
                 } else {
-                    $transactionType = TransactionType::updateOrCreate(
-                        ['id' => $item['id']],
-                        [
-                            'state' => $item['state'],
-                            'process_type_id' => $item['process_type_id'],
-                            'init_proc' => $item['init_proc'],
-                            'end_proc' => $item['end_proc'],
-                            'interm_task' => $item['interm_task'] ?? null,
-                            'external' => $item['external'] ?? null,
-                            'type' => $item['type'] ?? null,
-                            'frontier' => $item['frontier'] ?? null,
-                            'frontier_type' => $item['frontier_type'] ?? null,
-                            'executer_role_id' => $item['executer_role_id'],
-                            'own_user_access_only' => $item['own_user_access_only'],
-                            'auto_activate' => $item['auto_activate'],
-                            'freq_activate' => $item['freq_activate'] ?? null,
-                            'when_activate' => $item['when_activate'] ?? null,
-                        ]
-                    );
+                    $attributes['process_type_id'] = $processTypeId;
+                    $transactionType = TransactionType::create($attributes);
                 }
 
                 TransactionTypeName::updateOrCreate(
@@ -237,182 +228,89 @@ class ProcessDiagramController extends Controller
                     ]
                 );
 
-                // mapear original -> real
-                $transactionTypeIdMap[$origId] = $transactionType->id;
-
-                // registar DB id como ocupado nesta execução
+                // mapear original (diagram_id) -> real
+                $transactionTypeIdMap[$diagramId] = $transactionType->id;
                 $createdTransactionTypeIds[] = $transactionType->id;
 
                 $saved['transactionTypes']++;
             }
-            // apagar TransactionTypes que já não existem
-            TransactionType::whereNotIn('id', $createdTransactionTypeIds)->delete();
-            TransactionTypeName::whereNotIn('transaction_type_id', $createdTransactionTypeIds)->delete();
+            
+            // Delete only graphical elements for the Process Type whose diagram_id is NOT in the processed list
+            $toDeleteIds = $existingTransactionTypes->filter(function ($item) use ($processedDiagramIds) {
+                return !is_null($item->diagram_id) && !in_array($item->diagram_id, $processedDiagramIds, true);
+            })->pluck('id');
+            TransactionType::whereIn('id', $toDeleteIds)->delete();
+            TransactionTypeName::whereIn('transaction_type_id', $toDeleteIds)->delete();
 
             // --- WAITING LINKS ---
+            $processedWlDiagramIds = [];
+
             foreach ($data['waitingLinks'] as $item) {
-                // mapear waited_t / waiting_t
-                if (isset($transactionTypeIdMap[$item['waited_t']])) {
-                    $item['waited_t'] = $transactionTypeIdMap[$item['waited_t']];
-                }
-                if (isset($transactionTypeIdMap[$item['waiting_t']])) {
-                    $item['waiting_t'] = $transactionTypeIdMap[$item['waiting_t']];
-                }
+                $diagramId = $item['diagram_id'];
+                $processedWlDiagramIds[] = $diagramId;
 
-                $origId = (int)$item['id'];
-                $forceCreate = in_array($origId, $createdWaitingLinkIds, true);
+                // Resolve diagram cell IDs to DB IDs
+                $waitedT = isset($transactionTypeIdMap[$item['waited_t']]) ? $transactionTypeIdMap[$item['waited_t']] : $item['waited_t'];
+                $waitingT = isset($transactionTypeIdMap[$item['waiting_t']]) ? $transactionTypeIdMap[$item['waiting_t']] : $item['waiting_t'];
 
-                if ($forceCreate) {
-                    $waitingLink = WaitingLink::create([
-                        'waited_t' => $item['waited_t'],
+                // Manual lookup to avoid duplicates when connections change
+                $wl = WaitingLink::where('diagram_id', $diagramId)
+                    ->whereHas('waitingT', function ($q) use ($processTypeId) {
+                        $q->where('process_type_id', $processTypeId);
+                    })->first();
+
+                if ($wl) {
+                    $wl->update([
+                        'waited_t' => $waitedT,
                         'waited_act' => $item['waited_act'],
                         'waiting_act' => $item['waiting_act'],
-                        'waiting_t' => $item['waiting_t'],
+                        'waiting_t' => $waitingT,
                         'min' => $item['min'],
                         'max' => $item['max']
                     ]);
                 } else {
-                    $waitingLink = WaitingLink::updateOrCreate(
-                        ['id' => $item['id']],
-                        [
-                            'waited_t' => $item['waited_t'],
-                            'waited_act' => $item['waited_act'],
-                            'waiting_act' => $item['waiting_act'],
-                            'waiting_t' => $item['waiting_t'],
-                            'min' => $item['min'],
-                            'max' => $item['max']
-                        ]
-                    );
+                    WaitingLink::create([
+                        'diagram_id' => $diagramId,
+                        'waited_t' => $waitedT,
+                        'waited_act' => $item['waited_act'],
+                        'waiting_act' => $item['waiting_act'],
+                        'waiting_t' => $waitingT,
+                        'min' => $item['min'],
+                        'max' => $item['max']
+                    ]);
                 }
 
-                $createdWaitingLinkIds[] = $waitingLink->id;
                 $saved['waitingLinks']++;
             }
-            // apagar WaitingLinks que já não existem
-            if (!empty($createdWaitingLinkIds)) {
-                WaitingLink::whereNotIn('id', $createdWaitingLinkIds)->delete();
-            } else {
-                // se a lista estiver vazia, significa que não deveria existir nenhum WaitingLink
-                WaitingLink::truncate();
-            }
 
-            // --- ACTION RULES ---
-            foreach ($data['actionRules'] as $item) {
-                if (isset($transactionTypeIdMap[$item['transaction_type_id']])) {
-                    $item['transaction_type_id'] = $transactionTypeIdMap[$item['transaction_type_id']];
-                }
+            // Delete only graphical elements whose diagram_id is no longer in the payload
+            WaitingLink::whereNotNull('diagram_id')
+                ->whereNotIn('diagram_id', $processedWlDiagramIds)
+                ->whereHas('waitingT', function ($q) use ($processTypeId) {
+                    $q->where('process_type_id', $processTypeId);
+                })->delete();
 
-                $origId = (int)$item['id'];
-                $forceCreate = in_array($origId, $createdActionRuleIds, true);
 
-                if ($forceCreate) {
-                    $actionRule = ActionRule::create([
-                        'type' => $item['type'],
-                        't_state_id' => $item['t_state_id'],
-                        'transaction_type_id' => $item['transaction_type_id'],
-                        'blockly_xml' => $item['blockly_xml'] ?? null,
-                        'blockly_code' => $item['blockly_code'] ?? null,
-                        'preview' => $item['preview']
-                    ]);
-                } else {
-                    $actionRule = ActionRule::updateOrCreate(
-                        ['id' => $item['id']],
-                        [
-                            'type' => $item['type'],
-                            't_state_id' => $item['t_state_id'],
-                            'transaction_type_id' => $item['transaction_type_id'],
-                            'blockly_xml' => $item['blockly_xml'] ?? null,
-                            'blockly_code' => $item['blockly_code'] ?? null,
-                            'preview' => $item['preview']
-                        ]
-                    );
-                }
-
-                // mapear original -> real
-                $actionRuleIdMap[$origId] = $actionRule->id;
-
-                $createdActionRuleIds[] = $actionRule->id;
-                $saved['actionRules']++;
-            }
-            // apagar ActionRules que já não existem
-            if (!empty($createdActionRuleIds)) {
-                ActionRule::whereNotIn('id', $createdActionRuleIds)->delete();
-            } else {
-                // se a lista estiver vazia, significa que não deveria existir nenhum ActionRule
-                ActionRule::truncate();
-            }
-
-            // --- ACTIONS ---
-            foreach ($data['actions'] as $item) {
-                if (isset($actionRuleIdMap[$item['action_rule_id']])) {
-                    $item['action_rule_id'] = $actionRuleIdMap[$item['action_rule_id']];
-                }
-
-                // mapear prev_action_id / next_action_id / par_action_id
-                if (isset($actionIdMap[$item['prev_action_id']])) {
-                    $item['prev_action_id'] = $actionIdMap[$item['prev_action_id']];
-                }
-                if (isset($actionIdMap[$item['next_action_id']])) {
-                    $item['next_action_id'] = $actionIdMap[$item['next_action_id']];
-                }
-                if (isset($actionIdMap[$item['par_action_id']])) {
-                    $item['par_action_id'] = $actionIdMap[$item['par_action_id']];
-                }
-
-                $origId = (int)$item['id'];
-                $forceCreate = in_array($origId, $createdActionIds, true);
-
-                if ($forceCreate) {
-                    $action = Action::create([
-                        'action_rule_id' => $item['action_rule_id'],
-                        'type' => $item['type'],
-                        'prev_action_id' => $item['prev_action_id'] ?? null,
-                        'next_action_id' => $item['next_action_id'] ?? null,
-                        'par_action_id' => $item['par_action_id'] ?? null
-                    ]);
-                } else {
-                    $action = Action::updateOrCreate(
-                        ['id' => $item['id']],
-                        [
-                            'action_rule_id' => $item['action_rule_id'],
-                            'type' => $item['type'],
-                            'prev_action_id' => $item['prev_action_id'] ?? null,
-                            'next_action_id' => $item['next_action_id'] ?? null,
-                            'par_action_id' => $item['par_action_id'] ?? null
-                        ]
-                    );
-                }
-
-                // mapear original -> real
-                $actionIdMap[$origId] = $action->id;
-
-                $createdActionIds[] = $action->id;
-                $saved['actions']++;
-            }
-            // apagar Actions que já não existem
-            if (!empty($createdActionIds)) {
-                Action::whereNotIn('id', $createdActionIds)->delete();
-            } else {
-                // se a lista estiver vazia, significa que não deveria existir nenhuma Action
-                Action::truncate();
-            }
 
             // --- CAUSAL LINKS ---
+            $processedClDiagramIds = [];
+
             foreach ($data['causalLinks'] as $item) {
-                if (isset($actionIdMap[$item['causing_action']])) {
-                    $item['causing_action'] = $actionIdMap[$item['causing_action']];
-                }
-                if (isset($transactionTypeIdMap[$item['caused_transaction_type_id']])) {
-                    $item['caused_transaction_type_id'] = $transactionTypeIdMap[$item['caused_transaction_type_id']];
-                }
+                $diagramId = $item['diagram_id'];
+                $processedClDiagramIds[] = $diagramId;
 
-                $origId = (int)$item['id'];
-                $forceCreate = in_array($origId, $createdCausalLinkIds, true);
+                // Resolve caused_transaction_type_id from diagram cell ID
+                $causedTxTypeId = isset($transactionTypeIdMap[$item['caused_transaction_type_id']]) ? $transactionTypeIdMap[$item['caused_transaction_type_id']] : $item['caused_transaction_type_id'];
 
-                if ($forceCreate) {
-                    $causalLink = CausalLink::create([
+                $cl = CausalLink::where('diagram_id', $diagramId)
+                    ->whereHas('causedTransactionType', function ($q) use ($processTypeId) {
+                        $q->where('process_type_id', $processTypeId);
+                    })->first();
+
+                if ($cl) {
+                    $cl->update([
                         'causing_action' => $item['causing_action'],
-                        'caused_transaction_type_id' => $item['caused_transaction_type_id'],
+                        'caused_transaction_type_id' => $causedTxTypeId,
                         'caused_t_state_id' => $item['caused_t_state_id'],
                         'min' => $item['min'],
                         'max' => $item['max'],
@@ -420,30 +318,26 @@ class ProcessDiagramController extends Controller
                         'continue_if_same_user' => $item['continue_if_same_user']
                     ]);
                 } else {
-                    $causalLink = CausalLink::updateOrCreate(
-                        ['id' => $item['id']],
-                        [
-                            'causing_action' => $item['causing_action'],
-                            'caused_transaction_type_id' => $item['caused_transaction_type_id'],
-                            'caused_t_state_id' => $item['caused_t_state_id'],
-                            'min' => $item['min'],
-                            'max' => $item['max'],
-                            'cancel_proc' => $item['cancel_proc'],
-                            'continue_if_same_user' => $item['continue_if_same_user']
-                        ]
-                    );
+                    CausalLink::create([
+                        'diagram_id' => $diagramId,
+                        'causing_action' => $item['causing_action'],
+                        'caused_transaction_type_id' => $causedTxTypeId,
+                        'caused_t_state_id' => $item['caused_t_state_id'],
+                        'min' => $item['min'],
+                        'max' => $item['max'],
+                        'cancel_proc' => $item['cancel_proc'],
+                        'continue_if_same_user' => $item['continue_if_same_user']
+                    ]);
                 }
 
-                $createdCausalLinkIds[] = $causalLink->id;
                 $saved['causalLinks']++;
             }
-            // apagar CausalLinks que já não existem
-            if (!empty($createdCausalLinkIds)) {
-                CausalLink::whereNotIn('id', $createdCausalLinkIds)->delete();
-            } else {
-                // se a lista estiver vazia, significa que não deveria existir nenhum CausalLink
-                CausalLink::truncate();
-            }
+
+            CausalLink::whereNotNull('diagram_id')
+                ->whereNotIn('diagram_id', $processedClDiagramIds)
+                ->whereHas('causedTransactionType', function ($q) use ($processTypeId) {
+                    $q->where('process_type_id', $processTypeId);
+                })->delete();
 
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             DB::commit();

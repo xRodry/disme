@@ -3351,7 +3351,11 @@ function loadTStatesIntoSelect(select, editorUi, cell, styleKey) {
             }
 
             select.onchange = () => {
+                console.log("Causal Link Dropdown Changed!");
+                console.log("Selected value:", select.value);
+                console.log("Style key written:", styleKey);
                 FormUtils.updateCell(editorUi, cell, styleKey, select.value);
+                console.log("Cell style after change:", cell.getStyle());
             };
         });
 }

@@ -18,6 +18,7 @@ class ActionRule extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'diagram_id',
         't_state_id',
         'transaction_type_id',
         'type',

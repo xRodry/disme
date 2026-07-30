@@ -19,6 +19,7 @@ class Action extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'diagram_id',
         'action_rule_id',
         'type',
         'name',

@@ -147,14 +147,8 @@
         editorUi.actions.addAction("new...", function () {
             var ui = editorUi;
 
-            console.log("[DEBUG-MENUS] new... action triggered");
-            console.log("[DEBUG-MENUS] spinner.active BEFORE showDiagramTypeDialog:", ui.spinner.active);
 
             ui.showDiagramTypeDialog(function (type) {
-                console.log("[DEBUG-MENUS] DiagramTypeDialog callback. type =", type);
-                console.log("[DEBUG-MENUS] spinner.active AFTER DiagramTypeDialog:", ui.spinner.active);
-                console.log("[DEBUG-MENUS] ui.dialog:", ui.dialog);
-                console.log("[DEBUG-MENUS] ui.dialogs length:", ui.dialogs ? ui.dialogs.length : "N/A");
 
                 if (type === 'process') {
                     var config = {
@@ -172,8 +166,6 @@
                         cacheKey: "processTypesCache"
                     };
                     var processDialog = new GenericSelectionDialog(ui, config, function(data) {
-                        console.log("[DEBUG-MENUS] GenericSelectionDialog callback (process). data =", JSON.stringify(data));
-                        console.log("[DEBUG-MENUS] spinner.active BEFORE createFile:", ui.spinner.active);
                         createFile(type, data, null);
                     });
                     ui.showDialog(processDialog.container, 350, 220, true, true);
@@ -193,8 +185,6 @@
                         cacheKey: "conceptualDomainsCache"
                     };
                     var factDialog = new GenericSelectionDialog(ui, config, function(data) {
-                        console.log("[DEBUG-MENUS] GenericSelectionDialog callback (fact). data =", JSON.stringify(data));
-                        console.log("[DEBUG-MENUS] spinner.active BEFORE createFile:", ui.spinner.active);
                         createFile(type, null, data);
                     });
                     ui.showDialog(factDialog.container, 350, 220, true, true);
@@ -203,25 +193,20 @@
                 }
 
                 function createFile(type, processTypeData, conceptualDomainData) {
-                    console.log("[DEBUG-MENUS-createFile] ENTERED. type =", type, "processTypeData =", JSON.stringify(processTypeData), "conceptualDomainData =", JSON.stringify(conceptualDomainData));
-                    console.log("[DEBUG-MENUS-createFile] spinner.active:", ui.spinner.active);
-                    console.log("[DEBUG-MENUS-createFile] ui.dialog:", ui.dialog);
-                    console.log("[DEBUG-MENUS-createFile] ui.getCurrentFile():", ui.getCurrentFile());
 
                     ui.diagramType = type;
                     ui.pendingDiagramType = type;
                     ui.lockSaveDialogToDatabase = true;
                     if (ui.dialog) {
-                        console.log("[DEBUG-MENUS-createFile] Calling ui.hideDialog() because ui.dialog is truthy");
                         ui.hideDialog();
                     }
                     ui.editor.setStatus("");
+                    window.location.hash = "";
 
                     var title = ui.defaultFilename || "Diagrama sem nome.drawio";
                     var xml = ui.emptyDiagramXml;
 
                     if (ui.getCurrentFile() != null) {
-                        console.log("[DEBUG-MENUS-createFile] Setting currentFile.modified = false");
                         ui.getCurrentFile().setModified(false);
                     }
 
@@ -229,36 +214,28 @@
                     file.mode = App.MODE_DB;
                     file.dbId = null;
                     file.diagramTypeFlag = type;
-                    console.log("[DEBUG-MENUS-createFile] Created LocalFile. mode =", file.mode, "diagramTypeFlag =", file.diagramTypeFlag, "constructor =", file.constructor.name);
                     
                     if (processTypeData) {
-                        console.log("[DEBUG-MENUS-createFile] Calling ui.setProcessType(", processTypeData.id, ",", processTypeData.name, ")");
                         ui.setProcessType(processTypeData.id, processTypeData.name);
                     }
                     if (conceptualDomainData) {
-                        console.log("[DEBUG-MENUS-createFile] Calling ui.setConceptualDomain(", conceptualDomainData.id, ",", conceptualDomainData.name, ")");
                         ui.setConceptualDomain(conceptualDomainData.id, conceptualDomainData.name);
                     }
 
                     ui.pendingDiagramType = null;
-                    console.log("[DEBUG-MENUS-createFile] About to call ui.fileCreated(). spinner.active =", ui.spinner.active);
                     try {
                         ui.fileCreated(
                             file,
                             null,
                             true,
                             function () {
-                                console.log("[DEBUG-MENUS-createFile] done callback from fileCreated executed");
                                 setTimeout(function () {
                                     ui.updatePalettesByFlag(type);
                                 }, 0);
                             }
                         );
-                        console.log("[DEBUG-MENUS-createFile] ui.fileCreated() returned successfully");
                     } catch (e) {
-                        console.error("[DEBUG-MENUS-createFile] EXCEPTION in ui.fileCreated():", e.message, e.stack);
                     }
-                    console.log("[DEBUG-MENUS-createFile] END. spinner.active =", ui.spinner.active);
                 }
             });
         });

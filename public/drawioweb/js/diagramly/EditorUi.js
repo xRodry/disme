@@ -3409,19 +3409,13 @@
      * @param {number} dy Y-coordinate of the translation.
      */
     EditorUi.prototype.fileLoaded = function (file, noDialogs, success) {
-        console.log("[DEBUG-EDITORUI-fileLoaded] ENTERED. file =", file, "noDialogs =", noDialogs, "success =", typeof success);
         if (file) {
-            console.log("[DEBUG-EDITORUI-fileLoaded] file.constructor =", file.constructor.name, "file.mode =", file.getMode(), "file.diagramTypeFlag =", file.diagramTypeFlag);
-            console.log("[DEBUG-EDITORUI-fileLoaded] file.conceptualDomain =", JSON.stringify(file.conceptualDomain), "file.processType =", JSON.stringify(file.processType));
         }
         var oldFile = this.getCurrentFile();
-        console.log("[DEBUG-EDITORUI-fileLoaded] oldFile =", oldFile);
         this.fileLoadedError = null;
         this.fileEditable = null;
-        console.log("[DEBUG-EDITORUI-fileLoaded] calling setCurrentFile(null)");
         this.setCurrentFile(null);
         var result = false;
-        console.log("[DEBUG-EDITORUI-fileLoaded] calling hideDialog()");
         this.hideDialog();
 
         if (oldFile != null) {
@@ -3479,10 +3473,8 @@
 
                 // Order is significant, current file needed for correct
                 // file format for initial save after starting realtime
-                console.log("[DEBUG-EDITORUI-fileLoaded] calling setCurrentFile(file)");
                 this.openingFile = true;
                 this.setCurrentFile(file);
-                console.log("[DEBUG-EDITORUI-fileLoaded] after setCurrentFile(file). file.conceptualDomain =", JSON.stringify(file.conceptualDomain), "file.processType =", JSON.stringify(file.processType));
                 file.addListener(
                     "descriptorChanged",
                     this.descriptorChangedListener
@@ -3491,9 +3483,7 @@
                     "contentChanged",
                     this.descriptorChangedListener
                 );
-                console.log("[DEBUG-EDITORUI-fileLoaded] about to call file.open()");
                 file.open();
-                console.log("[DEBUG-EDITORUI-fileLoaded] file.open() returned successfully");
                 delete this.openingFile;
 
                 // DescriptorChanged updates the enabled state of the graph
@@ -3547,7 +3537,6 @@
                 }
 
                 this.editor.fireEvent(new mxEventObject("fileLoaded"));
-                console.log("[DEBUG-EDITORUI-fileLoaded] fileLoaded event fired. result = true");
                 result = true;
 
                 if (!this.isOffline() && file.getMode() != null) {
@@ -3595,7 +3584,6 @@
                     // ignore
                 }
             } catch (e) {
-                console.error("[DEBUG-EDITORUI-fileLoaded] EXCEPTION in try block:", e.message, e.stack);
                 this.fileLoadedError = e;
 
                 // Disconnects file from UI
