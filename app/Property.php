@@ -19,6 +19,7 @@ class Property extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'diagram_id',
         'ent_type_id',
         'value_type',
         'scope',

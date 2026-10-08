@@ -1188,13 +1188,13 @@ function customBlocks(blocklyComponent) {
         },
 
         getPossibleActionTypes: function() {
+            const block = this.sourceBlock_ || this;
             const actionTypes = getEmptyDropdown();
             // If there's no parent block with a selected action execution type, show action types from 'native execution'
             if (this.executionType === 'NATIVE_EXECUTION' || !this.executionType) {
                 actionTypes.push(
                     [translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.ASSIGN-EXPRESSION.TITLE'), 'ASSIGN_EXPRESSION'],
                     [translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.USER-OUTPUT.TITLE'), 'USER_OUTPUT'],
-                    [translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.CAUSAL-LINK.TITLE'), 'CAUSAL_LINK'],
                     [translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.USER-INPUT.TITLE-MULTIPLE-ENT-TYPES'), 'USER_INPUT_MULT_ENT_TYPES'],
                     [translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.USER-INPUT.TITLE-SINGLE-ENT-TYPE'), 'USER_INPUT_SINGLE_ENT_TYPE'],
                     [translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.EDIT-ENTITY-INSTANCE.TITLE'), 'EDIT_ENTITY_INSTANCE'],
@@ -1229,6 +1229,9 @@ function customBlocks(blocklyComponent) {
                     default:
                         break;
                 }
+            }
+            if (block.structural_action_id || (block.getFieldValue && block.getFieldValue('action_dropdown') === 'CAUSAL_LINK')) {
+                actionTypes.push([translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.CAUSAL-LINK.TITLE'), 'CAUSAL_LINK']);
             }
             return actionTypes;
         },
@@ -2110,6 +2113,8 @@ function customBlocks(blocklyComponent) {
                 .appendField(new Blockly.FieldCheckbox(false),'cancel_process')
                 .appendField(translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.CAUSAL-LINK.CONTINUE-SAME-USER') + ': ')
                 .appendField(new Blockly.FieldCheckbox(false),'continue_same_user')
+                .appendField(' | ')
+                .appendField(new Blockly.FieldLabel(translate.instant('BLOCKLY-BLOCKS.ACTION.DROPDOWN.CAUSAL-LINK.MANAGED-BY-PROCESS-DIAGRAM')), 'managed_label')
                 .setAlign(Blockly.ALIGN_RIGHT);
         },
 
@@ -2242,6 +2247,9 @@ function customBlocks(blocklyComponent) {
             if (this.has_opened_template_editor && !blocklyComponent.savingActionRule) {
                 container.setAttribute('template_editor_text', this.template_editor_text_);
             }
+            if (this.structural_action_id) {
+                container.setAttribute('structural_action_id', this.structural_action_id);
+            }
             return container;
         },
 
@@ -2261,7 +2269,14 @@ function customBlocks(blocklyComponent) {
             this.executionType = executionType === 'null' ? null : executionType;
             const crudOperation = xmlElement.getAttribute('crud_operation');
             this.crudOperation = crudOperation === 'null' ? null : crudOperation;
+
+            const structuralActionId = xmlElement.getAttribute('structural_action_id');
+            if (structuralActionId) {
+                this.structural_action_id = parseInt(structuralActionId, 10);
+            }
+
             this.setPossibleActionTypes();
+            
             this.hasUpdateDeleteIdBlock = xmlElement.getAttribute('has_update_delete_id_block') === 'true';
             if (xmlElement.getAttribute('template_editor_text')) {
                 this.has_opened_template_editor = true;

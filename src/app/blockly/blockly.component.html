@@ -16,7 +16,7 @@
                         </button>
                     </div>
                     <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
-                        <button class="btn btn-block btn-primary" (click)='parseXMLAndStoreActionRule()'>{{ 'BLOCKLY-PAGE.SAVE-TO-DB' | translate }}
+                        <button [disabled]="!this.loadedActionRuleId" class="btn btn-block btn-primary" (click)='parseXMLAndStoreActionRule()'>{{ 'BLOCKLY-PAGE.SAVE-TO-DB' | translate }}
                         </button>
                     </div>
                     <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">

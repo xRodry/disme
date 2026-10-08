@@ -5361,12 +5361,14 @@ var SaveDialog = function (
     data,
     mimeType,
     base64Encoded,
-    defaultMode
+    defaultMode,
+    isDraft
 ) {
     var currentFile = editorUi.getCurrentFile();
     var lockToDatabase =
         editorUi.lockSaveDialogToDatabase === true ||
-        (currentFile != null && currentFile.getMode() == App.MODE_DB);
+        (currentFile != null && currentFile.getMode() == App.MODE_DB) ||
+        (typeof isDraft === 'boolean');
     var div = document.createElement("div");
     div.style.display = "flex";
     div.style.flexWrap = "wrap";
@@ -5512,6 +5514,10 @@ var SaveDialog = function (
         typeSelect.style.boxSizing = "border-box";
         typeSelect.style.width = "100%";
         right.appendChild(typeSelect);
+
+        if (lockToDatabase) {
+            typeSelect.setAttribute("disabled", "disabled");
+        }
 
         table.appendChild(left);
         table.appendChild(right);
@@ -5803,7 +5809,11 @@ var SaveDialog = function (
         addStorageEntry(App.MODE_GITHUB, null, null, null, null, "pick");
         addStorageEntry(App.MODE_GITLAB, null, null, null, null, "pick");
         addStorageEntry(App.MODE_TRELLO);
-        addStorageEntry(App.MODE_DB);
+        var dbTitle = null;
+        if (typeof isDraft === 'boolean') {
+            dbTitle = mxResources.get(isDraft ? 'databaseDraft' : 'database');
+        }
+        addStorageEntry(App.MODE_DB, null, null, null, dbTitle);
 
         var allowDevice =
             !Editor.useLocalStorage ||
@@ -5863,8 +5873,13 @@ var SaveDialog = function (
         defaultValue = storageSelect.value;
     }
 
+    var initialSaveI18nKey = "save";
+    if (lockToDatabase || defaultValue == App.MODE_DB) {
+         initialSaveI18nKey = isDraft ? "saveAsDraft" : "saveAsDatabase";
+    }
+
     var saveBtn = mxUtils.button(
-        mxResources.get("save"),
+        mxResources.get(initialSaveI18nKey),
         function () {
             SaveDialog.lastValue = storageSelect.value;
             var entry = entries[SaveDialog.lastValue];
@@ -5901,14 +5916,15 @@ var SaveDialog = function (
         }
 
         saveBtn.innerHTML = "";
+        var saveI18nKey = "save";
+        if (storageSelect.value == "download" || storageSelect.value == "_blank") {
+            saveI18nKey = "ok";
+        } else if (storageSelect.value == App.MODE_DB || lockToDatabase) {
+            saveI18nKey = isDraft ? "saveAsDraft" : "saveAsDatabase";
+        }
         mxUtils.write(
             saveBtn,
-            mxResources.get(
-                storageSelect.value == "download" ||
-                    storageSelect.value == "_blank"
-                    ? "ok"
-                    : "save"
-            )
+            mxResources.get(saveI18nKey)
         );
 
         if (storageSelect.value == "") {
@@ -5926,6 +5942,10 @@ var SaveDialog = function (
     }
 
     storageChanged();
+
+    if (lockToDatabase) {
+        storageSelect.setAttribute("disabled", "disabled");
+    }
 
     right.appendChild(storageSelect);
 
@@ -12442,7 +12462,7 @@ DatabaseFileDialog.prototype.createFileItem = function (file) {
         "click",
         mxUtils.bind(this, function () {
             this.ui.hideDialog();
-            this.ui.loadFile("D" + file.id);
+            this.ui.loadFile("D" + (file.type || "editor") + "-" + file.id);
         })
     );
 

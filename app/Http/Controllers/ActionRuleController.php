@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ActionRuleResource;
 use App\Http\Traits\HTTPResponseTrait;
+use App\Http\Traits\GetMultilingualConceptName;
 use App\ActionRule;
 use DB;
 use Illuminate\Http\Request;
@@ -11,18 +12,25 @@ use Log;
 
 class ActionRuleController extends Controller
 {
-    use HTTPResponseTrait;
+    use HTTPResponseTrait, GetMultilingualConceptName;
 
-    public function index()
+    public function index(Request $request)
     {
+        $userLangId = $request->user()->language_id;
         $actionRules = ActionRule::whereNull('deleted_at')->get();
+
+        foreach ($actionRules as $actionRule) {
+            $this->hydrateActionRuleFKNames($actionRule, $userLangId);
+        }
 
         return ActionRuleResource::collection($actionRules);
     }
 
-    public function show($actionRuleId)
+    public function show(Request $request, $actionRuleId)
     {
+        $userLangId = $request->user()->language_id;
         $actionRule = ActionRule::find($actionRuleId);
+        $this->hydrateActionRuleFKNames($actionRule, $userLangId);
 
         return new ActionRuleResource($actionRule);
     }

@@ -114,12 +114,8 @@ function validateCell(graph, cell) {
             errors.push({ cell: cell, message: mxResources.get("error_causal_target") });
         }
         var causedState = getStyleValue(cell, "caused_t_state_id");
-        var causingAction = getStyleValue(cell, "causing_action");
         if (!causedState) {
             errors.push({ cell: cell, message: mxResources.get("error_caused_state") });
-        }
-        if (!causingAction) {
-            errors.push({ cell: cell, message: mxResources.get("error_causing_action") });
         }
     }
 
@@ -136,15 +132,11 @@ function validateCell(graph, cell) {
         }
         var compWaitingAct = getStyleValue(cell, "waiting_act");
         var compWaitedAct = getStyleValue(cell, "waited_act");
-        var compCausingAction = getStyleValue(cell, "causing_action");
         if (!compWaitingAct) {
             errors.push({ cell: cell, message: mxResources.get("error_comp_waiting_state") });
         }
         if (!compWaitedAct) {
             errors.push({ cell: cell, message: mxResources.get("error_comp_waited_state") });
-        }
-        if (!compCausingAction) {
-            errors.push({ cell: cell, message: mxResources.get("error_comp_causing_action") });
         }
     }
 
@@ -298,9 +290,29 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
             var txFuncao = parseInt(getStyleValue(cell, "tx_funcao")) || 0;
             var txTipo = getStyleValue(cell, "tx_tipo") || null;
             var txFinaliza = parseInt(getStyleValue(cell, "tx_finaliza")) || 0;
-            var txInterm = parseInt(getStyleValue(cell, "tx_interm")) || 0;
             var txAcesso = parseInt(getStyleValue(cell, "tx_acesso")) || 0;
             
+            var txInit = 0;
+            var txInterm = 0;
+            var incomingEdges = graph.getIncomingEdges(cell);
+            if (incomingEdges) {
+                for (var j = 0; j < incomingEdges.length; j++) {
+                    var edgeStyle = graph.getCellStyle(incomingEdges[j]);
+                    if (edgeStyle) {
+                        var isCausal = (edgeStyle.causallink == "1");
+                        var isWaiting = (edgeStyle.waitinglink == "1");
+                        var isComp = (edgeStyle.compositionlink == "1");
+
+                        if (edgeStyle.init_proc == "1" && !isCausal && !isWaiting && !isComp && edgeStyle.interm_task != "1") {
+                            txInit = 1;
+                        }
+                        if (edgeStyle.interm_task == "1" && !isCausal && !isWaiting && !isComp && edgeStyle.init_proc != "1") {
+                            txInterm = 1;
+                        }
+                    }
+                }
+            }
+
             // Frontier extraction
             var rawFrontier = getStyleValue(cell, "frontier");
             var rawFrontierType = getStyleValue(cell, "frontier_type");
@@ -317,7 +329,7 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
                 rt_name: txResultado,
                 state: txEstado,
                 process_type_id: processTypeId,
-                init_proc: 0,
+                init_proc: txInit,
                 end_proc: txFinaliza,
                 interm_task: txInterm,
                 external: txTipo === "external" ? 1 : 0,
@@ -360,7 +372,7 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
             if (cSource && cTarget) {
                 payload.causalLinks.push({
                     diagram_id: cell.getId(),
-                    causing_action: parseInt(getStyleValue(cell, "causing_action")) || 0,
+                    causing_transaction_type_id: cSource.getId(),
                     caused_transaction_type_id: cTarget.getId(),
                     caused_t_state_id: parseInt(getStyleValue(cell, "caused_t_state_id")) || 0,
                     min: getStyleValue(cell, "min") || "1",
@@ -393,7 +405,7 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
                 // CausalLink part
                 payload.causalLinks.push({
                     diagram_id: cell.getId() + "_cl",
-                    causing_action: parseInt(getStyleValue(cell, "causing_action")) || 0,
+                    causing_transaction_type_id: compSource.getId(),
                     caused_transaction_type_id: compTarget.getId(),
                     caused_t_state_id: parseInt(getStyleValue(cell, "caused_t_state_id")) || 0,
                     min: getStyleValue(cell, "min") || "1",
@@ -409,6 +421,117 @@ function buildBulkSavePayload(graph, processDiagramId, processTypeId) {
         payload.transactionTypes.length, "transaction types,",
         payload.waitingLinks.length, "waiting links,",
         payload.causalLinks.length, "causal links extracted");
+
+    return payload;
+}
+
+function buildFactBulkSavePayload(graph) {
+    var payload = {
+        entityTypes: [],
+        properties: []
+    };
+
+    var lang = (typeof getCurrentLanguage === 'function') ? getCurrentLanguage() : 'pt';
+    var langMap = { 'pt': 1, 'en': 2 };
+    var languageId = langMap[lang] || 1;
+
+    var parent = graph.getDefaultParent();
+    var topCells = graph.getChildCells(parent, true, true);
+    var model = graph.getModel();
+
+    // Properties are children of Entity swimlanes, not of the default parent.
+    // Collect top-level cells and their nested vertex children.
+    var cells = [];
+    for (var c = 0; c < topCells.length; c++) {
+        cells.push(topCells[c]);
+        var children = graph.getChildCells(topCells[c], true, false);
+        for (var k = 0; k < children.length; k++) {
+            cells.push(children[k]);
+        }
+    }
+
+    var entitiesMap = {};
+    var propertiesMap = {};
+
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var style = graph.getCellStyle(cell);
+
+        if (style.factModel == "1" && style.factType == "entity") {
+            var ent = {
+                diagram_id: cell.getId(),
+                language_id: languageId,
+                name: getStyleValue(cell, "fm_nome") || null,
+                id_name: getStyleValue(cell, "fm_identificador") || null,
+                state: getStyleValue(cell, "fm_estado") || "inactive",
+                transaction_type_id: parseInt(getStyleValue(cell, "fm_tipo_transacao")) || 0,
+                last_internal_id: 0,
+                has_many: parseInt(getStyleValue(cell, "fm_many")) || 0,
+                auto_generated: parseInt(getStyleValue(cell, "fm_auto")) || 0,
+                external: parseInt(getStyleValue(cell, "fm_externo")) || 0,
+                user_details: parseInt(getStyleValue(cell, "fm_user_details")) || 0
+            };
+            entitiesMap[cell.getId()] = ent;
+            payload.entityTypes.push(ent);
+        }
+
+        if (style.factModel == "1" && style.factType == "property") {
+            var prop = {
+                diagram_id: cell.getId(),
+                language_id: languageId,
+                name: getStyleValue(cell, "fp_nome") || null,
+                tooltip: getStyleValue(cell, "fp_tooltip") || "",
+                ent_type_id: null,
+                value_type: getStyleValue(cell, "fp_tipo") || "string",
+                scope: getStyleValue(cell, "fp_dominio") || "local",
+                unit_type_id: parseInt(getStyleValue(cell, "fp_unit_type")) || null,
+                state: getStyleValue(cell, "fp_estado") || "active",
+                fk_property_id: null,
+                fk_entity_type_id: parseInt(getStyleValue(cell, "fp_fk_entity_type_id")) || null,
+                part_of: parseInt(getStyleValue(cell, "fp_part_of")) || 0,
+                requires_translation: parseInt(getStyleValue(cell, "fp_requires_translation")) || 0,
+                editable: parseInt(getStyleValue(cell, "fp_editable")) || 0,
+                soft_delete: parseInt(getStyleValue(cell, "fp_soft_delete")) || 0,
+                is_a: 0,
+                is_dependent: 0,
+                multiple_values: parseInt(getStyleValue(cell, "fp_multiple_values")) || 0
+            };
+            propertiesMap[cell.getId()] = prop;
+            payload.properties.push(prop);
+        }
+    }
+
+    // Process connectors to resolve ent_type_id and fk_property_id, plus is_a and is_dependent
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var style = graph.getCellStyle(cell);
+
+        if (style.connector == "1") {
+            var source = model.getTerminal(cell, true);
+            var target = model.getTerminal(cell, false);
+
+            if (source && target) {
+                var targetProp = propertiesMap[target.getId()];
+                if (targetProp) {
+                    if (entitiesMap[source.getId()]) {
+                        targetProp.ent_type_id = source.getId();
+                    } else if (propertiesMap[source.getId()]) {
+                        targetProp.fk_property_id = source.getId();
+                    }
+                    if (style.is_a == "1") {
+                        targetProp.is_a = 1;
+                    }
+                    if (style.is_dependent == "1") {
+                        targetProp.is_dependent = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    console.log("buildFactBulkSavePayload:",
+        payload.entityTypes.length, "entity types,",
+        payload.properties.length, "properties extracted");
 
     return payload;
 }

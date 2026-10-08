@@ -90,7 +90,9 @@ export class BlocklyComponent implements OnInit {
     private languageAbbrv;
 
     public actionRuleDraft;
+    public loadedActionRuleId: number = null;
     public savingActionRule = false;
+    public dbCausalLinks: any[] = [];
 
     constructor(
         private modalService: BsModalService,
@@ -185,10 +187,72 @@ export class BlocklyComponent implements OnInit {
         return Blockly.utils.xml.domToText(domWorkspace);
     }
 
-    private loadXmlOnWorkspace(blocklyXML) {
+    private loadXmlOnWorkspace(blocklyXML, actionRule = null) {
+        if (actionRule) {
+            this.dbCausalLinks = actionRule.causal_links || [];
+        }
+
+        if (!blocklyXML || blocklyXML.trim() === '' || blocklyXML.indexOf('<block') === -1) {
+            this.clearWorkspace();
+            let defaultXml = '<xml xmlns="https://developers.google.com/blockly/xml"><block type="when_is_do" x="20" y="20">';
+            if (actionRule) {
+                if (actionRule.transaction_type_id) {
+                    defaultXml += `<field name="when_is_do_transaction_type">${actionRule.transaction_type_id}</field>`;
+                }
+                if (actionRule.type) {
+                    defaultXml += `<field name="action_rule_type">${actionRule.type.toUpperCase()}</field>`;
+                }
+                if (actionRule.t_state_id) {
+                    defaultXml += `<field name="when_is_do_t_state">${actionRule.t_state_id}</field>`;
+                }
+                
+                if (actionRule.causal_links && actionRule.causal_links.length > 0) {
+                    defaultXml += '<statement name="actions">';
+                    for (let i = 0; i < actionRule.causal_links.length; i++) {
+                        const cl = actionRule.causal_links[i];
+                        defaultXml += '<block type="action">';
+                        defaultXml += `<mutation comment_text="" no_next_connection="false" has_entity_details_block="false" has_entity_filters_block="false" only_allow_ent_type_form_blocks="false" endpoint_ent_types="" execution_type="null" crud_operation="null" has_update_delete_id_block="false" structural_action_id="${cl.action_id}"></mutation>`;
+                        defaultXml += '<field name="action_dropdown">CAUSAL_LINK</field>';
+                        defaultXml += `<field name="causal_link_transaction_type">${cl.caused_transaction_type_id}</field>`;
+                        defaultXml += `<field name="c_fact">${cl.caused_t_state_id}</field>`;
+                        defaultXml += `<field name="min">${cl.min || '1'}</field>`;
+                        defaultXml += `<field name="max">${cl.max || '1'}</field>`;
+                        const cancelProcessStr = (cl.cancel_proc == 1 || cl.cancel_proc === '1' || cl.cancel_proc === true) ? 'TRUE' : 'FALSE';
+                        const continueUserStr = (cl.continue_if_same_user == 1 || cl.continue_if_same_user === '1' || cl.continue_if_same_user === true) ? 'TRUE' : 'FALSE';
+                        defaultXml += `<field name="cancel_process">${cancelProcessStr}</field>`;
+                        defaultXml += `<field name="continue_same_user">${continueUserStr}</field>`;
+                        
+                        if (i < actionRule.causal_links.length - 1) {
+                            defaultXml += '<next>';
+                        }
+                    }
+                    
+                    defaultXml += '</block>';
+                    for (let i = 0; i < actionRule.causal_links.length - 1; i++) {
+                        defaultXml += '</next></block>';
+                    }
+                    defaultXml += '</statement>';
+                }
+            }
+            defaultXml += '</block></xml>';
+            this.xmlToLoad = defaultXml;
+            
+            if (Blockly.Blocks['when_is_do']) {
+                const dom = Blockly.utils.xml.textToDom(defaultXml);
+                Blockly.Xml.domToWorkspace(dom, this.workspace);
+                if (this.dbCausalLinks) this.syncCausalLinkBlocks(this.dbCausalLinks);
+                this.applyReadOnlyToStructuralBlocks();
+            }
+            this.alertToast.showSuccess(this.translate.instant('BLOCKLY-ACTIONS-NOTIFICATIONS.SUCCESS.LOAD-XML'));
+            return;
+        }
+        
         this.xmlToLoad = blocklyXML;
+        
         try {
             this.loadXmlCode(this.xmlToLoad);
+            if (this.dbCausalLinks) this.syncCausalLinkBlocks(this.dbCausalLinks);
+            this.applyReadOnlyToStructuralBlocks();
             this.alertToast.showSuccess(this.translate.instant('BLOCKLY-ACTIONS-NOTIFICATIONS.SUCCESS.LOAD-XML'));
         } catch (e) {
             console.log(e);
@@ -196,9 +260,90 @@ export class BlocklyComponent implements OnInit {
         }
     }
 
+    private syncCausalLinkBlocks(dbCausalLinks: any[]) {
+        const allBlocks = this.workspace.getAllBlocks(true);
+        const clBlocks = allBlocks.filter(b => b.type === 'action' && b.getFieldValue('action_dropdown') === 'CAUSAL_LINK');
+        
+        let discrepancy = false;
+        let matchedBlocks = 0;
+        
+        for (const block of clBlocks) {
+            let matchedDbRecord = null;
+            
+            if (block.structural_action_id) {
+                matchedDbRecord = dbCausalLinks.find(cl => cl.action_id === block.structural_action_id);
+            } else {
+                const blockTransType = block.getFieldValue('causal_link_transaction_type');
+                const blockFact = block.getFieldValue('c_fact');
+                
+                const possibleMatches = dbCausalLinks.filter(cl => 
+                    cl.caused_transaction_type_id.toString() === blockTransType &&
+                    cl.caused_t_state_id.toString() === blockFact
+                );
+                
+                if (possibleMatches.length === 1) {
+                    matchedDbRecord = possibleMatches[0];
+                    block.structural_action_id = matchedDbRecord.action_id;
+                }
+            }
+            
+            if (matchedDbRecord) {
+                block.setFieldValue(matchedDbRecord.caused_transaction_type_id.toString(), 'causal_link_transaction_type');
+                block.setFieldValue(matchedDbRecord.caused_t_state_id.toString(), 'c_fact');
+                block.setFieldValue(matchedDbRecord.min || '1', 'min');
+                block.setFieldValue(matchedDbRecord.max || '1', 'max');
+                
+                const cancelProcessStr = (matchedDbRecord.cancel_proc == 1 || matchedDbRecord.cancel_proc === '1' || matchedDbRecord.cancel_proc === true) ? 'TRUE' : 'FALSE';
+                const continueUserStr = (matchedDbRecord.continue_if_same_user == 1 || matchedDbRecord.continue_if_same_user === '1' || matchedDbRecord.continue_if_same_user === true) ? 'TRUE' : 'FALSE';
+                
+                block.setFieldValue(cancelProcessStr, 'cancel_process');
+                block.setFieldValue(continueUserStr, 'continue_same_user');
+                matchedBlocks++;
+            } else {
+                discrepancy = true;
+            }
+        }
+        
+        if (matchedBlocks !== dbCausalLinks.length) {
+            discrepancy = true;
+        }
+        
+        if (discrepancy) {
+            this.alertToast.showWarning('Discrepancy detected between Process Diagram and Blockly. Some Causal Links could not be automatically synchronized.');
+        }
+    }
+
+    private applyReadOnlyToStructuralBlocks() {
+        const allBlocks = this.workspace.getAllBlocks(false);
+        for (const block of allBlocks) {
+            if (block.type === 'action' && block.getFieldValue('action_dropdown') === 'CAUSAL_LINK') {
+                block.setEditable(false);
+                block.setMovable(false);
+                block.setDeletable(false);
+                block.contextMenu = false;
+                
+                const fieldsToDisable = ['action_dropdown', 'causal_link_transaction_type', 'c_fact', 'cancel_process', 'continue_same_user'];
+                for (const fieldName of fieldsToDisable) {
+                    const field = block.getField(fieldName);
+                    if (field) field.setEnabled(false);
+                }
+            }
+            if (block.type === 'when_is_do' && this.loadedActionRuleId) {
+                const fieldsToDisable = ['when_is_do_transaction_type', 'action_rule_type', 'when_is_do_t_state'];
+                for (const fieldName of fieldsToDisable) {
+                    const field = block.getField(fieldName);
+                    if (field) field.setEnabled(false);
+                }
+            }
+        }
+    }
+
     public newActionRule() {
         if (window.confirm(this.translate.instant('BLOCKLY-PAGE.LOSE-PROGRESS-WARNING'))) {
             this.clearWorkspace();
+            const defaultXml = '<xml xmlns="https://developers.google.com/blockly/xml"><block type="when_is_do" x="20" y="20"></block></xml>';
+            const dom = Blockly.utils.xml.textToDom(defaultXml);
+            Blockly.Xml.domToWorkspace(dom, this.workspace);
         }
     }
 
@@ -206,6 +351,7 @@ export class BlocklyComponent implements OnInit {
         this.workspace.clear();
         this.workspace.hasWarnings = [];
         this.actionRuleDraft = null;
+        this.loadedActionRuleId = null;
     }
 
     public loadXmlCode(xml) {
@@ -274,11 +420,18 @@ export class BlocklyComponent implements OnInit {
         const modalRef = this.modalService.show(ModalBlocklyComponent, {class: 'modal-lg', initialState: {draftModal: actionRuleDrafts}});
         modalRef.content.passEntry.subscribe((receivedEntry) => {
             if (receivedEntry) {
-                this.loadXmlOnWorkspace(receivedEntry.blockly_xml);
                 if (receivedEntry.name) {
+                    this.loadXmlOnWorkspace(receivedEntry.blockly_xml, receivedEntry);
                     this.actionRuleDraft = {...receivedEntry} as ActionRuleDraft;
+                    this.loadedActionRuleId = null;
                 } else {
-                    this.actionRuleDraft = null;
+                    this.restBlocklyApi.getActionRule(receivedEntry.id).subscribe((detailedEntry: any) => {
+                        const detailedData = detailedEntry.data || detailedEntry;
+                        receivedEntry.causal_links = detailedData.causal_links;
+                        this.loadXmlOnWorkspace(receivedEntry.blockly_xml, receivedEntry);
+                        this.actionRuleDraft = null;
+                        this.loadedActionRuleId = receivedEntry.id;
+                    });
                 }
             }
         });
@@ -396,6 +549,10 @@ export class BlocklyComponent implements OnInit {
             // When we're saving and reloading the AR, load the XML after loading all the updated data for the blocks
             if (this.xmlToLoad) {
                 this.loadXmlOnWorkspace(this.xmlToLoad);
+            } else {
+                const defaultXml = '<xml xmlns="https://developers.google.com/blockly/xml"><block type="when_is_do" x="20" y="20"></block></xml>';
+                const dom = Blockly.utils.xml.textToDom(defaultXml);
+                Blockly.Xml.domToWorkspace(dom, this.workspace);
             }
         }
     }
@@ -490,8 +647,18 @@ export class BlocklyComponent implements OnInit {
         const actionRules = parsedResult.action_rule;
         console.log('Action Rules', actionRules);
 
+        if (!actionRules) {
+            this.savingActionRule = false;
+            this.alertToast.showError('Action Rules block structure is missing. Ensure the when_is_do block is present.');
+            return;
+        }
+
         for (const actionRuleXML of actionRules) {
             const actionRule = {} as ActionRule;
+            
+            if (this.loadedActionRuleId) {
+                actionRule.id = this.loadedActionRuleId;
+            }
 
             actionRule.transaction_type_id = actionRuleXML.transaction_type[0];
             actionRule.type = actionRuleXML.type[0].toLowerCase();

@@ -18,6 +18,7 @@ class EntType extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'diagram_id',
         'state',
         'transaction_type_id',
         'last_internal_id',

@@ -57,6 +57,15 @@ trait GetMultilingualConceptName {
         }
     }
 
+    public function hydrateActionRuleFKNames($actionRule, $userLangId) {
+        $actionRule->transaction_type_name = $this->getMultilingualConceptName('transaction_type_name',
+            't_name', 'transaction_type_id', $actionRule->transaction_type_id, $userLangId);
+        $actionRule->t_state_name = $this->getMultilingualConceptName('t_state_name', 'name',
+            't_state_id', $actionRule->t_state_id, $userLangId);
+        $actionRule->t_state_act_name = $this->getMultilingualConceptName('t_state_name', 'act_name',
+            't_state_id', $actionRule->t_state_id, $userLangId);
+    }
+
 }
 
 ?>

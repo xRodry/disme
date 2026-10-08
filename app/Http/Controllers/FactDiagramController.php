@@ -102,10 +102,10 @@ class FactDiagramController extends Controller
     {
         // Validação básica
         $data = $request->validate([
-            'entityTypes' => ['required', 'array'],
-            'properties' => ['required', 'array'],
+            'entityTypes' => ['present', 'array'],
+            'properties' => ['present', 'array'],
 
-            'entityTypes.*.id' => ['integer'],
+            'entityTypes.*.diagram_id' => ['required', 'string'],
             'entityTypes.*.language_id' => ['required', 'integer'],
             'entityTypes.*.name' => ['required', 'string'],
             'entityTypes.*.id_name' => ['nullable', 'string'],
@@ -117,16 +117,16 @@ class FactDiagramController extends Controller
             'entityTypes.*.external' => ['nullable', 'integer'],
             'entityTypes.*.user_details' => ['required', 'integer'],
 
-            'properties.*.id' => ['integer'],
+            'properties.*.diagram_id' => ['required', 'string'],
             'properties.*.language_id' => ['required', 'integer'],
             'properties.*.name' => ['nullable', 'string'],
-            'properties.*.tooltip' => ['required', 'string'],
-            'properties.*.ent_type_id' => ['nullable', 'integer'],
+            'properties.*.tooltip' => ['nullable', 'string'],
+            'properties.*.ent_type_id' => ['nullable', 'string'],
             'properties.*.value_type' => ['required', 'string'],
             'properties.*.scope' => ['required', 'string'],
             'properties.*.unit_type_id' => ['nullable', 'integer'],
             'properties.*.state' => ['required', 'string'],
-            'properties.*.fk_property_id' => ['nullable', 'integer'],
+            'properties.*.fk_property_id' => ['nullable', 'string'],
             'properties.*.fk_entity_type_id' => ['nullable', 'integer'],
             'properties.*.part_of' => ['required', 'integer'],
             'properties.*.requires_translation' => ['required', 'integer'],
@@ -142,44 +142,62 @@ class FactDiagramController extends Controller
         try {
             $saved = ['entityTypes' => 0, 'properties' => 0];
 
-            // mapas e listas usados durante a execução
-            $entityTypeIdMap   = []; // map: original_id (ou 'new_X') => real DB id
-            $createdEntityTypeIds = []; // lista de DB ids criados/ocupados nesta execução
+            $entityTypeIdMap = []; // diagram_id -> real DB id
+            $propertyIdMap = [];   // diagram_id -> real DB id
 
-            $propertyIdMap     = []; // map: original_prop_id (ou 'new_X') => real DB id
-            $createdPropertyIds = []; // lista de DB ids criados/ocupados nesta execução
+            $processedEntDiagramIds = [];
+            $transactionTypeIdsInvolved = [];
 
             // --- ENTITY TYPES ---
             foreach ($data['entityTypes'] as $item) {
-                $origId = (int)$item['id'];
+                $diagramId = $item['diagram_id'];
+                $transactionTypeId = $item['transaction_type_id'];
 
-                // Se o origId já corresponde a um DB id criado nesta execução, queremos CRIAR um novo ent_type (não actualizar o registo com esse id)
-                $forceCreate = in_array($origId, $createdEntityTypeIds, true);
+                $processedEntDiagramIds[] = $diagramId;
+                if (!in_array($transactionTypeId, $transactionTypeIdsInvolved)) {
+                    $transactionTypeIdsInvolved[] = $transactionTypeId;
+                }
 
-                if ($forceCreate) {
-                    // Criar novo (não tentamos usar o id do payload)
-                    $entityType = EntType::create([
-                        'state'               => $item['state'],
-                        'transaction_type_id' => $item['transaction_type_id'],
-                        'last_internal_id'    => $item['last_internal_id'] ?? 0,
-                        'has_many'            => $item['has_many'],
-                        'auto_generated'      => $item['auto_generated'] ?? null,
-                        'external'            => $item['external'] ?? null,
-                        'user_details'        => $item['user_details']
-                    ]);
+                // 1. Try to find by diagram_id and transaction_type_id
+                $entityType = EntType::where('transaction_type_id', $transactionTypeId)
+                    ->where('diagram_id', $diagramId)
+                    ->first();
+
+                // 2. Fallback for legacy records (diagram_id is NULL)
+                if (!$entityType && !empty($item['name'])) {
+                    $eName = $item['name'];
+                    $langId = $item['language_id'];
+
+                    $legacyMatchId = \DB::table('ent_type_name')
+                        ->where('name', $eName)
+                        ->where('language_id', $langId)
+                        ->whereNull('deleted_at')
+                        ->pluck('ent_type_id');
+
+                    if ($legacyMatchId->isNotEmpty()) {
+                        $entityType = EntType::where('transaction_type_id', $transactionTypeId)
+                            ->whereNull('diagram_id')
+                            ->whereIn('id', $legacyMatchId)
+                            ->first();
+                    }
+                }
+
+                $attributes = [
+                    'diagram_id' => $diagramId,
+                    'state' => $item['state'],
+                    'last_internal_id' => $item['last_internal_id'] ?? 0,
+                    'has_many' => $item['has_many'],
+                    'auto_generated' => $item['auto_generated'] ?? null,
+                    'external' => $item['external'] ?? null,
+                    'user_details' => $item['user_details']
+                ];
+
+                if ($entityType) {
+                    // 3. Update existing and backfill diagram_id
+                    $entityType->update($attributes);
                 } else {
-                    $entityType = EntType::updateOrCreate(
-                        ['id' => $item['id']],
-                        [
-                            'state' => $item['state'],
-                            'transaction_type_id' => $item['transaction_type_id'],
-                            'last_internal_id' => $item['last_internal_id'] ?? 0,
-                            'has_many' => $item['has_many'],
-                            'auto_generated' => $item['auto_generated'] ?? null,
-                            'external' => $item['external'] ?? null,
-                            'user_details' => $item['user_details']
-                        ]
-                    );
+                    $attributes['transaction_type_id'] = $transactionTypeId;
+                    $entityType = EntType::create($attributes);
                 }
 
                 EntTypeName::updateOrCreate(
@@ -188,81 +206,93 @@ class FactDiagramController extends Controller
                         'language_id' => $item['language_id']
                     ],
                     [
-                        'name'       => $item['name'],
-                        'id_name'    => $item['id_name'] ?? null
+                        'name' => $item['name'],
+                        'id_name' => $item['id_name'] ?? null
                     ]
                 );
 
-                // mapear original -> real
-                $entityTypeIdMap[$origId] = $entityType->id;
-
-                // registar DB id como ocupado nesta execução
-                $createdEntityTypeIds[] = $entityType->id;
-
+                $entityTypeIdMap[$diagramId] = $entityType->id;
                 $saved['entityTypes']++;
             }
-            //apagar EntTypes que já não existem
-            EntType::whereNotIn('id', $createdEntityTypeIds)->delete();
-            EntTypeName::whereNotIn('ent_type_id', $createdEntityTypeIds)->delete();
-
 
             // --- PROPERTIES ---
+            $processedPropDiagramIds = [];
+            $entTypeIdsInvolved = [];
+
             foreach ($data['properties'] as $item) {
-                // ajustar FK de ent_type se referia a um original mapeado
-                if (isset($entityTypeIdMap[$item['ent_type_id']])) {
-                    $item['ent_type_id'] = $entityTypeIdMap[$item['ent_type_id']];
+                $diagramId = $item['diagram_id'];
+                $processedPropDiagramIds[] = $diagramId;
+
+                // Resolve foreign keys from diagram_id to real DB id
+                $entTypeId = null;
+                if (!empty($item['ent_type_id'])) {
+                    $entTypeId = isset($entityTypeIdMap[$item['ent_type_id']]) ? $entityTypeIdMap[$item['ent_type_id']] : null;
                 }
 
-                // ajustar FK de fk_entity_type_id se referia a um original mapeado
-                if (isset($entityTypeIdMap[$item['fk_entity_type_id']])) {
-                    $item['fk_entity_type_id'] = $entityTypeIdMap[$item['fk_entity_type_id']];
+                $fkPropertyId = null;
+                if (!empty($item['fk_property_id'])) {
+                    $fkPropertyId = isset($propertyIdMap[$item['fk_property_id']]) ? $propertyIdMap[$item['fk_property_id']] : null;
                 }
 
-                // ajustar fk_property_id se referia a uma property mapeada anteriormente
-                if (isset($propertyIdMap[$item['fk_property_id']])) {
-                    $item['fk_property_id'] = $propertyIdMap[$item['fk_property_id']];
+                if ($entTypeId && !in_array($entTypeId, $entTypeIdsInvolved)) {
+                    $entTypeIdsInvolved[] = $entTypeId;
                 }
 
-                $origPid = (int)$item['id'];
-                $forceCreate = in_array($origPid, $createdPropertyIds, true);
+                // Try to find by diagram_id and ent_type_id
+                $property = null;
+                if ($entTypeId) {
+                    $property = Property::where('ent_type_id', $entTypeId)
+                        ->where('diagram_id', $diagramId)
+                        ->first();
+                } elseif ($fkPropertyId) {
+                    $property = Property::where('fk_property_id', $fkPropertyId)
+                        ->where('diagram_id', $diagramId)
+                        ->first();
+                }
 
-                if ($forceCreate) {
-                    $property = Property::create([
-                        'ent_type_id'          => $item['ent_type_id'] ?? null,
-                        'value_type'           => $item['value_type'],
-                        'scope'                => $item['scope'],
-                        'unit_type_id'         => $item['unit_type_id'] ?? null,
-                        'state'                => $item['state'],
-                        'fk_property_id'       => $item['fk_property_id'] ?? null,
-                        'fk_entity_type_id'    => $item['fk_entity_type_id'] ?? null,
-                        'part_of'              => $item['part_of'],
-                        'requires_translation' => $item['requires_translation'],
-                        'editable'             => $item['editable'],
-                        'soft_delete'          => $item['soft_delete'],
-                        'is_a'                 => $item['is_a'] ?? null,
-                        'is_dependent'         => $item['is_dependent'] ?? null,
-                        'multiple_values'      => $item['multiple_values']
-                    ]);
+                // Fallback for legacy properties
+                if (!$property && !empty($item['name']) && $entTypeId) {
+                    $pName = $item['name'];
+                    $langId = $item['language_id'];
+
+                    $legacyMatchId = \DB::table('property_name')
+                        ->where('name', $pName)
+                        ->where('language_id', $langId)
+                        ->whereNull('deleted_at')
+                        ->pluck('property_id');
+
+                    if ($legacyMatchId->isNotEmpty()) {
+                        $property = Property::where('ent_type_id', $entTypeId)
+                            ->whereNull('diagram_id')
+                            ->whereIn('id', $legacyMatchId)
+                            ->first();
+                    }
+                }
+
+                $attributes = [
+                    'diagram_id' => $diagramId,
+                    'value_type' => $item['value_type'],
+                    'scope' => $item['scope'],
+                    'unit_type_id' => $item['unit_type_id'] ?? null,
+                    'state' => $item['state'],
+                    'fk_entity_type_id' => $item['fk_entity_type_id'] ?? null,
+                    'part_of' => $item['part_of'],
+                    'requires_translation' => $item['requires_translation'],
+                    'editable' => $item['editable'],
+                    'soft_delete' => $item['soft_delete'],
+                    'is_a' => $item['is_a'] ?? null,
+                    'is_dependent' => $item['is_dependent'] ?? null,
+                    'multiple_values' => $item['multiple_values']
+                ];
+
+                if ($property) {
+                    $attributes['ent_type_id'] = $entTypeId;
+                    $attributes['fk_property_id'] = $fkPropertyId;
+                    $property->update($attributes);
                 } else {
-                    $property = Property::updateOrCreate(
-                        ['id' => $item['id']],
-                        [
-                            'ent_type_id' => $item['ent_type_id'] ?? null,
-                            'value_type' => $item['value_type'],
-                            'scope' => $item['scope'],
-                            'unit_type_id' => $item['unit_type_id'] ?? null,
-                            'state' => $item['state'],
-                            'fk_property_id' => $item['fk_property_id'] ?? null,
-                            'fk_entity_type_id' => $item['fk_entity_type_id'] ?? null,
-                            'part_of' => $item['part_of'],
-                            'requires_translation' => $item['requires_translation'],
-                            'editable' => $item['editable'],
-                            'soft_delete' => $item['soft_delete'],
-                            'is_a' => $item['is_a'] ?? null,
-                            'is_dependent' => $item['is_dependent'] ?? null,
-                            'multiple_values' => $item['multiple_values']
-                        ]
-                    );
+                    $attributes['ent_type_id'] = $entTypeId;
+                    $attributes['fk_property_id'] = $fkPropertyId;
+                    $property = Property::create($attributes);
                 }
 
                 PropertyName::updateOrCreate(
@@ -271,31 +301,49 @@ class FactDiagramController extends Controller
                         'language_id' => $item['language_id']
                     ],
                     [
-                        'name'       => $item['name'] ?? null,
-                        'tooltip'    => $item['tooltip']
+                        'name' => $item['name'] ?? null,
+                        'tooltip' => $item['tooltip'] ?? null
                     ]
                 );
 
-                // mapear property original -> real
-                $propertyIdMap[$origPid] = $property->id;
-
-                $createdPropertyIds[] = $property->id;
+                $propertyIdMap[$diagramId] = $property->id;
                 $saved['properties']++;
             }
-            //apagar Properties que já não existem
-            Property::whereNotIn('id', $createdPropertyIds)->delete();
-            PropertyName::whereNotIn('property_id', $createdPropertyIds)->delete();
 
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            // Safe scoped deletion for Properties
+            if (!empty($entTypeIdsInvolved)) {
+                $existingProperties = Property::whereIn('ent_type_id', $entTypeIdsInvolved)->get();
+                $toDeletePropIds = $existingProperties->filter(function ($item) use ($processedPropDiagramIds) {
+                    return !is_null($item->diagram_id) && !in_array($item->diagram_id, $processedPropDiagramIds, true);
+                })->pluck('id');
+
+                Property::whereIn('id', $toDeletePropIds)->delete();
+                PropertyName::whereIn('property_id', $toDeletePropIds)->delete();
+            }
+
+            // Safe scoped deletion for EntTypes
+            if (!empty($transactionTypeIdsInvolved)) {
+                $existingEntTypes = EntType::whereIn('transaction_type_id', $transactionTypeIdsInvolved)->get();
+                $toDeleteEntIds = $existingEntTypes->filter(function ($item) use ($processedEntDiagramIds) {
+                    return !is_null($item->diagram_id) && !in_array($item->diagram_id, $processedEntDiagramIds, true);
+                })->pluck('id');
+
+                EntType::whereIn('id', $toDeleteEntIds)->delete();
+                EntTypeName::whereIn('ent_type_id', $toDeleteEntIds)->delete();
+            }
+
             DB::commit();
-            return response()->json(['success' => true, 'saved' => $saved], 200);
-        } catch (\Throwable $e) {
-            DB::rollBack();
+
+            return response()->json([
+                'success' => true,
+                'saved' => $saved
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
             Log::error($e);
             return response()->json([
                 'success' => false,
-                'message' => 'Falha ao guardar em bulk.',
-                'error'   => config('app.debug') ? $e->getMessage() : null
+                'error' => $e->getMessage()
             ], 500);
         }
     }

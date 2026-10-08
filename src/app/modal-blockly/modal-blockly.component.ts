@@ -88,13 +88,17 @@ export class ModalBlocklyComponent implements OnInit {
             }
         } else {
             if (window.confirm(this.translate.instant('BLOCKLY-ACTIONS-NOTIFICATIONS.ASK-DELETE'))) {
-                return this.restBlocklyApi.deleteActionRule(this.selectedActionRule.id).subscribe((data: {}) => {
-                    if (data) {
+                return this.restBlocklyApi.deleteActionRule(this.selectedActionRule.id).subscribe((data: any) => {
+                    if (data && data.success === true) {
                         this.alertToast.showSuccess(this.translate.instant('BLOCKLY-ACTIONS-NOTIFICATIONS.SUCCESS.DELETE-AR'));
                         this.closeModal();
+                    } else if (data && data.success === false && data.error_code === 'STRUCTURAL_DEPENDENCY') {
+                        this.alertToast.showError(this.translate.instant('BLOCKLY-ACTIONS-NOTIFICATIONS.ERROR.DELETE-AR-STRUCTURAL-DEPENDENCY'));
                     } else {
                         this.alertToast.showError(this.translate.instant('BLOCKLY-ACTIONS-NOTIFICATIONS.ERROR.DELETE-AR'));
                     }
+                }, error => {
+                    this.alertToast.showError(this.translate.instant('BLOCKLY-ACTIONS-NOTIFICATIONS.ERROR.DELETE-AR'));
                 });
             }
         }

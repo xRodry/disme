@@ -18,6 +18,7 @@
         <ng-select *ngIf="!this.actionRuleDrafts" id="actionRule"
                    [items]="ActionRules"
                    placeholder = "{{ 'LOAD-AR-MODAL.DEFAULT-OPTION' | translate }}"
+                   bindLabel="transaction_type_name"
                    [(ngModel)]="selectedActionRule">
             <ng-template ng-label-tmp ng-option-tmp let-item="item">
                 <div *ngIf="item.type === 'act'">

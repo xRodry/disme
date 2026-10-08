@@ -679,6 +679,23 @@ App.isBuiltInPlugin = function (path) {
 };
 
 /**
+ * Queue for loading plugins and wait for UI instance
+ */
+App.initPluginCallback = function () {
+    if (App.DrawPlugins == null) {
+        // Workaround for need to load plugins now but wait for UI instance
+        App.DrawPlugins = [];
+
+        // Global entry point for plugins is Draw.loadPlugin. This is the only
+        // long-term supported solution for access to the EditorUi instance.
+        window.Draw = new Object();
+        window.Draw.loadPlugin = function (callback) {
+            App.DrawPlugins.push(callback);
+        };
+    }
+};
+
+/**
  * Program flow starts here.
  *
  * Optional callback is called with the app instance.
@@ -1497,22 +1514,7 @@ if (urlParams["embed"] != "1") {
     App.prototype.footerHeight = 0;
 }
 
-/**
- * Queue for loading plugins and wait for UI instance
- */
-App.initPluginCallback = function () {
-    if (App.DrawPlugins == null) {
-        // Workaround for need to load plugins now but wait for UI instance
-        App.DrawPlugins = [];
 
-        // Global entry point for plugins is Draw.loadPlugin. This is the only
-        // long-term supported solution for access to the EditorUi instance.
-        window.Draw = new Object();
-        window.Draw.loadPlugin = function (callback) {
-            App.DrawPlugins.push(callback);
-        };
-    }
-};
 
 /**
  *
@@ -4004,77 +4006,8 @@ App.prototype.checkDrafts = function () {
                     null,
                     guid,
                     mxUtils.bind(this, function (drafts) {
-                        if (drafts.length == 1) {
-                            this.loadDraft(
-                                drafts[0].data,
-                                mxUtils.bind(this, function () {
-                                    this.removeDatabaseItem(drafts[0].key);
-                                })
-                            );
-                        } else if (drafts.length > 1) {
-                            var ts = new Date(drafts[0].modified);
-
-                            var dlg = new DraftDialog(
-                                this,
-                                drafts.length > 1
-                                    ? mxResources.get("selectDraft")
-                                    : mxResources.get("draftFound", [
-                                          ts.toLocaleDateString() +
-                                              " " +
-                                              ts.toLocaleTimeString(),
-                                      ]),
-                                drafts.length > 1 ? null : drafts[0].data,
-                                mxUtils.bind(this, function (index) {
-                                    this.hideDialog();
-                                    index = index != "" ? index : 0;
-
-                                    this.loadDraft(
-                                        drafts[index].data,
-                                        mxUtils.bind(this, function () {
-                                            this.removeDatabaseItem(
-                                                drafts[index].key
-                                            );
-                                        })
-                                    );
-                                }),
-                                mxUtils.bind(this, function (index, success) {
-                                    index = index != "" ? index : 0;
-                                    this.removeDatabaseItem(drafts[index].key);
-
-                                    if (success != null) {
-                                        success();
-                                    }
-                                }),
-                                null,
-                                null,
-                                null,
-                                drafts.length > 1 ? drafts : null
-                            );
-                            this.showDialog(
-                                dlg.container,
-                                640,
-                                480,
-                                true,
-                                false,
-                                mxUtils.bind(this, function (cancel) {
-                                    if (urlParams["splash"] != "0") {
-                                        this.loadFile();
-                                    } else {
-                                        this.createFile(
-                                            this.defaultFilename,
-                                            this.getFileData(),
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            true
-                                        );
-                                    }
-                                })
-                            );
-                            dlg.init();
-                        } else if (urlParams["splash"] != "0") {
+                        // DISME workflow: bypass DraftDialog and ignore drafts
+                        if (urlParams["splash"] != "0") {
                             this.loadFile();
                         } else {
                             this.createFile(
@@ -4094,7 +4027,6 @@ App.prototype.checkDrafts = function () {
             0
         );
     } catch (e) {
-        // ignore
     }
 };
 
@@ -4673,6 +4605,9 @@ App.prototype.openDbFile = function (entry) {
             file.mode = App.MODE_DB;
             file.dbId = diagram.id;
             file.diagramTypeFlag = diagram.type || "editor";
+            file.getHash = function() {
+                return "D" + file.diagramTypeFlag + "-" + file.dbId;
+            };
             if (diagram.type === "fact") {
                 if (!diagram.conceptual_domain_id) {
                     this.showError(mxResources.get('error') || 'Error', mxResources.get('error_conceptual_domain_name') || 'Associated Conceptual Domain is missing or deleted.', mxResources.get('ok'));
@@ -5334,7 +5269,12 @@ App.prototype.saveFile = function (forceDialog, success, isDraft) {
                     saveFunction(input.value, mode, input, folderId);
                     this.hideDialog();
                 }),
-                allowTab ? null : ["_blank"]
+                allowTab ? null : ["_blank"],
+                null,
+                null,
+                null,
+                null,
+                isDraft
             );
 
             this.showDialog(
@@ -5618,14 +5558,12 @@ App.prototype.createFile = function (
     clibs,
     success
 ) {
-    console.log("[CHECKPOINT 8] App.prototype.createFile() starts");
     mode = tempFile ? null : mode != null ? mode : this.mode;
 
     if (
         title != null &&
         this.spinner.spin(document.body, mxResources.get("inserting"))
     ) {
-        console.log("[CHECKPOINT 11] Spinner starts (in createFile)");
         data = data != null ? data : this.emptyDiagramXml;
 
         // Decompresses existing content
@@ -5634,7 +5572,6 @@ App.prototype.createFile = function (
         }
 
         var complete = mxUtils.bind(this, function () {
-            console.log("[CHECKPOINT 12] Spinner stops (in createFile complete)");
             this.spinner.stop();
         });
 
@@ -5675,8 +5612,6 @@ App.prototype.createFile = function (
                     error
                 );
             } else if (mode == App.MODE_DB) {
-                console.log("Creating DB file (correct flow)");
-
                 var pendingType = this.pendingDiagramType || null;
                 var isNewTypedDiagram = pendingType != null;
                 this.pendingDiagramType = null;
@@ -5700,13 +5635,10 @@ App.prototype.createFile = function (
                 }
 
                 if (!type) {
-                    console.warn("Tipo não definido, fallback para fact");
                     type = "fact";
                 }
 
                 type = type.toLowerCase();
-
-                console.log("FINAL TYPE:", type);
 
                 var url = "/editorDiagramSave";
 
@@ -5715,8 +5647,6 @@ App.prototype.createFile = function (
                 } else if (type.includes("process")) {
                     url = "/processDiagram/save";
                 }
-
-                console.log("Saving to:", url);
 
                 var fileData = isNewTypedDiagram
                     ? data
@@ -5747,8 +5677,6 @@ App.prototype.createFile = function (
                     payload.process_type_id = this.currentFile.processType.id;
                 }
 
-                console.log("Payload:", payload);
-
                 var xhr = new mxXmlRequest(
                     url,
                     JSON.stringify(payload),
@@ -5770,7 +5698,6 @@ App.prototype.createFile = function (
                             try {
                                 resp = JSON.parse(text);
                             } catch (_) {
-                                console.warn("Non-JSON response:", text);
                             }
                             
                             if (xhr.getStatus() === 409 || (resp && resp.success === false)) {
@@ -5801,6 +5728,9 @@ App.prototype.createFile = function (
                             file.dbId = resp && resp.id ? resp.id : existingId;
 
                             file.diagramTypeFlag = type;
+                            file.getHash = function() {
+                                return "D" + type + "-" + file.dbId;
+                            };
 
                             if (type.includes("fact")) {
                                 if (this.currentFile && this.currentFile.conceptualDomain) {
@@ -5817,10 +5747,7 @@ App.prototype.createFile = function (
                             file.modified = false;
                             file.autosave = false;
 
-                            console.log("Saved OK with ID:", file.dbId);
-
                             var finishSave = mxUtils.bind(this, function() {
-                                console.log("[CHECKPOINT 9] finishSave() is reached");
                                 if (replace) {
                                     complete();
                                     this.hideDialog();
@@ -5838,7 +5765,7 @@ App.prototype.createFile = function (
                                         this.setMode(file.mode);
                                     }
                                     
-                                    var hash = "D" + file.dbId;
+                                    var hash = file.getHash();
                                     if (window.location.hash !== "#" + hash) {
                                         window.history.replaceState(null, null, "#" + hash);
                                     }
@@ -6269,87 +6196,81 @@ App.prototype.loadFile = function (id, sameWindow, file, success, force) {
                     actualDbId = parts[1];
                 }
 
-                if (
-                    this.spinner.spin(
-                        document.body,
-                        mxResources.get("loading")
-                    )
-                ) {
-                    var xhr = new mxXmlRequest(
-                        "/editorDiagram/" + actualDbId + "?type=" + typeParam,
-                        "",
-                        "GET",
-                        true
-                    );
+                var requestUrl = "/editorDiagram/" + actualDbId + "?type=" + typeParam;
+                var xhr = new mxXmlRequest(
+                    requestUrl,
+                    "",
+                    "GET",
+                    true
+                );
 
-                    xhr.send(
-                        mxUtils.bind(this, function () {
-                            this.spinner.stop();
-                            try {
-                                var response = JSON.parse(xhr.getText());
-                                // The backend returns the diagram model, so the XML is in response.XML
-                                if (response && response.XML) {
-                                    var dbFile = new LocalFile(
-                                        this,
-                                        response.XML,
-                                        response.name
-                                    );
-                                    dbFile.mode = App.MODE_DB;
-                                    dbFile.dbId = actualDbId;
-                                    
-                                    dbFile.getHash = function() {
-                                        return "D" + typeParam + "-" + actualDbId;
-                                    };
-                                    
-                                    dbFile.diagramTypeFlag = response.type || typeParam;
-                                    if (dbFile.diagramTypeFlag === "fact") {
-                                        if (!response.conceptual_domain_id) {
-                                            this.showError(mxResources.get('error') || 'Error', mxResources.get('error_conceptual_domain_name') || 'Associated Conceptual Domain is missing or deleted.', mxResources.get('ok'));
-                                        } else {
-                                            dbFile.conceptualDomain = {
-                                                id: response.conceptual_domain_id,
-                                                name: response.conceptual_domain_name || ''
-                                            };
-                                        }
+                xhr.send(
+                    mxUtils.bind(this, function () {
+                        this.spinner.stop();
+                        try {
+                            var response = JSON.parse(xhr.getText());
+                            // The backend returns the diagram model, so the XML is in response.XML
+                            if (response && response.XML) {
+                                var dbFile = new LocalFile(
+                                    this,
+                                    response.XML,
+                                    response.name
+                                );
+                                dbFile.mode = App.MODE_DB;
+                                dbFile.dbId = actualDbId;
+                                
+                                dbFile.getHash = function() {
+                                    return "D" + typeParam + "-" + actualDbId;
+                                };
+                                
+                                dbFile.diagramTypeFlag = response.type || typeParam;
+                                if (dbFile.diagramTypeFlag === "fact") {
+                                    if (!response.conceptual_domain_id) {
+                                        this.showError(mxResources.get('error') || 'Error', mxResources.get('error_conceptual_domain_name') || 'Associated Conceptual Domain is missing or deleted.', mxResources.get('ok'));
+                                    } else {
+                                        dbFile.conceptualDomain = {
+                                            id: response.conceptual_domain_id,
+                                            name: response.conceptual_domain_name || ''
+                                        };
                                     }
-                                    if (dbFile.diagramTypeFlag === "process") {
-                                        if (!response.process_type_id) {
-                                            this.showError(mxResources.get('error') || 'Error', mxResources.get('error_process_type_name') || 'Associated Process Type is missing or deleted.', mxResources.get('ok'));
-                                        } else {
-                                            dbFile.processType = {
-                                                id: response.process_type_id,
-                                                name: response.process_type_name || ''
-                                            };
-                                        }
-                                    }
-
-                                    this.fileLoaded(dbFile);
-
-                                    if (dbFile.diagramTypeFlag === "fact" && dbFile.conceptualDomain && this.setConceptualDomain) {
-                                        this.setConceptualDomain(dbFile.conceptualDomain.id, dbFile.conceptualDomain.name);
-                                    }
-                                    if (dbFile.diagramTypeFlag === "process" && dbFile.processType && this.setProcessType) {
-                                        this.setProcessType(dbFile.processType.id, dbFile.processType.name);
-                                    }
-
-                                    if (success != null) {
-                                        success();
-                                    }
-                                } else {
-                                    this.handleError({
-                                        message: "File not found in database",
-                                    });
                                 }
-                            } catch (e) {
-                                this.handleError(e);
+                                if (dbFile.diagramTypeFlag === "process") {
+                                    if (!response.process_type_id) {
+                                        this.showError(mxResources.get('error') || 'Error', mxResources.get('error_process_type_name') || 'Associated Process Type is missing or deleted.', mxResources.get('ok'));
+                                    } else {
+                                        dbFile.processType = {
+                                            id: response.process_type_id,
+                                            name: response.process_type_name || ''
+                                        };
+                                    }
+                                }
+
+                                this.fileLoaded(dbFile);
+
+                                if (dbFile.diagramTypeFlag === "fact" && dbFile.conceptualDomain && this.setConceptualDomain) {
+                                    this.setConceptualDomain(dbFile.conceptualDomain.id, dbFile.conceptualDomain.name);
+                                }
+                                if (dbFile.diagramTypeFlag === "process" && dbFile.processType && this.setProcessType) {
+                                    this.setProcessType(dbFile.processType.id, dbFile.processType.name);
+                                }
+
+                                if (success != null) {
+                                    success();
+                                }
+                            } else {
+                                this.handleError({
+                                    message: "File not found in database",
+                                });
                             }
-                        }),
-                        mxUtils.bind(this, function (err) {
-                            this.spinner.stop();
-                            this.handleError(err);
-                        })
-                    );
-                }
+                        } catch (e) {
+                            this.handleError(e);
+                        }
+                    }),
+                    mxUtils.bind(this, function (err) {
+                        this.spinner.stop();
+                        this.handleError(err);
+                    })
+                );
             } else if (id.charAt(0) == "E") {
                 // Embed file
                 //Currently we only reload current file. Id is not used!
@@ -6633,7 +6554,6 @@ App.prototype.loadFile = function (id, sameWindow, file, success, force) {
                             mxUtils.bind(this, function (resp) {
                                 // Makes sure the file does not save the invalid UI model and overwrites anything important
                                 if (window.console != null && resp != null) {
-                                    console.log("error in loadFile:", id, resp);
                                 }
 
                                 var fn = mxUtils.bind(this, function () {
@@ -7558,12 +7478,10 @@ App.prototype.save = function (name, done, isDraft) {
 
     if (isDb) {
         if (!isDraft) {
-            console.log("🔍 VALIDATE DB DIAGRAM");
 
             // 🔍 Run diagram validation (save disabled for now)
             var validationErrors = validateDiagram(this.editor.graph);
             if (validationErrors.length > 0) {
-                console.log("❌ Validation failed:", validationErrors.length, "error(s)");
                 this.validationErrors = validationErrors;
                 this.showErrorsTab = true;
                 if (this.format != null) {
@@ -7571,7 +7489,6 @@ App.prototype.save = function (name, done, isDraft) {
                 }
                 return; // Stop save workflow if there are errors
             } else {
-                console.log("✅ Validation passed — no errors found");
                 this.validationErrors = [];
                 if (this.format != null) {
                     this.format.refresh();
@@ -7583,13 +7500,11 @@ App.prototype.save = function (name, done, isDraft) {
         // For Save as Draft flow (isDraft === true):
         // Save to database directly without validation
         if (isSaveAs) {
-            console.log("🆕 FIRST SAVE -> save to database (draft)");
             this.createFile(
                 title, data, null, App.MODE_DB,
                 success, true, null, null, null, null
             );
         } else {
-            console.log("✅ UPDATE DIRETO (draft)");
             this.updateDatabaseFile(file, title, success, error);
         }
 
@@ -7679,11 +7594,9 @@ App.prototype.executeBulkSave = function(file, success, error) {
                 try {
                     resp = JSON.parse(text);
                 } catch (_) {
-                    console.warn("Non-JSON response from bulk-save:", text);
                 }
 
                 if (xhr.getStatus() === 200 && resp && resp.success) {
-                    console.log("Bulk save successful:", resp);
                     if (success) success();
                 } else {
                     var errMsg = (resp && resp.error) ? resp.error : (resp && resp.message ? resp.message : "Failed to bulk save semantic data");
@@ -7697,6 +7610,60 @@ App.prototype.executeBulkSave = function(file, success, error) {
         },
         function(err) {
             self.showError(mxResources.get('error') || 'Error', "Network error during bulk save", mxResources.get('ok'));
+            if (error) error(err);
+        }
+    );
+};
+
+/**
+ * Executes the bulk save for semantic persistence of a Fact Diagram.
+ */
+App.prototype.executeFactBulkSave = function(file, success, error) {
+    if (!file || !file.dbId) {
+        if (success) success();
+        return;
+    }
+    
+    // Call the builder function from DiagramUtils.js
+    var payload = buildFactBulkSavePayload(this.editor.graph);
+    
+    var xhr = new mxXmlRequest(
+        "/factDiagram/bulk-save",
+        JSON.stringify(payload),
+        "POST",
+        true
+    );
+
+    xhr.setRequestHeaders = function(request, params) {
+        request.setRequestHeader("Content-Type", "application/json");
+        request.setRequestHeader("Accept", "application/json");
+    };
+
+    var self = this;
+    xhr.send(
+        function() {
+            try {
+                var text = xhr.getText();
+                var resp = null;
+                try {
+                    resp = JSON.parse(text);
+                } catch (_) {
+                }
+
+                if (xhr.getStatus() === 200 && resp && resp.success) {
+                    if (success) success();
+                } else {
+                    var errMsg = (resp && resp.error) ? resp.error : (resp && resp.message ? resp.message : "Failed to bulk save fact data");
+                    self.showError(mxResources.get('error') || 'Error', errMsg, mxResources.get('ok'));
+                    if (error) error(errMsg);
+                }
+            } catch (e) {
+                self.showError(mxResources.get('error') || 'Error', e.message || "Failed to bulk save fact", mxResources.get('ok'));
+                if (error) error(e);
+            }
+        },
+        function(err) {
+            self.showError(mxResources.get('error') || 'Error', "Network error during fact bulk save", mxResources.get('ok'));
             if (error) error(err);
         }
     );
@@ -7728,7 +7695,6 @@ App.prototype.updateDatabaseFile = function (file, title, success, error) {
             url = "/processDiagram/save";
         }
 
-        console.log("Saving update to:", url);
 
         var payload = {
             id: file.dbId,
@@ -7774,7 +7740,6 @@ App.prototype.updateDatabaseFile = function (file, title, success, error) {
                 try {
                     var resp = JSON.parse(xhr.getText());
 
-                    console.log("✅ Update response:", resp);
 
                     if (xhr.getStatus() === 409 || (resp && resp.success === false)) {
                         this.spinner.stop();
@@ -7814,6 +7779,8 @@ App.prototype.updateDatabaseFile = function (file, title, success, error) {
 
                         if (type.includes("process")) {
                             this.executeBulkSave(file, finishUpdate);
+                        } else if (type.includes("fact")) {
+                            this.executeFactBulkSave(file, finishUpdate);
                         } else {
                             finishUpdate();
                         }

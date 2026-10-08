@@ -239,7 +239,7 @@ export class ProcessDiagramComponent implements OnInit {
                         id: toInt(linkIdAttr),
                         causing_action: toInt(obj.getAttribute('action_id')),
                         caused_transaction_type_id: toInt(obj.getAttribute('causalLink_caused_transaction_type_id')),
-                        caused_t_state_id: toInt(obj.getAttribute('causalLink_caused_t_state_id')),
+                        caused_t_state_id: obj.getAttribute('causalLink_caused_t_state_id'),
                         min: obj.getAttribute('min'),
                         max: obj.getAttribute('max'),
                         cancel_proc: toInt(obj.getAttribute('causalLink_cancel_proc')),

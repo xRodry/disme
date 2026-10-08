@@ -313,7 +313,6 @@
 
 			if (mxScriptsLoaded && mxWinLoaded)
 			{
-				console.log("🚀 Launching App.main()");
 				App.main();
 			}
 		};
@@ -702,7 +701,6 @@
 
 			function loadNext() {
 				if (i >= coreDependencies.length) {
-					console.log("✅ All core dependencies loaded");
 					mxScriptsLoaded = true;
 					mxWinLoaded = true;
 					checkAllLoaded();
@@ -717,7 +715,6 @@
 					loadNext();
 				};
 				script.onerror = () => {
-					console.error(`❌ Failed to load ${coreDependencies[i]}`);
 					i++;
 					loadNext(); // skip and continue
 				};

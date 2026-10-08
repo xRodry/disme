@@ -3572,20 +3572,6 @@ function renderCausalLinkForm(container, editorUi, cell) {
 
     container.appendChild(row2);
 
-    // =========================
-    // 🔹 AÇÃO CAUSADORA
-    // =========================
-    const causing_action = FormUtils.createInput(
-        cell,
-        "causing_action",
-        "",
-        editorUi
-    );
-
-    container.appendChild(
-        FormUtils.createLabel(mxResources.get("causing_action"))
-    );
-    container.appendChild(causing_action);
 
     // =========================
     // 🔹 MIN / MAX
@@ -3736,20 +3722,6 @@ function renderCompositionLinkForm(container, editorUi, cell) {
 
     container.appendChild(row3);
 
-    // =========================
-    // 🔹 AÇÃO CAUSADORA
-    // =========================
-    const causing_action = FormUtils.createInput(
-        cell,
-        "causing_action",
-        "",
-        editorUi
-    );
-
-    container.appendChild(
-        FormUtils.createLabel(mxResources.get("causing_action"))
-    );
-    container.appendChild(causing_action);
 
     // =========================
     // 🔹 MIN / MAX

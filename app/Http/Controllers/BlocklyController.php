@@ -88,25 +88,15 @@ class BlocklyController extends Controller
         // Get all action rules in the system along with its FK names in the user's language
         $actionRules = DB::table('action_rule')
             ->join('transaction_type', 'action_rule.transaction_type_id', '=', 'transaction_type.id')
-            ->whereNotNull('action_rule.blockly_xml')
             ->whereNull(['action_rule.deleted_at', 'transaction_type.deleted_at'])
             ->select('action_rule.*')
             ->get();
 
         foreach ($actionRules as $actionRule) {
-            $this->getActionRuleFKNames($actionRule, $userLangId);
+            $this->hydrateActionRuleFKNames($actionRule, $userLangId);
         }
 
         return ActionRuleResource::collection($actionRules);
-    }
-
-    private function getActionRuleFKNames($actionRule, $userLangId) {
-        $actionRule->transaction_type_name = $this->getMultilingualConceptName('transaction_type_name',
-            't_name', 'transaction_type_id', $actionRule->transaction_type_id, $userLangId);
-        $actionRule->t_state_name = $this->getMultilingualConceptName('t_state_name', 'name',
-            't_state_id', $actionRule->t_state_id, $userLangId);
-        $actionRule->t_state_act_name = $this->getMultilingualConceptName('t_state_name', 'act_name',
-            't_state_id', $actionRule->t_state_id, $userLangId);
     }
 
     public function getActionRule(Request $request, $id)
@@ -115,7 +105,25 @@ class BlocklyController extends Controller
 
         $actionRule = ActionRule::where('id',$id)
             ->whereNull('deleted_at')->first();
-        $this->getActionRuleFKNames($actionRule, $userLangId);
+        $this->hydrateActionRuleFKNames($actionRule, $userLangId);
+
+        $actionRule->causal_links = DB::table('action')
+            ->join('causal_link', 'causal_link.causing_action', '=', 'action.id')
+            ->where('action.action_rule_id', $actionRule->id)
+            ->where('action.type', 'causal_link')
+            ->whereNull('action.deleted_at')
+            ->whereNull('causal_link.deleted_at')
+            ->select(
+                'action.id as action_id',
+                'causal_link.caused_transaction_type_id',
+                'causal_link.caused_t_state_id',
+                'causal_link.min',
+                'causal_link.max',
+                'causal_link.cancel_proc',
+                'causal_link.continue_if_same_user'
+            )
+            ->orderBy('action.id', 'asc')
+            ->get();
 
         return new ActionRuleResource($actionRule);
     }
@@ -154,7 +162,7 @@ class BlocklyController extends Controller
         foreach ($subQueryTerms as $subQueryTerm) {
             if ($subQueryTerm->type === 'filter') {
                 $filterProperty = QueryFilter::where('query_term_id', $subQueryTerm->id)->first();
-                if ($filterProperty->is_parameter) {
+                if ($filterProperty && $filterProperty->is_parameter && $filterProperty->property) {
                     $filterProperty->property_name = $this->getMultilingualConceptName('property_name', 'name',
                     'property_id', $filterProperty->property_id, $userLangId);
                     $filterProperty->ent_type_name = $this->getMultilingualConceptName('ent_type_name', 'name',
@@ -185,34 +193,37 @@ class BlocklyController extends Controller
 
         DB::beginTransaction();
         try {
-            $transactionTypeId = $request->input('transaction_type_id');
-            $tStateId = $request->input('t_state_id');
-            $type = $request->input('type');
+            // Frontend passes 'id'
+            $actionRuleId = $request->input('id');
 
-            // If there's an AR with the same transType/tState/type that the new one is replacing, 'Delete' it
-            $previousActionRuleVersion = ActionRule::where([
-                'transaction_type_id' => $transactionTypeId,
-                't_state_id' => $tStateId,
-                'type' => $type
-            ])->whereNull('deleted_at')->first();
-            if ($previousActionRuleVersion) {
-                $this->deleteActionRule($request, $previousActionRuleVersion->id);
+            $action_rule = ActionRule::find($actionRuleId);
+
+            if (!$action_rule) {
+                throw new \Exception('ActionRule not found for ID: ' . $actionRuleId);
+            }
+
+            // We do NOT delete the action rule.
+            // We ONLY delete the logic actions that belong to this action rule.
+            $logicActions = Action::where('action_rule_id', $actionRuleId)
+                ->where('type', '!=', 'causal_link')
+                ->whereNull('deleted_at')
+                ->get();
+
+            foreach ($logicActions as $actionToDelete) {
+                $actionToDelete->update([
+                    'deleted_by' => $userId
+                ]);
+                $actionToDelete->delete();
             }
 
             $blockly_XML = $request->input('blockly_xml');
-            // Action Rule to be stored in the action ruled table
-            $action_rule = new ActionRule;
-            $action_rule->t_state_id = $tStateId;
-            $action_rule->type = $type;
-            $action_rule->transaction_type_id = $transactionTypeId;
+            
             $action_rule->blockly_code = $request->input('blockly_code');
             $action_rule->preview = $request->input('preview');
-
             $action_rule->updated_by = $userId;
-            $action_rule->save();
 
             $actions = $request->input('actions');
-            $blockly_XML = $this->storeActions ($blockly_XML, $actions, $action_rule->id, null, $previousActionRuleVersion, $userId, $langId);
+            $blockly_XML = $this->storeActions ($blockly_XML, $actions, $action_rule->id, null, $action_rule, $userId, $langId);
 
             $action_rule->blockly_xml = $blockly_XML;
             $action_rule->save();
@@ -230,14 +241,25 @@ class BlocklyController extends Controller
     {
         $userId = $request->user()->id;
 
+        $isStructurallyBound = Action::where('action_rule_id', $actionRuleId)
+            ->where('type', 'causal_link')
+            ->whereNull('deleted_at')
+            ->exists();
+
+        if ($isStructurallyBound) {
+            return response()->json([
+                'success' => false,
+                'error_code' => 'STRUCTURAL_DEPENDENCY'
+            ]);
+        }
+
         $actionRule = ActionRule::find($actionRuleId);
 
         $actionsBelongingToAR = Action::where('action_rule_id', $actionRuleId)
-        ->whereNull('deleted_at')->get();
+            ->whereNull('deleted_at')->get();
 
         DB::beginTransaction();
         try {
-
             foreach ($actionsBelongingToAR as $actionToDelete) {
                 $actionToDelete->update([
                     'deleted_by' => $userId
@@ -245,17 +267,19 @@ class BlocklyController extends Controller
                 $actionToDelete->delete();
             }
 
-            $actionRule->update([
-                'deleted_by' => $userId
-            ]);
-            $actionRule->delete();
+            if ($actionRule) {
+                $actionRule->update([
+                    'deleted_by' => $userId
+                ]);
+                $actionRule->delete();
+            }
 
             DB::commit();
-            return 'true';
+            return response()->json(['success' => true]);
         } catch (\Exception $e) {
             DB::rollback();
             Log::debug($e);
-            return 'false';
+            return response()->json(['success' => false]);
         }
     }
 
@@ -266,6 +290,12 @@ class BlocklyController extends Controller
         $previous_action = null;
 
         foreach ($actions as $input_action) {
+            
+            // Phase 2: Structural actions are managed by the Process Diagram.
+            // Blockly only handles executable logic actions.
+            if ($input_action["type"] == 'causal_link') {
+                continue;
+            }
 
             $action = new Action;
             $action->action_rule_id = $action_rule_id;
@@ -301,23 +331,8 @@ class BlocklyController extends Controller
                 $action_text->save();
             }
 
-            // In case action is of type causal link
-            if ($action->type == 'causal_link'){
-
-                // Create an entry in the causal link table
-                $causal_link = new CausalLink;
-                $causal_link->causing_action = $action->id;
-                $causal_link->caused_transaction_type_id = $input_action["caused_action_trans_type_id"];
-                $causal_link->caused_t_state_id = $input_action["caused_action_t_state_id"];
-                $causal_link->min = $input_action["min"];
-                $causal_link->max = $input_action["max"];
-                $causal_link->cancel_proc = $input_action["cancel_process"];
-                $causal_link->continue_if_same_user = $input_action["continue_if_same_user"];
-                $causal_link->updated_by = $userId;
-                $causal_link->save();
-
-                // In case action if of type assign expression
-            }  else if($action->type == 'assign_expression') {
+            // In case action if of type assign expression
+            if($action->type == 'assign_expression') {
 
                 list($destinationTermId, $blockly_XML) = $this->storeTerm($blockly_XML, $input_action['destinationTerm'], $userId, $langId, $action->id);
                 list($sourceTermId, $blockly_XML) = $this->storeTerm($blockly_XML, $input_action['sourceTerm'], $userId, $langId, $action->id);

@@ -1496,3 +1496,7 @@ conceptualDomainCreationFailed=Erro ao criar Domínio Conceitual
 loadingConceptualDomains=Carregando...
 noConceptualDomainsFound=Nenhum domínio conceitual disponível
 error_conceptual_domain_name=O Domínio Conceitual associado está ausente ou foi apagado.
+saveAsDraft=Guardar como Rascunho
+saveAsDatabase=Guardar na Base de Dados
+databaseDraft=Rascunho na Base de Dados
+database=Base de Dados

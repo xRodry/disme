@@ -15,6 +15,7 @@ use App\ProcessDiagram;
 use App\TransactionType;
 use App\TransactionTypeName;
 use App\WaitingLink;
+use App\TState;
 use DB;
 use Illuminate\Http\Request;
 use Log;
@@ -100,6 +101,24 @@ class ProcessDiagramController extends Controller
 
     public function bulkSave(Request $request)
     {
+        // Normalize caused_t_state_id for causalLinks (convert abbreviations to IDs)
+        $causalLinks = $request->input('causalLinks');
+        if (is_array($causalLinks)) {
+            foreach ($causalLinks as &$cl) {
+                if (isset($cl['caused_t_state_id'])) {
+                    $val = $cl['caused_t_state_id'];
+                    // If it's a non-numeric string, try to resolve it via TState
+                    if (is_string($val) && !is_numeric($val)) {
+                        $tState = \App\TState::where('abbrv', $val)->first();
+                        if ($tState) {
+                            $cl['caused_t_state_id'] = $tState->id;
+                        }
+                    }
+                }
+            }
+            $request->merge(['causalLinks' => $causalLinks]);
+        }
+
         // Validação básica
         $data = $request->validate([
             'processDiagramId' => ['required', 'integer'],
@@ -140,9 +159,9 @@ class ProcessDiagramController extends Controller
 
 
             'causalLinks.*.diagram_id' => ['required', 'string'],
-            'causalLinks.*.causing_action' => ['required'],
+            'causalLinks.*.causing_transaction_type_id' => ['required', 'string'],
             'causalLinks.*.caused_transaction_type_id' => ['required', 'string'],
-            'causalLinks.*.caused_t_state_id' => ['required', 'integer'],
+            'causalLinks.*.caused_t_state_id' => ['required', 'integer', 'exists:t_state,id'],
             'causalLinks.*.min' => ['required', 'string'],
             'causalLinks.*.max' => ['required', 'string'],
             'causalLinks.*.cancel_proc' => ['required', 'integer'],
@@ -157,6 +176,7 @@ class ProcessDiagramController extends Controller
             // Maps: diagram_id -> DB id
             $transactionTypeIdMap = [];
             $createdTransactionTypeIds = [];
+            $claimedLegacyIds = [];
 
             $processTypeId = $data['processTypeId'];
 
@@ -188,6 +208,7 @@ class ProcessDiagramController extends Controller
                         $transactionType = TransactionType::where('process_type_id', $processTypeId)
                             ->whereNull('diagram_id')
                             ->whereIn('id', $legacyMatchId)
+                            ->whereNotIn('id', $claimedLegacyIds)
                             ->first();
                     }
                 }
@@ -210,6 +231,9 @@ class ProcessDiagramController extends Controller
                 ];
 
                 if ($transactionType) {
+                    if (is_null($transactionType->diagram_id)) {
+                        $claimedLegacyIds[] = $transactionType->id;
+                    }
                     // 3. Update existing and backfill diagram_id
                     $transactionType->update($attributes);
                 } else {
@@ -292,8 +316,13 @@ class ProcessDiagramController extends Controller
 
 
 
-            // --- CAUSAL LINKS ---
+            // --- CAUSAL LINKS & ACTIONS ---
             $processedClDiagramIds = [];
+            $processedActionIds = []; // For cleanup
+
+            // Resolve the Executed TState ID dynamically
+            $tStateExecuted = TState::where('abbrv', 'ex')->first();
+            $tStateExecutedId = $tStateExecuted ? $tStateExecuted->id : 3;
 
             foreach ($data['causalLinks'] as $item) {
                 $diagramId = $item['diagram_id'];
@@ -302,6 +331,43 @@ class ProcessDiagramController extends Controller
                 // Resolve caused_transaction_type_id from diagram cell ID
                 $causedTxTypeId = isset($transactionTypeIdMap[$item['caused_transaction_type_id']]) ? $transactionTypeIdMap[$item['caused_transaction_type_id']] : $item['caused_transaction_type_id'];
 
+                // Resolve causing_transaction_type_id from diagram cell ID
+                $causingTxTypeId = isset($transactionTypeIdMap[$item['causing_transaction_type_id']]) ? $transactionTypeIdMap[$item['causing_transaction_type_id']] : $item['causing_transaction_type_id'];
+
+                // 1. Generate or Find ActionRule
+                $actionRule = ActionRule::firstOrCreate(
+                    [
+                        'transaction_type_id' => $causingTxTypeId,
+                        't_state_id' => $tStateExecutedId,
+                        'type' => 'act'
+                    ],
+                    [
+                        'blockly_xml' => '',
+                        'blockly_code' => '',
+                        'preview' => ''
+                    ]
+                );
+
+                if ($actionRule->wasRecentlyCreated) {
+                    $saved['actionRules']++;
+                }
+
+                // 2. Generate or Find Action for this Causal Link
+                $action = Action::firstOrCreate(
+                    [
+                        'diagram_id' => $diagramId,
+                        'type' => 'causal_link',
+                        'action_rule_id' => $actionRule->id
+                    ],
+                    []
+                );
+
+                if ($action->wasRecentlyCreated) {
+                    $saved['actions']++;
+                }
+
+                $processedActionIds[] = $action->id;
+
                 $cl = CausalLink::where('diagram_id', $diagramId)
                     ->whereHas('causedTransactionType', function ($q) use ($processTypeId) {
                         $q->where('process_type_id', $processTypeId);
@@ -309,7 +375,7 @@ class ProcessDiagramController extends Controller
 
                 if ($cl) {
                     $cl->update([
-                        'causing_action' => $item['causing_action'],
+                        'causing_action' => $action->id,
                         'caused_transaction_type_id' => $causedTxTypeId,
                         'caused_t_state_id' => $item['caused_t_state_id'],
                         'min' => $item['min'],
@@ -320,7 +386,7 @@ class ProcessDiagramController extends Controller
                 } else {
                     CausalLink::create([
                         'diagram_id' => $diagramId,
-                        'causing_action' => $item['causing_action'],
+                        'causing_action' => $action->id,
                         'caused_transaction_type_id' => $causedTxTypeId,
                         'caused_t_state_id' => $item['caused_t_state_id'],
                         'min' => $item['min'],
@@ -336,6 +402,13 @@ class ProcessDiagramController extends Controller
             CausalLink::whereNotNull('diagram_id')
                 ->whereNotIn('diagram_id', $processedClDiagramIds)
                 ->whereHas('causedTransactionType', function ($q) use ($processTypeId) {
+                    $q->where('process_type_id', $processTypeId);
+                })->delete();
+
+            // Orphan Cleanup for Auto-Generated Actions
+            Action::where('type', 'causal_link')
+                ->whereNotIn('id', $processedActionIds)
+                ->whereHas('actionRule.transactionType', function ($q) use ($processTypeId) {
                     $q->where('process_type_id', $processTypeId);
                 })->delete();
 

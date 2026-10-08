@@ -217,7 +217,8 @@
             "DELETE-AR": "Failed to delete Action Rule.",
             "DELETE-AR-DRAFT": "Failed to delete Action Rule Draft.",
             "LOAD-AR": "Failed to load existing Action Rules.",
-            "LOAD-AR-DRAFT": "Failed to load existing Action Rule Drafts."
+            "LOAD-AR-DRAFT": "Failed to load existing Action Rule Drafts.",
+            "DELETE-AR-STRUCTURAL-DEPENDENCY": "Cannot delete Action Rule: it is structurally referenced by a Causal Link in the Process Diagram. Please remove the causal link from Draw.io first."
         },
         "ASK-DELETE": "Are you sure you want to delete this Action Rule?",
         "ASK-DELETE-DRAFT": "Are you sure you want to delete this Action Rule Draft?"
@@ -354,7 +355,8 @@
                     "MIN": "min",
                     "MAX": "max",
                     "CANCEL-PROCESS": "cancel process",
-                    "CONTINUE-SAME-USER": "continue if same user"
+                    "CONTINUE-SAME-USER": "continue if same user",
+                    "MANAGED-BY-PROCESS-DIAGRAM": "🔒 Managed by Process Diagram"
                 },
                 "USER-INPUT": {
                     "TITLE-MULTIPLE-ENT-TYPES": "create instance of multiple entity types",

@@ -1842,7 +1842,7 @@
                     mxResources.get("factmodel_generalization")
                 ),
                 sb.createEdgeTemplateEntry(
-                    "endArrow=none;html=1;rounded=0;strokeWidth=2;fontSize=19;connector=1;",
+                    "endArrow=none;html=1;rounded=0;strokeWidth=2;fontSize=19;connector=1;is_a=1;",
                     130,
                     1,
                     "",
@@ -1860,7 +1860,7 @@
                     null
                 ),
                 sb.createEdgeTemplateEntry(
-                    "endArrow=none;html=1;strokeWidth=2;endFill=0;dashed=0;dashPattern=1 1;startArrow=oval;startFill=1;rounded=0;connector=1;",
+                    "endArrow=none;html=1;strokeWidth=2;endFill=0;dashed=0;dashPattern=1 1;startArrow=oval;startFill=1;rounded=0;connector=1;is_dependent=1;",
                     130,
                     1,
                     "",
@@ -1869,7 +1869,7 @@
                     null
                 ),
                 sb.createEdgeTemplateEntry(
-                    "endArrow=none;html=1;strokeWidth=2;endFill=0;dashed=1;dashPattern=1 1;startArrow=oval;startFill=1;rounded=0;connector=1;",
+                    "endArrow=none;html=1;strokeWidth=2;endFill=0;dashed=1;dashPattern=1 1;startArrow=oval;startFill=1;rounded=0;connector=1;is_dependent=1;",
                     130,
                     1,
                     "",
@@ -1962,7 +1962,7 @@
                     mxResources.get("processmodel_mandatory_dependency")
                 ),
                 sb.createEdgeTemplateEntry(
-                    "endArrow=none;html=1;strokeWidth=1;endSize=8;startSize=8;dashed=1;endFill=0;rounded=0;causallink=1;",
+                    "endArrow=none;html=1;strokeWidth=1;endSize=8;startSize=8;dashed=1;endFill=0;rounded=0;causallink=1;min=0;",
                     120,
                     1,
                     "",
@@ -1971,7 +1971,7 @@
 
                 sb.addEntry("optional dependency (ex → rq)", function () {
                     var edge = sb.createDependencyEdge("ex", "rq", false);
-                    edge.setStyle(edge.getStyle() + "causallink=1,");
+                    edge.setStyle(edge.getStyle() + "causallink=1;min=0;");
                     return sb.createVertexTemplateFromCells(
                         [edge],
                         140,
@@ -1983,7 +1983,7 @@
                     "explicitation of cardinality - default 1",
                     function () {
                         var edge = sb.createDependencyEdge("1..*", null, false);
-                        edge.setStyle(edge.getStyle() + "causallink=1,");
+                        edge.setStyle(edge.getStyle() + "causallink=1;");
                         return sb.createVertexTemplateFromCells(
                             [edge],
                             140,
@@ -1995,14 +1995,14 @@
                     }
                 ),
                 sb.createEdgeTemplateEntry(
-                    "endArrow=classic;html=1;startArrow=oval;startFill=1;endSize=8;startSize=8;rounded=0;",
+                    "endArrow=classic;html=1;startArrow=oval;startFill=1;endSize=8;startSize=8;rounded=0;init_proc=1;",
                     40,
                     1.4285714285714286,
                     "",
                     mxResources.get("processmodel_initial_task")
                 ),
                 sb.createEdgeTemplateEntry(
-                    "endArrow=classic;html=1;startArrow=oval;startFill=0;endSize=8;startSize=8;rounded=0;",
+                    "endArrow=classic;html=1;startArrow=oval;startFill=0;endSize=8;startSize=8;rounded=0;interm_task=1;",
                     40,
                     1.4285714285714286,
                     "",

@@ -30,7 +30,10 @@ class ActionRuleResource extends JsonResource
             'blockly_code' => $this->blockly_code,
             'preview' => $this->preview,
             'updated_by' => $this->updated_by,
-            'deleted_by' => $this->deleted_by
+            'deleted_by' => $this->deleted_by,
+            'causal_links' => $this->when(isset($this->resource->causal_links), function() {
+                return $this->resource->causal_links;
+            })
         ];
     }
 }

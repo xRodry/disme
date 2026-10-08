@@ -561,7 +561,8 @@
                     "X"
                 )
             ).isEnabled = function () {
-                return isGraphEnabled() && mxClient.IS_SVG;
+                // Disabled per user request
+                return false; 
             };
         }
 
@@ -5610,7 +5611,7 @@
                 null,
                 "D"
             )
-        ).isEnabled = isGraphEnabled;
+        ).isEnabled = function() { return false; }; // Disabled per user request
 
         editorUi.actions.put(
             "insertNote",

@@ -6,7 +6,7 @@
     <div ng-controller="actionRulesController">
         <div growl></div>
         <br>
-        <button id="btn-add" class="btn btn-primary btn-xs" ng-click="openModalForm('md', 0, 'add')">Add New Action Rule</button>
+        <button id="btn-add" class="btn btn-primary btn-xs" ng-click="openModalForm('md', 0, 'add')" style="display: none;">Add New Action Rule</button>
         <br><br>
         <div class="alert alert-danger" ng-show="tableParams==null">
             {{trans("transactionTypes/messages.EMPTY_TABLE")}} {{trans("transactionTypes/messages.Page_Name")}}
@@ -34,7 +34,7 @@
 
                 <td>
                     <button class="btn btn-default btn-xs btn-detail" ng-click="openModalForm('md', actionrule.id, 'edit')">{{trans("common.BTNTABLE1")}}</button>
-                    <button class="btn btn-info btn-xs btn-detail" ng-click="openModalFormActions('lg', actionrule.id, '', 0)">Add New Action</button>
+                    <button class="btn btn-info btn-xs btn-detail" ng-click="openModalFormActions('lg', actionrule.id, '', 0)" style="display: none;">Add New Action</button>
                     <button class="btn btn-info btn-xs btn-detail" ng-click="openModalViewActions('lg', actionrule.id)">View Actions</button>
                     <button class="btn btn-info btn-xs btn-detail" ng-click="blockly(actionrule.id)">Blockly</button>
                     <button class="btn btn-danger btn-xs btn-delete" ng-click="delete(transactiontype.id)">{{trans("common.BTNTABLE3")}}</button>

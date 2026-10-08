@@ -217,7 +217,8 @@
             "DELETE-AR": "Ocorreu uma falha ao apagar a Regra Ação.",
             "DELETE-AR-DRAFT": "Ocorreu uma falha ao apagar o Rascunho de Regra Ação.",
             "LOAD-AR": "Ocorreu uma falha ao carregar as Regras de Ação",
-            "LOAD-AR-DRAFT": "Ocorreu uma falha ao carregar os Rascunhos de Regras de Ação"
+            "LOAD-AR-DRAFT": "Ocorreu uma falha ao carregar os Rascunhos de Regras de Ação",
+            "DELETE-AR-STRUCTURAL-DEPENDENCY": "Não é possível apagar a Regra de Ação: está associada estruturalmente a um Link Causal no Diagrama de Processo. Por favor, remova o link causal no Draw.io primeiro."
         },
         "ASK-DELETE": "Tem a certeza que pretende apagar esta Regra de Ação?",
         "ASK-DELETE-DRAFT": "Tem a certeza que pretende apagar este Rascunho de Regra de Ação?"
@@ -354,7 +355,8 @@
                     "MIN": "min",
                     "MAX": "max",
                     "CANCEL-PROCESS": "cancela processo",
-                    "CONTINUE-SAME-USER": "continua se for mesmo utilizador"
+                    "CONTINUE-SAME-USER": "continua se for mesmo utilizador",
+                    "MANAGED-BY-PROCESS-DIAGRAM": "🔒 Gerido pelo Diagrama de Processos"
                 },
                 "USER-INPUT": {
                     "TITLE-MULTIPLE-ENT-TYPES": "criar instância - várias entidades",
